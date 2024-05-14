@@ -1,7 +1,9 @@
 
 interface _GlobalComponents {
-      'BlocksCard': typeof import("../components/blocks/card.vue")['default']
+      'BlocksBackBlock': typeof import("../components/blocks/backBlock.vue")['default']
+    'BlocksCard': typeof import("../components/blocks/card.vue")['default']
     'BlocksNav': typeof import("../components/blocks/nav.vue")['default']
+    'BlocksUserTag': typeof import("../components/blocks/userTag.vue")['default']
     'ElementsButton': typeof import("../components/elements/Button.vue")['default']
     'ElementsInput': typeof import("../components/elements/input.vue")['default']
     'ElementsScrollUp': typeof import("../components/elements/scrollUp.vue")['default']
@@ -27,8 +29,10 @@ interface _GlobalComponents {
     'Head': typeof import("../node_modules/nuxt/dist/head/runtime/components")['Head']
     'Html': typeof import("../node_modules/nuxt/dist/head/runtime/components")['Html']
     'Body': typeof import("../node_modules/nuxt/dist/head/runtime/components")['Body']
-      'LazyBlocksCard': typeof import("../components/blocks/card.vue")['default']
+      'LazyBlocksBackBlock': typeof import("../components/blocks/backBlock.vue")['default']
+    'LazyBlocksCard': typeof import("../components/blocks/card.vue")['default']
     'LazyBlocksNav': typeof import("../components/blocks/nav.vue")['default']
+    'LazyBlocksUserTag': typeof import("../components/blocks/userTag.vue")['default']
     'LazyElementsButton': typeof import("../components/elements/Button.vue")['default']
     'LazyElementsInput': typeof import("../components/elements/input.vue")['default']
     'LazyElementsScrollUp': typeof import("../components/elements/scrollUp.vue")['default']
@@ -68,8 +72,10 @@ declare module 'vue' {
   export interface GlobalComponents extends _GlobalComponents { }
 }
 
+export const BlocksBackBlock: typeof import("../components/blocks/backBlock.vue")['default']
 export const BlocksCard: typeof import("../components/blocks/card.vue")['default']
 export const BlocksNav: typeof import("../components/blocks/nav.vue")['default']
+export const BlocksUserTag: typeof import("../components/blocks/userTag.vue")['default']
 export const ElementsButton: typeof import("../components/elements/Button.vue")['default']
 export const ElementsInput: typeof import("../components/elements/input.vue")['default']
 export const ElementsScrollUp: typeof import("../components/elements/scrollUp.vue")['default']
@@ -95,8 +101,10 @@ export const Style: typeof import("../node_modules/nuxt/dist/head/runtime/compon
 export const Head: typeof import("../node_modules/nuxt/dist/head/runtime/components")['Head']
 export const Html: typeof import("../node_modules/nuxt/dist/head/runtime/components")['Html']
 export const Body: typeof import("../node_modules/nuxt/dist/head/runtime/components")['Body']
+export const LazyBlocksBackBlock: typeof import("../components/blocks/backBlock.vue")['default']
 export const LazyBlocksCard: typeof import("../components/blocks/card.vue")['default']
 export const LazyBlocksNav: typeof import("../components/blocks/nav.vue")['default']
+export const LazyBlocksUserTag: typeof import("../components/blocks/userTag.vue")['default']
 export const LazyElementsButton: typeof import("../components/elements/Button.vue")['default']
 export const LazyElementsInput: typeof import("../components/elements/input.vue")['default']
 export const LazyElementsScrollUp: typeof import("../components/elements/scrollUp.vue")['default']
