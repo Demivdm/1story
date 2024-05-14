@@ -1,0 +1,24 @@
+@mixin rounded-button {
+    
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #222425;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    
+    &:hover,
+    &.is-active {
+        
+        background: linear-gradient(135deg, #1ce3f0 0%, #1391f8 100%);
+        
+    }
+}
+
+@mixin main-background {
+    
+    background: radial-gradient(50% 50% at 50% 50%, #C5CDF7 0%, #F2F4FD 100%);
+
+        
+    }

@@ -1,0 +1,24 @@
+$color-black: #000000;
+$color-white: #ffffff;
+
+// main colors
+$color-primary: var(--primary-color);
+$color-secondary: var(--secondary-color);
+$color-tertiary: var(--tertiary-color);
+$color-extra: var(--extra-color);
+
+// text colors
+
+$color-heading: var(--heading-color);
+$color-text: var(--text-color);
+$color-site-primary: var(--primary-site-color);
+
+// button colors
+
+$color-button-bg--primary: var(--primary-button-bg);
+$color-button-text--primary: var(--primary-button-text);
+
+:root{
+    transition: ease-in-out all 10s !important;
+
+}
