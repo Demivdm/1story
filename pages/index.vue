@@ -1,4 +1,5 @@
 <template>
+  <main>
   <!-- <div> -->
     <BlocksNav></BlocksNav>
 <!-- prevent is er in dit geval voor dat de pagina niet herlaadt elke keer als er iets wordt toegeveoegd -->
@@ -44,7 +45,7 @@
     <h3>Dit is jouw willekeurige persoonlijke zin</h3>
     <p>{{ currentRandomSentence }}</p>
   </div> -->
-
+</main>
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
@@ -144,4 +145,11 @@ onMounted(() => {
 });
 
 </script>
+<style lang="scss" scoped>
+@import '../scss/mixins/_index.scss';
 
+main{
+  @include main-background;
+  height: 100vh;
+}
+</style>
