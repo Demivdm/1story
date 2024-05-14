@@ -1,0 +1,139 @@
+body {
+    font-family: $font-regular;
+    color: $color-text;
+    line-height: $general-line-height;
+    font-size: $font-size--p;
+  
+    @include md {
+      font-size: $font-size--p-tab;
+    }
+  
+    @include sm {
+      font-size: $font-size--p-mob;
+    }
+  }
+  
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: $font-title;
+    font-weight: normal;
+    line-height: $general-line-height;
+  }
+  
+  h1 {
+    font-size: $font-size--h1;
+    @include md {
+      font-size: $font-size--h1-tab;
+    }
+  
+    @include sm {
+      font-size: $font-size--h1-mob;
+    }
+  }
+  
+  h2 {
+    font-size: $font-size--h2;
+    @include md {
+      font-size: $font-size--h2-tab;
+    }
+  
+    @include sm {
+      font-size: $font-size--h2-mob;
+    }
+  }
+  
+  h3 {
+    font-size: $font-size--h3;
+    @include md {
+      font-size: $font-size--h3-tab;
+    }
+  
+    @include sm {
+      font-size: $font-size--h3-mob;
+    }
+  }
+  
+  h4 {
+    font-size: $font-size--h4;
+    @include md {
+      font-size: $font-size--h4-tab;
+    }
+  
+    @include sm {
+      font-size: $font-size--h4-mob;
+    }
+  }
+  
+  h5 {
+    font-size: $font-size--h5;
+    @include md {
+      font-size: $font-size--h5-tab;
+    }
+  
+    @include sm {
+      font-size: $font-size--h5-mob;
+    }
+  }
+  
+  h6 {
+    font-size: $font-size--h6;
+    @include md {
+      font-size: $font-size--h6-tab;
+    }
+  
+    @include sm {
+      font-size: $font-size--h6-mob;
+    }
+  }
+  
+  a {
+    font-size: $font-size--a;
+    @include md-lg {
+      font-size: $font-size--a-tab;
+    }
+  
+    @include sm {
+      font-size: $font-size--a-mob;
+    }
+  }
+  
+  ul,
+  ol {
+    padding-bottom: 20px;
+    li {
+      position: relative;
+      padding: 4px 16px;
+  
+      @include md-lg {
+        font-size: $font-size--li;
+      }
+  
+      @include sm {
+        font-size: $font-size--li-mob;
+      }
+    }
+  }
+  ul {
+    li {
+      &::before {
+        content: "";
+        position: absolute;
+        display: block;
+        height: 8px;
+        width: 8px;
+        border-radius: 100px;
+        background: $color-text;
+        top: 8px;
+        left: 0;
+      }
+    }
+  }
+  
+  p {
+    padding-bottom: 20px;
+  }
+  
