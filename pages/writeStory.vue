@@ -16,7 +16,7 @@
   <button @click="() => addSentence()">Verzenden</button>
 
   <!-- onderstaande oplossing kon niet omdat ik in een kleiner component probeer te komen -->
-  <!-- ik heb dit opgelost door vue routes te gebruiken -->
+  <!-- ik heb dit opgelost door vue routes te gebruiker -->
   <!-- <ElementsButton>
       <NuxtLink to="/confirm">
         Doorgaan
