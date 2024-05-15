@@ -1,8 +1,11 @@
 <template>
+    <BlocksNav></BlocksNav>
   <BlocksBackBlock></BlocksBackBlock>
   <ElementsBackButton></ElementsBackButton>
   <ElementsScrollUp></ElementsScrollUp>
-  <ElementsTagBlock></ElementsTagBlock> 27-02-2024
+  <ElementsTagBlock></ElementsTagBlock> 
+  <date>27-02-2024</date>
+
   <BlocksUserTag></BlocksUserTag>
   <h2>Dit zijn alle zinnen</h2>
   <!-- werkt in combinatie met de ref beter omdat er niet de hele tijd naar alle elementen hierin gekeken moet worden -->

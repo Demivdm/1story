@@ -1,9 +1,13 @@
 <template>
   <h2>Bedankt voor het delen</h2>
   <p>Hieronder kun je nogmaals zien wat je hebt ingevuld. Foutje gemaakt? Geen probleem, je kunt het nu nog aanpassen. Als alles naar wens is, kun je het tabblad sluiten of andere verhalen bekijken.</p>
- <ElementsButton>Verzenden</ElementsButton>
  <ElementsButton>Bewerken</ElementsButton>
- <ElementsButton>Bekijk alle verhalen</ElementsButton>
+ <ElementsButton>
+      <NuxtLink to="/allStories">
+        Bekijk andere verhalen
+      </NuxtLink>
+    </ElementsButton>
+
 
  
   <!-- <div class="confirm-pop-up" v-if="showConfirm">
