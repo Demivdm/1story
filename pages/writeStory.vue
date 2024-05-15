@@ -1,86 +1,75 @@
 <template>
-    <BlocksNav></BlocksNav>
-    <BlocksForm></BlocksForm>
+  <BlocksNav></BlocksNav>
+  <BlocksForm></BlocksForm>
 
-    <!-- <form action="">
-    <BlocksCard></BlocksCard>
-    <ElementsTagBlock></ElementsTagBlock>naam vorige schrijver
-    <ElementsTagBlock></ElementsTagBlock>functie vorige schrijver
+  <textarea
+    v-model="textInput"
+    @input="limitCheck"
+    cols="30"
+    rows="10"
+    placeholder="Schrijf je zin"
+    name="sentence"
+    required
+  ></textarea>
+  <p>{{ remainingChar }} tekens over</p>
+  <!-- waarom staat hier een arrow functie voor en kan ik niet gewoon de functie zelf aanroepen -->
+  <button @click="() => addSentence()">Verzenden</button>
 
-    <p> Mijn naam is</p>
-  <ElementsInput></ElementsInput>
-  <p> en ik werk als</p>
-   <ElementsInput></ElementsInput>
- 
-   <p> Mijn zin van de week is </p>
-  </form> -->
-      <textarea v-model="textInput" @input="limitCheck"
- cols="30" rows="10" placeholder="Schrijf je zin" ></textarea>
-      <p>{{ remainingChar }} tekens over</p>
-      <button @click="() => addSentence()">Verzenden</button>
-
-    
-    <!-- <ElementsButton>
+  <!-- onderstaande oplossing kon niet omdat ik in een kleiner component probeer te komen -->
+  <!-- ik heb dit opgelost door vue routes te gebruiken -->
+  <!-- <ElementsButton>
       <NuxtLink to="/confirm">
         Doorgaan
       </NuxtLink>
     </ElementsButton> -->
-
-  </template>
+</template>
 
 <script setup>
-import { ref, computed, watch } from 'vue';
-import { collection, onSnapshot, addDoc } from "firebase/firestore";
-import { db } from '~/firebase';
-
-
-
+import { ref, computed, watch } from "vue";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "~/firebase";
 
 const charLimit = 100;
-const textInput = ref('');
+const textInput = ref("");
 const router = useRouter();
-
-
 
 // nieuwe zinnen aanmaken en verzenden
 
 const addSentence = () => {
-  // if statement to handle when the input field is empty
-  if(textInput.value === '') {
+  // if statement zodat de db niet wordt gevuld als het input veld leeg is.
+  if (textInput.value === "") {
     return;
   }
 
-  // Add the sentence to the database
+  // zin toevoegen aan de db
   addDoc(collection(db, "sentences"), {
     content: textInput.value,
-  }).then(() => {
-    // Clear the input field after sending
-    textInput.value = '';
-    
-    // Navigate to the confirmation page
-    router.push({ name: 'confirm' });
-  }).catch(error => {
-    console.error('Error adding sentence:', error);
-  });
+  })
+    .then(() => {
+      // inputfield leeg maken als de zin is verstuurd
+      textInput.value = "";
+
+      // gebruiker doorsturen naar de confirm pagina
+      router.push({ name: "confirm" });
+    })
+    .catch((error) => {
+      console.error("Error adding sentence, please try again later", error);
+    });
 };
 
-
-// chararcter check
+// character check
 const remainingChar = computed(() => {
   return charLimit - textInput.value.length;
 });
-
-const limitCheck = (event) => {
+// wat doet de slice?
+// deze functie kijkt of de value van text input al meer is dan het character limiet
+const limitCheck = () => {
   if (textInput.value.length >= charLimit) {
     textInput.value = textInput.value.slice(0, charLimit);
   }
 };
-
+// watcher zodat er altijd wordt gekeken wanneer de gebruiker tekens invult
 watch(textInput, () => {
   limitCheck();
 });
 </script>
-
-
-
-

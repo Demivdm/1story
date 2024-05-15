@@ -1,5 +1,5 @@
 <template>
-    <input type="text"/>
+    <input type="text" required/>
 </template>
 <script>
 
