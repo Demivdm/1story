@@ -1,7 +1,6 @@
 
 interface _GlobalComponents {
-      'BlocksBackBlock': typeof import("../components/blocks/backBlock.vue")['default']
-    'BlocksCard': typeof import("../components/blocks/card.vue")['default']
+      'BlocksCard': typeof import("../components/blocks/card.vue")['default']
     'BlocksForm': typeof import("../components/blocks/form.vue")['default']
     'BlocksNav': typeof import("../components/blocks/nav.vue")['default']
     'BlocksUserTag': typeof import("../components/blocks/userTag.vue")['default']
@@ -31,8 +30,7 @@ interface _GlobalComponents {
     'Head': typeof import("../node_modules/nuxt/dist/head/runtime/components")['Head']
     'Html': typeof import("../node_modules/nuxt/dist/head/runtime/components")['Html']
     'Body': typeof import("../node_modules/nuxt/dist/head/runtime/components")['Body']
-      'LazyBlocksBackBlock': typeof import("../components/blocks/backBlock.vue")['default']
-    'LazyBlocksCard': typeof import("../components/blocks/card.vue")['default']
+      'LazyBlocksCard': typeof import("../components/blocks/card.vue")['default']
     'LazyBlocksForm': typeof import("../components/blocks/form.vue")['default']
     'LazyBlocksNav': typeof import("../components/blocks/nav.vue")['default']
     'LazyBlocksUserTag': typeof import("../components/blocks/userTag.vue")['default']
@@ -76,7 +74,6 @@ declare module 'vue' {
   export interface GlobalComponents extends _GlobalComponents { }
 }
 
-export const BlocksBackBlock: typeof import("../components/blocks/backBlock.vue")['default']
 export const BlocksCard: typeof import("../components/blocks/card.vue")['default']
 export const BlocksForm: typeof import("../components/blocks/form.vue")['default']
 export const BlocksNav: typeof import("../components/blocks/nav.vue")['default']
@@ -107,7 +104,6 @@ export const Style: typeof import("../node_modules/nuxt/dist/head/runtime/compon
 export const Head: typeof import("../node_modules/nuxt/dist/head/runtime/components")['Head']
 export const Html: typeof import("../node_modules/nuxt/dist/head/runtime/components")['Html']
 export const Body: typeof import("../node_modules/nuxt/dist/head/runtime/components")['Body']
-export const LazyBlocksBackBlock: typeof import("../components/blocks/backBlock.vue")['default']
 export const LazyBlocksCard: typeof import("../components/blocks/card.vue")['default']
 export const LazyBlocksForm: typeof import("../components/blocks/form.vue")['default']
 export const LazyBlocksNav: typeof import("../components/blocks/nav.vue")['default']
