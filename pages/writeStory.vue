@@ -1,7 +1,7 @@
 <template>
   <BlocksNav></BlocksNav>
+  <ElementsBackButton></ElementsBackButton>
   <BlocksForm></BlocksForm>
-
   <textarea
     v-model="textInput"
     @input="limitCheck"
