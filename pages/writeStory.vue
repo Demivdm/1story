@@ -26,12 +26,13 @@
 
 <script setup>
 import { ref, computed, watch } from "vue";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, orderBy } from "firebase/firestore";
 import { db } from "~/firebase";
 
 const charLimit = 100;
 const textInput = ref("");
 const router = useRouter();
+// const q = query(sentences, orderBy("createdAt"));
 
 // nieuwe zinnen aanmaken en verzenden
 
@@ -44,6 +45,7 @@ const addSentence = () => {
   // zin toevoegen aan de db
   addDoc(collection(db, "sentences"), {
     content: textInput.value,
+    createdAt: serverTimestamp(),
   })
     .then(() => {
       // inputfield leeg maken als de zin is verstuurd
