@@ -1,7 +1,9 @@
 <template>
   <BlocksNav></BlocksNav>
   <ElementsBackButton></ElementsBackButton>
-  <BlocksForm></BlocksForm>
+  <input type="text"  placeholder="vul hier je naam in" v-model="nameInput"/>
+  <input type="text"  placeholder="vul hier je functie in" v-model="functionInput"/>
+
   <textarea
     v-model="textInput"
     @input="limitCheck"
@@ -26,11 +28,14 @@
 
 <script setup>
 import { ref, computed, watch } from "vue";
-import { collection, addDoc, serverTimestamp, orderBy } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, doc } from "firebase/firestore";
 import { db } from "~/firebase";
 
 const charLimit = 100;
 const textInput = ref("");
+const nameInput = ref("");
+const functionInput = ref("");
+
 const router = useRouter();
 // const q = query(sentences, orderBy("createdAt"));
 
@@ -42,14 +47,21 @@ const addSentence = () => {
     return;
   }
 
+  
   // zin toevoegen aan de db
   addDoc(collection(db, "sentences"), {
+    
     content: textInput.value,
+    name: nameInput.value,
+    function: functionInput.value,
     createdAt: serverTimestamp(),
   })
     .then(() => {
       // inputfield leeg maken als de zin is verstuurd
       textInput.value = "";
+      nameInput.value = "";
+      functionInput.value = "";
+
 
       // gebruiker doorsturen naar de confirm pagina
       router.push({ name: "confirm" });

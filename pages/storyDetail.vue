@@ -1,19 +1,30 @@
 <template>
+  <section class="check">
+
+
     <BlocksNav></BlocksNav>
   <ElementsBackButton></ElementsBackButton>
   <ElementsScrollUp></ElementsScrollUp>
-  <ElementsTagBlock></ElementsTagBlock> 
+
   <time>27-02-2024</time>
 
-  <BlocksUserTag></BlocksUserTag>
-  <h2>Dit zijn alle zinnen</h2>
+  <h2>Het verhaal</h2>
   <!-- werkt in combinatie met de ref beter omdat er niet de hele tijd naar alle elementen hierin gekeken moet worden -->
   <section class="story">
     <div v-for="sentence in sentences" :key="sentence.id">
     <span class="sentence">{{ sentence.content }}</span>
 
+    <h2>naam</h2>
+    <span class="sentence">{{ sentence.name }}</span>
+    <ElementsTagBlock></ElementsTagBlock> 
+    <h2>functie</h2>
+    <span class="sentence">{{ sentence.function }}</span>
+    <ElementsTagBlock></ElementsTagBlock> 
+
+
   </div>
   </section>
+</section>
 
 </template>
 <script setup>
@@ -41,6 +52,8 @@ onMounted(() => {
       const sentence = {
         id: doc.id,
         content: data.content,
+        name: data.name,
+        function: data.function,
         // dit pakt de createdat data uit de db als die er is
         // dan wordt het veranderd naar een date die js kan gebruiken
         // als createdAt niet bestaat dan wordt deze op null gezet
@@ -58,15 +71,22 @@ onMounted(() => {
 });
 </script>
 <style>
+.check{
+  height: 300vh;
+}
 .story{
+  overflow-x: hidden;
   display: flex;
+  flex-wrap: wrap;
+  white-space: nowrap;
+
 }
 .sentences{
  width: max-content;
  
 }
 .sentence {
-display: block;
-  margin-right: 5px; 
+display: inline;
+  margin-right: 8px; 
 }
 </style>
