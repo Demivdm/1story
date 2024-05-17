@@ -55,6 +55,7 @@ const addSentence = () => {
     name: nameInput.value,
     function: functionInput.value,
     createdAt: serverTimestamp(),
+    used: false
   })
     .then(() => {
       // inputfield leeg maken als de zin is verstuurd
