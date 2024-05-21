@@ -21,8 +21,9 @@
 
     
      
-
-  <input type="text"  placeholder="vul hier je naam in" v-model="nameInput"/>
+<label for="name">Naam</label>
+  <input type="text"  :placeholder="currentUser?.displayName || 'Vul hier je naam in'" v-model="nameInput"/>
+  <label for="functie">Functie</label>
   <input type="text"  placeholder="vul hier je functie in" v-model="functionInput"/>
 
   <textarea
@@ -79,7 +80,7 @@ const addSentence = () => {
   
   // zin toevoegen aan de db
   addDoc(collection(db, "sentences"), {
-    
+    uid: currentUser.value.uid,
     content: textInput.value,
     name: nameInput.value,
     function: functionInput.value,
@@ -94,7 +95,7 @@ const addSentence = () => {
 
 
       // gebruiker doorsturen naar de confirm pagina
-      router.push({ name: "confirm" });
+      router.push('confirm');
     })
     .catch((error) => {
       console.error("Error adding sentence, please try again later", error);
@@ -123,11 +124,17 @@ const logout = async () => {
     logoutMessage.value = "Logging out";
     setTimeout(() => {
       router.push('/');
-      logoutMessage.value = ''; // Clear message after redirect
+      logoutMessage.value = ''; 
     }, 5000);
   } catch (error) {
     console.error("Error signing out: ", error);
     router.push('/404');
   }
 };
+// naam automatisch invullen wanneer deze beschikbaar is
+onMounted(() => {
+  if (currentUser.value && currentUser.value.displayName) {
+    nameInput.value = currentUser.value.displayName;
+  }
+});
 </script>
