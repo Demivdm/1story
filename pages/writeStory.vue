@@ -1,6 +1,27 @@
 <template>
   <BlocksNav></BlocksNav>
   <ElementsBackButton></ElementsBackButton>
+  <!-- <h2>
+      Welcome {{ currentUser.displayName }}
+        </h2>
+      <button @click="logout">Logout</button>
+       -->
+       <span v-if="!currentUser">
+        <BlocksLogin></BlocksLogin>
+       </span>
+       <span v-else-if="currentUser">
+        <h2>
+        Welcome {{ currentUser.displayName }}
+        </h2>
+        </span>
+      <ElementsButton @click="logout()">
+        Logout
+      </ElementsButton>
+        <p>{{ logoutMessage }} </p>
+
+    
+     
+
   <input type="text"  placeholder="vul hier je naam in" v-model="nameInput"/>
   <input type="text"  placeholder="vul hier je functie in" v-model="functionInput"/>
 
@@ -28,16 +49,24 @@
 
 <script setup>
 import { ref, computed, watch } from "vue";
+  
+import { EmailAuthProvider, GoogleAuthProvider,} from 'firebase/auth';
 import { collection, addDoc, serverTimestamp, doc } from "firebase/firestore";
 import { db } from "~/firebase";
+import { useCurrentUser } from 'vuefire';
+import { signOut, getAuth } from 'firebase/auth';
 
+
+  const currentUser = useCurrentUser()
 const charLimit = 100;
 const textInput = ref("");
 const nameInput = ref("");
 const functionInput = ref("");
-
+const auth = getAuth();
 const router = useRouter();
-// const q = query(sentences, orderBy("createdAt"));
+const logoutMessage = ref('');
+
+
 
 // nieuwe zinnen aanmaken en verzenden
 
@@ -87,4 +116,18 @@ const limitCheck = () => {
 watch(textInput, () => {
   limitCheck();
 });
+const logout = async () => {
+  try {
+    await signOut(auth);
+    console.log("User signed out");
+    logoutMessage.value = "Logging out";
+    setTimeout(() => {
+      router.push('/');
+      logoutMessage.value = ''; // Clear message after redirect
+    }, 5000);
+  } catch (error) {
+    console.error("Error signing out: ", error);
+    router.push('/404');
+  }
+};
 </script>

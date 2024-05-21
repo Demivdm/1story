@@ -8,7 +8,7 @@ const goBack = () => {
   if (window.history.state.back) {
     router.back();
   } else {
-    router.push("/index");
+    router.push("/");
   }
 };
 </script>

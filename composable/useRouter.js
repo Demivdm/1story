@@ -1,18 +1,52 @@
+// import { createRouter, createWebHistory } from 'vue-router';
+// import confirmation from '@/confirm.vue';
+
+// const routes = [
+//   {
+//     path: '/confirm',
+//     name: 'confirm',
+//     component: confirm
+//   }
+//   // Add more routes as needed
+// ];
+
+// const router = createRouter({
+//   history: createWebHistory(),
+//   routes
+// });
+
+// export default router;
 import { createRouter, createWebHistory } from 'vue-router';
-import confirmation from '@/confirm.vue';
+import { getAuth } from 'firebase/auth';
+
+import WriteStory from '@/components/WriteStory.vue'; // Example WriteStory component
+import Login from '@/components/Login.vue'; // Example Login component
 
 const routes = [
-  {
-    path: '/confirm',
-    name: 'confirm',
-    component: confirm
-  }
-  // Add more routes as needed
+  { path: '/', component: Index },
+  { 
+    path: '/writeStory', 
+    component: WriteStory, 
+    meta: { requiresAuth: true } 
+  },
+  { path: '/login', component: Login },
+  
 ];
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const auth = getAuth();
+  const currentUser = auth.currentUser;
+
+  if (to.matched.some(record => record.meta.requiresAuth) && !currentUser) {
+    next('/writeStory');
+  } else {
+    next();
+  }
 });
 
 export default router;

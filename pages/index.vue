@@ -10,29 +10,36 @@
       <!-- op deze manier kan de db niet gevuld worden met lege velden -->
       <!-- <ElementsButton :disabled="!newSentence">Deel jouw zin</ElementsButton> -->
     <!-- </form> -->
+
     <div>
     <span v-if="currentUser">
-      <ElementsButton>
-        <NuxtLink to="/writeStory">
-          Deel jouw zin
-        </NuxtLink>
+      <ElementsButton to="/writeStory">
+          Deel jouw zin nuxt
       </ElementsButton>
+      <!-- <ElementsButton href="https://nos.nl" target class="Demi Post">
+          Deel jouw zin a
+      </ElementsButton>
+      <ElementsButton click="">
+          Deel jouw zin btn
+      </ElementsButton> -->
+      
     </span>
     <span v-else>
-        <NuxtLink to="/login">
+        <NuxtLink to="/loginPage">
           Deel jouw zin
         </NuxtLink>
       
     </span>
   </div>
 
+   
 
     <h2>Verbind, creëer en deel samen verhalen - één zin per week, elke maand een nieuw avontuur!</h2>
   
     <ElementsButton>
-      <NuxtLink to="/allStories">
+
         Bekijk andere verhalen
-      </NuxtLink>
+ 
     </ElementsButton>
 
 
@@ -66,13 +73,16 @@ import { collection, onSnapshot, addDoc } from "firebase/firestore";
 import { db } from '~/firebase';
 
 
+
 // waarom type je hier binnen de ref maar in een functie is het achter de dubbele punt
 
 const sentences = ref(<Sentence[]>[]);
 const newSentence = ref<String>('');
 const showConfirm = ref<boolean>(false);
-  const currentUser = useCurrentUser()
-let currentRandomSentence = ref<string>("Loading...");
+  const currentUser = useCurrentUser();
+
+
+// let currentRandomSentence = ref<string>("Loading...");
 
 
 // nieuwe zinnen aanmaken en verzenden
@@ -152,7 +162,7 @@ onMounted(() => {
     sentences.value = fbSentences;
     // getrandom sentence wordt in ontmounted pas aangeroepen zodat de random zin niet elke keer update
     // wanneer er iets wordt getypt in de input
-    getRandomSentence();
+    // getRandomSentence();
   });
  
   

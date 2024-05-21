@@ -1,24 +1,17 @@
 <template>
      <div>
     <h2>Login</h2>
-    <span v-if="logoutMessage">{{ logoutMessage }} 
         <ElementsButton>
-      <NuxtLink to="/allStories">
         Bekijk andere verhalen
-      </NuxtLink>
     </ElementsButton>
-    
-    </span>
-    <span v-if="currentUser">
-      Welcome {{ currentUser.displayName }}
-      <button @click="logout">Logout</button>
-    </span>
-    <span v-else>
       <div id="firebaseui-auth-container"></div>
-    </span>
+    
   </div>
 
   </template>
+  <style lang="sass" scoped>
+  
+  </style>
   
   <script lang="ts" setup>
   
@@ -29,7 +22,6 @@
 
 
   const currentUser = useCurrentUser()
-  const logoutMessage = ref('');
   const auth = getAuth();
 const router = useRouter();
 
@@ -42,25 +34,19 @@ const router = useRouter();
     signInSuccessUrl: "/",
     callbacks: {
       signInSuccessWithAuthResult() {
+        // router.push('/writeStory');
         console.log("Successfully signed in");
-        // window.location = "/";
+     
       },
     },
   }
-  const logout = async () => {
-  try {
-    await signOut(auth);
-    console.log("User signed out");
-    logoutMessage.value = "Je bent uitgelogd";
-  } catch (error) {
-    console.error("Error signing out: ", error);
-    router.push('/404');
 
-  }
-};
-
-  onMounted(() => {
+onMounted(() => {
+  if (currentUser.value) {
+    router.push('/');
+  } else {
     ui.start("#firebaseui-auth-container", config);
-  })
+  }
+});
   
 </script>
