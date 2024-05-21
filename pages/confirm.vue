@@ -2,11 +2,18 @@
   <div v-if="sentence">
     <h2>Bedankt voor het delen</h2>
     <p>Hieronder kun je nogmaals zien wat je hebt ingevuld. Foutje gemaakt? Geen probleem, je kunt het nu nog aanpassen. Als alles naar wens is, kun je het tabblad sluiten of andere verhalen bekijken.</p>
-    <span class="name">Naam: {{ name.name }}</span><BR></BR>
-    <span class="job">Functie: {{ job.function }}</span><BR></BR>
+    <span class="name">Naam: {{ name.name }}</span>
+    <span class="job">Functie: {{ job.function }}</span>
     <span class="sentence">{{ sentence.content }}</span>
 
-
+    <template v-if="!editing">
+      <span class="sentence">{{ sentence.content }}</span>
+      <button @click="toggleEditing">Bewerken</button>
+    </template>
+    <template v-else>
+      <input type="text" v-model="editedContent">
+      <button @click="saveEdit">Opslaan</button>
+    </template>
     <ElementsButton>
       <NuxtLink to="/allStories">
         Bekijk andere verhalen
@@ -14,7 +21,7 @@
     </ElementsButton>
   </div>
   <div v-else>
-    Heb je wel een zin ingevuld?
+   loading.....
   </div>
 </template>
 
@@ -27,6 +34,9 @@ import { db } from '~/firebase';
 const sentence = ref(null);
 const name = ref(null);
 const job = ref(null);
+const editing = ref(false);
+const editedContent = ref('');
+
 
 onMounted(() => {
   const sentencesCollection = collection(db, "sentences");
@@ -56,6 +66,16 @@ onMounted(() => {
     });
   });
 });
+// EDITING WERKT NIET, FIX DIT
+// function toggleEditing() {
+//   editing.value = !editing.value;
+//   editedContent.value = sentence.value.content; 
+// }
+
+// function saveEdit() {
+//   sentence.value.content = editedContent.value;
+//   editing.value = false;
+// }
 </script>
 
 <script>

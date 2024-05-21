@@ -10,6 +10,13 @@
       <!-- op deze manier kan de db niet gevuld worden met lege velden -->
       <!-- <ElementsButton :disabled="!newSentence">Deel jouw zin</ElementsButton> -->
     <!-- </form> -->
+
+  <div>
+    <!-- <router-link to="/auth">Sign in</router-link> -->
+    <BlocksLogin></BlocksLogin>
+  </div>
+
+
     <h2>Verbind, creëer en deel samen verhalen - één zin per week, elke maand een nieuw avontuur!</h2>
     <ElementsButton>
       <NuxtLink to="/writeStory">

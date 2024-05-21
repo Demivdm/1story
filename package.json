@@ -10,10 +10,14 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "firebase": "^10.11.1",
+    "firebase": "^10.12.1",
+    "firebaseui": "^6.1.0",
     "nuxt": "^3.11.2",
+    "nuxt-vuefire": "^1.0.2",
     "sass": "^1.77.1",
     "vue": "^3.4.21",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "vuefire": "^3.1.23",
+    "vuex": "^4.1.0"
   }
 }

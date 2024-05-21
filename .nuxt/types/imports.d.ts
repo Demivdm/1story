@@ -30,6 +30,7 @@ declare global {
   const getAppManifest: typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getAppManifest']
   const getCurrentInstance: typeof import('../../node_modules/vue')['getCurrentInstance']
   const getCurrentScope: typeof import('../../node_modules/vue')['getCurrentScope']
+  const getCurrentUser: typeof import('../../node_modules/nuxt-vuefire/dist/runtime/auth/composables')['getCurrentUser']
   const getRouteRules: typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getRouteRules']
   const h: typeof import('../../node_modules/vue')['h']
   const hasInjectionContext: typeof import('../../node_modules/vue')['hasInjectionContext']
@@ -98,11 +99,21 @@ declare global {
   const useAppConfig: typeof import('../../node_modules/nuxt/dist/app/config')['useAppConfig']
   const useAsyncData: typeof import('../../node_modules/nuxt/dist/app/composables/asyncData')['useAsyncData']
   const useAttrs: typeof import('../../node_modules/vue')['useAttrs']
+  const useCollection: typeof import('../../node_modules/vuefire')['useCollection']
   const useCookie: typeof import('../../node_modules/nuxt/dist/app/composables/cookie')['useCookie']
   const useCssModule: typeof import('../../node_modules/vue')['useCssModule']
   const useCssVars: typeof import('../../node_modules/vue')['useCssVars']
+  const useCurrentUser: typeof import('../../node_modules/vuefire')['useCurrentUser']
+  const useDatabase: typeof import('../../node_modules/vuefire')['useDatabase']
+  const useDatabaseList: typeof import('../../node_modules/vuefire')['useDatabaseList']
+  const useDatabaseObject: typeof import('../../node_modules/vuefire')['useDatabaseObject']
+  const useDocument: typeof import('../../node_modules/vuefire')['useDocument']
   const useError: typeof import('../../node_modules/nuxt/dist/app/composables/error')['useError']
   const useFetch: typeof import('../../node_modules/nuxt/dist/app/composables/fetch')['useFetch']
+  const useFirebaseApp: typeof import('../../node_modules/nuxt-vuefire/dist/runtime/app/composables')['useFirebaseApp']
+  const useFirebaseAuth: typeof import('../../node_modules/vuefire')['useFirebaseAuth']
+  const useFirebaseStorage: typeof import('../../node_modules/vuefire')['useFirebaseStorage']
+  const useFirestore: typeof import('../../node_modules/vuefire')['useFirestore']
   const useHead: typeof import('../../node_modules/@unhead/vue')['useHead']
   const useHeadSafe: typeof import('../../node_modules/@unhead/vue')['useHeadSafe']
   const useHydration: typeof import('../../node_modules/nuxt/dist/app/composables/hydrate')['useHydration']
@@ -130,6 +141,9 @@ declare global {
   const useServerSeoMeta: typeof import('../../node_modules/@unhead/vue')['useServerSeoMeta']
   const useSlots: typeof import('../../node_modules/vue')['useSlots']
   const useState: typeof import('../../node_modules/nuxt/dist/app/composables/state')['useState']
+  const useStorageFile: typeof import('../../node_modules/vuefire')['useStorageFile']
+  const useStorageFileMetadata: typeof import('../../node_modules/vuefire')['useStorageFileMetadata']
+  const useStorageFileUrl: typeof import('../../node_modules/vuefire')['useStorageFileUrl']
   const useTransitionState: typeof import('../../node_modules/vue')['useTransitionState']
   const watch: typeof import('../../node_modules/vue')['watch']
   const watchEffect: typeof import('../../node_modules/vue')['watchEffect']
@@ -184,6 +198,7 @@ declare module 'vue' {
     readonly getAppManifest: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getAppManifest']>
     readonly getCurrentInstance: UnwrapRef<typeof import('../../node_modules/vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('../../node_modules/vue')['getCurrentScope']>
+    readonly getCurrentUser: UnwrapRef<typeof import('../../node_modules/nuxt-vuefire/dist/runtime/auth/composables')['getCurrentUser']>
     readonly getRouteRules: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getRouteRules']>
     readonly h: UnwrapRef<typeof import('../../node_modules/vue')['h']>
     readonly hasInjectionContext: UnwrapRef<typeof import('../../node_modules/vue')['hasInjectionContext']>
@@ -252,11 +267,21 @@ declare module 'vue' {
     readonly useAppConfig: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/config')['useAppConfig']>
     readonly useAsyncData: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/asyncData')['useAsyncData']>
     readonly useAttrs: UnwrapRef<typeof import('../../node_modules/vue')['useAttrs']>
+    readonly useCollection: UnwrapRef<typeof import('../../node_modules/vuefire')['useCollection']>
     readonly useCookie: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/cookie')['useCookie']>
     readonly useCssModule: UnwrapRef<typeof import('../../node_modules/vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('../../node_modules/vue')['useCssVars']>
+    readonly useCurrentUser: UnwrapRef<typeof import('../../node_modules/vuefire')['useCurrentUser']>
+    readonly useDatabase: UnwrapRef<typeof import('../../node_modules/vuefire')['useDatabase']>
+    readonly useDatabaseList: UnwrapRef<typeof import('../../node_modules/vuefire')['useDatabaseList']>
+    readonly useDatabaseObject: UnwrapRef<typeof import('../../node_modules/vuefire')['useDatabaseObject']>
+    readonly useDocument: UnwrapRef<typeof import('../../node_modules/vuefire')['useDocument']>
     readonly useError: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/error')['useError']>
     readonly useFetch: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/fetch')['useFetch']>
+    readonly useFirebaseApp: UnwrapRef<typeof import('../../node_modules/nuxt-vuefire/dist/runtime/app/composables')['useFirebaseApp']>
+    readonly useFirebaseAuth: UnwrapRef<typeof import('../../node_modules/vuefire')['useFirebaseAuth']>
+    readonly useFirebaseStorage: UnwrapRef<typeof import('../../node_modules/vuefire')['useFirebaseStorage']>
+    readonly useFirestore: UnwrapRef<typeof import('../../node_modules/vuefire')['useFirestore']>
     readonly useHead: UnwrapRef<typeof import('../../node_modules/@unhead/vue')['useHead']>
     readonly useHeadSafe: UnwrapRef<typeof import('../../node_modules/@unhead/vue')['useHeadSafe']>
     readonly useHydration: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/hydrate')['useHydration']>
@@ -284,6 +309,9 @@ declare module 'vue' {
     readonly useServerSeoMeta: UnwrapRef<typeof import('../../node_modules/@unhead/vue')['useServerSeoMeta']>
     readonly useSlots: UnwrapRef<typeof import('../../node_modules/vue')['useSlots']>
     readonly useState: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/state')['useState']>
+    readonly useStorageFile: UnwrapRef<typeof import('../../node_modules/vuefire')['useStorageFile']>
+    readonly useStorageFileMetadata: UnwrapRef<typeof import('../../node_modules/vuefire')['useStorageFileMetadata']>
+    readonly useStorageFileUrl: UnwrapRef<typeof import('../../node_modules/vuefire')['useStorageFileUrl']>
     readonly useTransitionState: UnwrapRef<typeof import('../../node_modules/vue')['useTransitionState']>
     readonly watch: UnwrapRef<typeof import('../../node_modules/vue')['watch']>
     readonly watchEffect: UnwrapRef<typeof import('../../node_modules/vue')['watchEffect']>
@@ -328,6 +356,7 @@ declare module '@vue/runtime-core' {
     readonly getAppManifest: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getAppManifest']>
     readonly getCurrentInstance: UnwrapRef<typeof import('../../node_modules/vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('../../node_modules/vue')['getCurrentScope']>
+    readonly getCurrentUser: UnwrapRef<typeof import('../../node_modules/nuxt-vuefire/dist/runtime/auth/composables')['getCurrentUser']>
     readonly getRouteRules: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/manifest')['getRouteRules']>
     readonly h: UnwrapRef<typeof import('../../node_modules/vue')['h']>
     readonly hasInjectionContext: UnwrapRef<typeof import('../../node_modules/vue')['hasInjectionContext']>
@@ -396,11 +425,21 @@ declare module '@vue/runtime-core' {
     readonly useAppConfig: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/config')['useAppConfig']>
     readonly useAsyncData: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/asyncData')['useAsyncData']>
     readonly useAttrs: UnwrapRef<typeof import('../../node_modules/vue')['useAttrs']>
+    readonly useCollection: UnwrapRef<typeof import('../../node_modules/vuefire')['useCollection']>
     readonly useCookie: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/cookie')['useCookie']>
     readonly useCssModule: UnwrapRef<typeof import('../../node_modules/vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('../../node_modules/vue')['useCssVars']>
+    readonly useCurrentUser: UnwrapRef<typeof import('../../node_modules/vuefire')['useCurrentUser']>
+    readonly useDatabase: UnwrapRef<typeof import('../../node_modules/vuefire')['useDatabase']>
+    readonly useDatabaseList: UnwrapRef<typeof import('../../node_modules/vuefire')['useDatabaseList']>
+    readonly useDatabaseObject: UnwrapRef<typeof import('../../node_modules/vuefire')['useDatabaseObject']>
+    readonly useDocument: UnwrapRef<typeof import('../../node_modules/vuefire')['useDocument']>
     readonly useError: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/error')['useError']>
     readonly useFetch: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/fetch')['useFetch']>
+    readonly useFirebaseApp: UnwrapRef<typeof import('../../node_modules/nuxt-vuefire/dist/runtime/app/composables')['useFirebaseApp']>
+    readonly useFirebaseAuth: UnwrapRef<typeof import('../../node_modules/vuefire')['useFirebaseAuth']>
+    readonly useFirebaseStorage: UnwrapRef<typeof import('../../node_modules/vuefire')['useFirebaseStorage']>
+    readonly useFirestore: UnwrapRef<typeof import('../../node_modules/vuefire')['useFirestore']>
     readonly useHead: UnwrapRef<typeof import('../../node_modules/@unhead/vue')['useHead']>
     readonly useHeadSafe: UnwrapRef<typeof import('../../node_modules/@unhead/vue')['useHeadSafe']>
     readonly useHydration: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/hydrate')['useHydration']>
@@ -428,6 +467,9 @@ declare module '@vue/runtime-core' {
     readonly useServerSeoMeta: UnwrapRef<typeof import('../../node_modules/@unhead/vue')['useServerSeoMeta']>
     readonly useSlots: UnwrapRef<typeof import('../../node_modules/vue')['useSlots']>
     readonly useState: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/state')['useState']>
+    readonly useStorageFile: UnwrapRef<typeof import('../../node_modules/vuefire')['useStorageFile']>
+    readonly useStorageFileMetadata: UnwrapRef<typeof import('../../node_modules/vuefire')['useStorageFileMetadata']>
+    readonly useStorageFileUrl: UnwrapRef<typeof import('../../node_modules/vuefire')['useStorageFileUrl']>
     readonly useTransitionState: UnwrapRef<typeof import('../../node_modules/vue')['useTransitionState']>
     readonly watch: UnwrapRef<typeof import('../../node_modules/vue')['watch']>
     readonly watchEffect: UnwrapRef<typeof import('../../node_modules/vue')['watchEffect']>
