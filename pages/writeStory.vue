@@ -6,19 +6,12 @@
         </h2>
       <button @click="logout">Logout</button>
        -->
-       <span v-if="!currentUser">
-        <BlocksLogin></BlocksLogin>
-       </span>
-       <span v-else-if="currentUser">
-        <h2>
-        Welcome {{ currentUser.displayName }}
-        </h2>
-        </span>
+       <span v-if="currentUser">
       <ElementsButton @click="logout()">
         Logout
       </ElementsButton>
         <p>{{ logoutMessage }} </p>
-
+       </span>
     
      
 <label for="name">Naam</label>
