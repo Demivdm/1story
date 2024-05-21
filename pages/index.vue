@@ -10,19 +10,25 @@
       <!-- op deze manier kan de db niet gevuld worden met lege velden -->
       <!-- <ElementsButton :disabled="!newSentence">Deel jouw zin</ElementsButton> -->
     <!-- </form> -->
-
-  <div>
-    <!-- <router-link to="/auth">Sign in</router-link> -->
-    <BlocksLogin></BlocksLogin>
+    <div>
+    <span v-if="currentUser">
+      <ElementsButton>
+        <NuxtLink to="/writeStory">
+          Deel jouw zin
+        </NuxtLink>
+      </ElementsButton>
+    </span>
+    <span v-else>
+        <NuxtLink to="/login">
+          Deel jouw zin
+        </NuxtLink>
+      
+    </span>
   </div>
 
 
     <h2>Verbind, creëer en deel samen verhalen - één zin per week, elke maand een nieuw avontuur!</h2>
-    <ElementsButton>
-      <NuxtLink to="/writeStory">
-        Deel jouw zin
-      </NuxtLink>
-    </ElementsButton>
+  
     <ElementsButton>
       <NuxtLink to="/allStories">
         Bekijk andere verhalen
@@ -65,6 +71,7 @@ import { db } from '~/firebase';
 const sentences = ref(<Sentence[]>[]);
 const newSentence = ref<String>('');
 const showConfirm = ref<boolean>(false);
+  const currentUser = useCurrentUser()
 let currentRandomSentence = ref<string>("Loading...");
 
 
@@ -117,16 +124,16 @@ const openConfirmation = () => {
 // willekeurige zin
 // de willekeruig zin blijft nu constant updaten omdat het niet in de onmounted zit
 // deze wordt nu aangeroepen binnen de onmounted waardoor het probleem is opgelost
-const getRandomSentence = () => {
-  if (sentences.value.length === 0) {
-    currentRandomSentence.value = "Sorry geen zin gevonden, probeer het later nog een keer";
-    return;
-  }
+// const getRandomSentence = () => {
+//   if (sentences.value.length === 0) {
+//     currentRandomSentence.value = "Sorry geen zin gevonden, probeer het later nog een keer";
+//     return;
+//   }
   
-  const randomIndex = Math.floor(Math.random() * sentences.value.length);
-  currentRandomSentence.value = sentences.value[randomIndex].content;
+//   const randomIndex = Math.floor(Math.random() * sentences.value.length);
+//   currentRandomSentence.value = sentences.value[randomIndex].content;
   // console.log(randomIndex)
-}
+// }
 
 // voor het ophalen van de zinnen uit de db
 onMounted(() => {
