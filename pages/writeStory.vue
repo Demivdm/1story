@@ -14,11 +14,11 @@
        </span>
     
      
-<label for="name">Naam</label>
+<label for="name">Mijn naam is</label>
   <input type="text"  :placeholder="currentUser?.displayName || 'Vul hier je naam in'" v-model="nameInput"/>
-  <label for="functie">Functie</label>
+  <label for="functie">en ik werk als</label>
   <input type="text"  placeholder="vul hier je functie in" v-model="functionInput"/>
-
+  <label for="name">Mijn zin van de week is</label>
   <textarea
     v-model="textInput"
     @input="limitCheck"
