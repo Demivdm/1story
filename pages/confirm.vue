@@ -1,85 +1,111 @@
 <template>
-  <div v-if="sentence">
-    <h2>Bedankt voor het delen</h2>
-    <p>Hieronder kun je nogmaals zien wat je hebt ingevuld. Foutje gemaakt? Geen probleem, je kunt het nu nog aanpassen. Als alles naar wens is, kun je het tabblad sluiten of andere verhalen bekijken.</p>
-    <span class="name">Naam: {{ name.name }}</span>
-    <span class="job">Functie: {{ job.function }}</span>
-    <span class="sentence">{{ sentence.content }}</span>
+  <div>
+    <pre>{{  sentences  }}</pre>
+    <div v-for="sentence in sentences" :key="sentence.id" class="sentence-container">
+      <!-- <p>{{ sentence.content }}</p>
+      <p>{{ sentence.content }}</p> -->
+      <h2>Mijn naam is</h2>
+        <p>{{ sentence.name }}</p>
+      <h2>en ik werk als</h2>
+        <p>{{ sentence.function }}</p>
+      <h2>Mijn zin van de week</h2>
+        <p>{{ sentence.content }}</p>
+      <input
+        :disabled="!sentence.isEditing"
+        :class="{ disabled: !sentence.isEditing }"
+        v-model="sentence.content"
+        class="sentence-input"
+      />
+      
+  
 
-    <template v-if="!editing">
-      <span class="sentence">{{ sentence.content }}</span>
-      <button @click="toggleEditing">Bewerken</button>
-    </template>
-    <template v-else>
-      <input type="text" v-model="editedContent">
-      <button @click="saveEdit">Opslaan</button>
-    </template>
-    <ElementsButton>
-      <NuxtLink to="/allStories">
-        Bekijk andere verhalen
-      </NuxtLink>
-    </ElementsButton>
+      <button @click="toggleEdit(sentence)">
+        {{ sentence.isEditing ? 'Verzenden' : 'Bewerken' }}
+      </button>
+    </div>
   </div>
-  <div v-else>
-   loading.....
-  </div>
+  
+
+  <ElementsBackButton>
+  </ElementsBackButton>
+
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
+import { ref, onMounted, watch } from 'vue';
+import { collection, onSnapshot, query, where, orderBy, limit, getDocs, updateDoc , serverTimestamp, doc} from 'firebase/firestore';
 import { db } from '~/firebase';
 
-// de waarde hiervan is null zodat ik deze later kan vullen met de data die uit de db komt
-const sentence = ref(null);
-const name = ref(null);
-const job = ref(null);
-const editing = ref(false);
-const editedContent = ref('');
+const sentences = ref([]);
+const name = ref('');
+const job = ref('');
 
+const currentUser = useCurrentUser();
 
-onMounted(() => {
-  const sentencesCollection = collection(db, "sentences");
-  const q = query(sentencesCollection, orderBy('createdAt', 'asc'));
+const fetchSentences = async (userId) => {
+  try {
+    const collectionRef = collection(db, "sentences");
+    const q2 = query(collectionRef, where("uid", "==", userId), orderBy("createdAt", "desc"), limit(1))
 
-  onSnapshot(q, (querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      // hier vul ik sentence,job en name met de waarden van de laatste zin
-      // dit is als het goed is de zin van de gebruiker door de timestamps
-      sentence.value = {
-        
-        content: data.content,
-        function: data.function,
-        createdAt: data.createdAt ? data.createdAt.toDate() : null,
-      };
-      name.value = {
-        name: data.name,
+    const querySnapshot = onSnapshot(q2, (snapshot) => {
+     
 
+      sentences.value = snapshot.docs.map(doc => {
+        const timestamp =  serverTimestamp();
+        const data = doc.data()
+        return {
+          id: doc.id,
+          content: data.content,
+          isEditing: false,
+          uid: data.uid,
+          name: data.name,
+          function: data.function,
+          createdAt: timestamp || null,
+          
+        }
       }
-      job.value = {
-        function: data.function,
+     );
 
-      }
-      // Hier breek ik de loop zodat alleen de eerste zin wordt getoond 
-      return;
+
+      
     });
-  });
-});
-// EDITING WERKT NIET, FIX DIT
-// function toggleEditing() {
-//   editing.value = !editing.value;
-//   editedContent.value = sentence.value.content; 
-// }
-
-// function saveEdit() {
-//   sentence.value.content = editedContent.value;
-//   editing.value = false;
-// }
-</script>
-
-<script>
-export default {
-  name: 'confirm'
+    console.log({sentences})
+  } catch (error) {
+    console.error("Error fetching sentences: ", error);
+  }
 };
+const toggleEdit = async (sentence) => {
+  if (sentence.isEditing) {
+    try {
+      const sentenceRef = doc(db, "sentences", sentence.id);
+      await updateDoc(sentenceRef, {
+        content: sentence.content,
+      });
+    } catch (error) {
+      console.error("Error updating sentence: ", error);
+    }
+    
+  }
+  sentence.isEditing = !sentence.isEditing;
+};
+
+// Watch for changes to currentUser
+// ik heb een wachter nodig om te kijen of de waarde van de user veranderd, of de waarde van de uid veranded
+watch(currentUser, (newValue) => {
+  if (newValue && newValue.uid) {
+    fetchSentences(newValue.uid);
+  }
+});
+
+
+
+
 </script>
+<style>
+
+.disabled {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
+
+</style>
