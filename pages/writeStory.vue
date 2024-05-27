@@ -8,16 +8,16 @@
     <p>{{ logoutMessage }} </p>
   </span>
 
-  <div v-if="randomSentence">
+  <div v-if="prevSentence">
     <ElementsTagBlock></ElementsTagBlock>
-    <p><strong>Name:</strong> {{ randomSentence.name }}</p>
+    <p><strong>Name:</strong> {{ prevSentence.name }}</p>
     <ElementsTagBlock></ElementsTagBlock>
-    <p><strong>Job:</strong> {{ randomSentence.job }}</p>
-    <h2><strong>Jouw zin voor deze week:</strong> {{ randomSentence.content }}</h2>
+    <p><strong>Job:</strong> {{ prevSentence.job }}</p>
+    <h2><strong>Jouw zin voor deze week:</strong> {{ prevSentence.content }}</h2>
   </div>
-  <div v-if="!randomSentence">
-  <p>oeps geen zin gevonden, probeer het later nog een keer</p>
-</div>
+  <div v-if="!prevSentence">
+    <p>oeps geen zin gevonden, probeer het later nog een keer</p>
+  </div>
     
   <label for="name">Mijn naam is</label>
   <input type="text" :placeholder="currentUser?.displayName || 'Vul hier je naam in'" v-model="nameInput"/>
@@ -39,8 +39,7 @@
 
 <script setup>
 import { ref, computed, watch, onMounted } from "vue";
-import { EmailAuthProvider, GoogleAuthProvider } from 'firebase/auth';
-import { collection, addDoc, serverTimestamp, doc, query, where, getDocs, updateDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, query, orderBy, limit, getDocs } from "firebase/firestore";
 import { db } from "~/firebase";
 import { useCurrentUser } from 'vuefire';
 import { signOut, getAuth } from 'firebase/auth';
@@ -54,40 +53,7 @@ const functionInput = ref("");
 const auth = getAuth();
 const router = useRouter();
 const logoutMessage = ref('');
-const randomSentence = ref(null);
-
-const fetchRandomSentence = async (userId) => {
-  console.log("Fetching random sentence for user:", userId);
-  
-  try {
-    const q = query(
-      collection(db, "sentences"),
-      where("used", "==", false),
-      where("uid", "!=", userId)
-    );
-    const querySnapshot = await getDocs(q);
-
-    const sentences = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
-
-    if (sentences.length > 0) {
-      const randomIndex = Math.floor(Math.random() * sentences.length);
-      const selectedSentence = sentences[randomIndex];
-
-      // Mark the sentence as used
-      const sentenceRef = doc(db, "sentences", selectedSentence.id);
-      await updateDoc(sentenceRef, { used: true });
-
-      randomSentence.value = selectedSentence;
-    } else {
-      randomSentence.value = null;
-    }
-  } catch (error) {
-    console.error("Error fetching random sentence: ", error);
-  }
-};
+const prevSentence = ref(null);
 
 const addSentence = () => {
   if (!currentUser.value || !currentUser.value.uid) {
@@ -98,8 +64,7 @@ const addSentence = () => {
   if (textInput.value === "") {
     return;
   }
-// const activeStory = admin.keuze
-// const activeStory = story.active
+
   addDoc(collection(db, "sentences"), {
     uid: currentUser.value.uid,
     content: textInput.value,
@@ -107,8 +72,6 @@ const addSentence = () => {
     job: functionInput.value,
     createdAt: serverTimestamp(),
     storyUID: "vq7I23zQK8iszSCXbMsj",
-    // storyUId: story.active
-
   })
   .then(() => {
     textInput.value = "";
@@ -150,63 +113,32 @@ const logout = async () => {
   }
 };
 
+const fetchLastSentence = async () => {
+  try {
+    const q = query(
+      collection(db, "sentences"),
+      orderBy("createdAt", "desc"),
+      limit(1)
+    );
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      const doc = querySnapshot.docs[0];
+      prevSentence.value = {
+        id: doc.id,
+        ...doc.data()
+      };
+    } else {
+      prevSentence.value = null;
+    }
+  } catch (error) {
+    console.error("Error fetching last sentence: ", error);
+  }
+};
+
 onMounted(() => {
   if (currentUser.value && currentUser.value.displayName) {
     nameInput.value = currentUser.value.displayName;
   }
-  if (currentUser.value && currentUser.value.uid) {
-    fetchRandomSentence(currentUser.value.uid);
-  }
+  fetchLastSentence();
 });
-const fetchSentenceForReaction = async (currentUserId) => {
-  try {
-    // Query the sentences collection to get the most recent sentence by a different user
-    const q = query(
-      collection(db, "sentences"),
-      where("createdBy", "!=", currentUserId), // Exclude sentences created by the current user
-      orderBy("createdAt", "desc"), // Order by creation time to get the most recent sentence
-      limit(1) // Limit to 1 sentence
-    );
-    
-    const querySnapshot = await getDocs(q);
-
-    if (!querySnapshot.empty) {
-      // Extract the most recent sentence document
-      const sentenceDoc = querySnapshot.docs[0];
-      const sentenceData = sentenceDoc.data();
-      
-      // Return the sentence data
-      return {
-        id: sentenceDoc.id,
-        content: sentenceData.content,
-        createdBy: sentenceData.createdBy
-      };
-    } else {
-      // No previous sentence found
-      return null;
-    }
-  } catch (error) {
-    console.error("Error fetching sentence for reaction:", error);
-    return null;
-  }
-};
-
-// Lifecycle hook to fetch the sentence when the component is mounted
-onMounted(async () => {
-  try {
-    // Fetch the most recent sentence by a different user
-    const sentenceForReaction = await fetchSentenceForReaction(currentUser.value.uid);
-
-    if (sentenceForReaction) {
-      // Display the fetched sentence to the user for their reaction
-      // (You can set it to a reactive variable or display it directly in the UI)
-      randomSentence.value = sentenceForReaction;
-    } else {
-      // No previous sentence found, handle this case
-      console.log("No previous sentence found.");
-    }
-  } catch (error) {
-    console.error("Error fetching sentence for reaction:", error);
-  }
-})
 </script>
