@@ -14,8 +14,12 @@
   </style>
   
   <script lang="ts" setup>
+  
 
   import * as firebaseui from 'firebaseui'
+  import 'firebaseui/dist/firebaseui.css'
+
+
 
   const currentUser = useCurrentUser()
   const auth = getAuth();

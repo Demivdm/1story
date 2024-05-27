@@ -107,9 +107,10 @@ const remainingChar = (sentence) => {
   // ik heb een wachter nodig om te kijen of de waarde van de user veranderd, of de waarde van de uid veranded
   watch(currentUser, (newValue) => {
     if (newValue && newValue.uid) {
+      console.log({currentUser, newValue})
       fetchSentences(newValue.uid);
     }
-  });
+  }, {immediate: true});
   </script>
   <style>
   .disabled {

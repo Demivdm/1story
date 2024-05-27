@@ -23,7 +23,8 @@ export default defineNuxtConfig({
         'limit',
        'getDocs',
        'updateDoc',
-        'doc',]
+        'doc',
+      'serverTimestamp']
       },
       {
         from: 'vue',
