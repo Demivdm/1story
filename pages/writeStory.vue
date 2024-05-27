@@ -38,12 +38,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from "vue";
-import { collection, addDoc, serverTimestamp, query, orderBy, limit, getDocs } from "firebase/firestore";
-import { db } from "~/firebase";
-import { useCurrentUser } from 'vuefire';
-import { signOut, getAuth } from 'firebase/auth';
-import { useRouter } from 'vue-router';
+
 
 const currentUser = useCurrentUser();
 const charLimit = 100;

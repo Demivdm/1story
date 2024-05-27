@@ -7,9 +7,45 @@ export default defineNuxtConfig({
   ],
 
   imports: {
-    dirs: ['types/*.ts', 'store/*.ts', 'types/**/*.ts'],
-  },
   
+    dirs: ['types/*.ts', 'store/*.ts', 'types/**/*.ts'],
+    presets: [
+      {
+        from: '~/firebase',
+        imports: ['db']
+      },
+      {
+        from: 'firebase/firestore',
+        imports: ['collection', 'onSnapshot', 'addDoc', 
+        'query',
+        'where',
+        'orderBy',
+        'limit',
+       'getDocs',
+       'updateDoc',
+        'doc',]
+      },
+      {
+        from: 'vue',
+        imports: ['onMounted', 'ref', 'watch', 'defineProps']
+      },
+      {
+        from: 'vue-router',
+        imports: ['useRouter']
+      },
+      {
+        from: 'vue-fire',
+        imports: ['useCurrentUser']
+      },
+      {
+        from: 'firebase/auth',
+        imports: ['signOut','EmailAuthProvider', 'getAuth','GoogleAuthProvider']
+      },
+    ]
+  },
+ 
+
+
  vuefire: {
     auth: true, // enable Firebase Authentication
     config: {

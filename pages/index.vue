@@ -2,6 +2,7 @@
   <main>
   <!-- <div> -->
     <BlocksNav></BlocksNav>
+    <!-- uitzoeken wat emit precies doet -->
     <ElementsLogout @click="$emit('click')">
     
   </ElementsLogout>
@@ -71,9 +72,6 @@
 </main>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { collection, onSnapshot, addDoc } from "firebase/firestore";
-import { db } from '~/firebase';
 
 
 
@@ -129,9 +127,7 @@ console.log(showConfirm)
 //   showConfirm.value = false;
 // }
 
-const openConfirmation = () => {
-  showConfirm.value = true;
-}
+
 
 
 // willekeurige zin

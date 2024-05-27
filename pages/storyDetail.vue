@@ -17,9 +17,6 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
-import { db } from "~/firebase";
 
 // Define reactive variables
 const sentences = ref([]);

@@ -14,12 +14,8 @@
   </style>
   
   <script lang="ts" setup>
-  
-  import { EmailAuthProvider, GoogleAuthProvider, signOut, getAuth } from 'firebase/auth';
-  import * as firebaseui from 'firebaseui'
-  import 'firebaseui/dist/firebaseui.css'
-  import { useCurrentUser } from 'vuefire';
 
+  import * as firebaseui from 'firebaseui'
 
   const currentUser = useCurrentUser()
   const auth = getAuth();

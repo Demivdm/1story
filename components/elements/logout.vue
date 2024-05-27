@@ -10,10 +10,7 @@
   </template>
   
   <script setup>
-  import { ref } from 'vue';
-  import { signOut, getAuth } from 'firebase/auth';
-  import { useRouter } from 'vue-router';
-  import { useCurrentUser } from 'vuefire';
+
   
   const auth = getAuth();
   const router = useRouter();

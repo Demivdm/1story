@@ -39,19 +39,6 @@
   </template>
 
   <script setup>
-  import { ref, onMounted, watch } from "vue";
-  import {
-    collection,
-    query,
-    where,
-    orderBy,
-    limit,
-    getDocs,
-    updateDoc,
-    serverTimestamp,
-    doc,
-  } from "firebase/firestore";
-  import { db } from "~/firebase";
 
   const sentences = ref([]);
   const name = ref("");
