@@ -2,6 +2,9 @@
   <main>
   <!-- <div> -->
     <BlocksNav></BlocksNav>
+    <ElementsLogout @click="$emit('click')">
+    
+  </ElementsLogout>
 <!-- prevent is er in dit geval voor dat de pagina niet herlaadt elke keer als er iets wordt toegeveoegd -->
 <!-- wat moet ik hier neerzetten met de verkorte functie -->
     <!-- <form @submit.prevent="openConfirmation"> -->

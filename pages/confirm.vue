@@ -1,75 +1,89 @@
 <template>
   <div>
-    <pre>{{  sentences  }}</pre>
-    <div v-for="sentence in sentences" :key="sentence.id" class="sentence-container">
-      <!-- <p>{{ sentence.content }}</p>
-      <p>{{ sentence.content }}</p> -->
+    <BlocksNav></BlocksNav>
+    
+    <h1>Bedankt voor het delen</h1>
+    <!-- er moet gereload worden voordat de gebruiker de zin kan bewerken fix dit later -->
+  
+    <div
+      v-for="sentence in sentences"
+      :key="sentence.id"
+      class="sentence-container"
+    >
+   
       <h2>Mijn naam is</h2>
-        <p>{{ sentence.name }}</p>
+      <p>{{ sentence.name }}</p>
       <h2>en ik werk als</h2>
-        <p>{{ sentence.function }}</p>
+      <p>{{ sentence.job }}</p>
       <h2>Mijn zin van de week</h2>
-        <p>{{ sentence.content }}</p>
+      <p>{{ sentence.content }}</p>
       <input
         :disabled="!sentence.isEditing"
         :class="{ disabled: !sentence.isEditing }"
         v-model="sentence.content"
         class="sentence-input"
       />
-      
-  
 
       <button @click="toggleEdit(sentence)">
-        {{ sentence.isEditing ? 'Verzenden' : 'Bewerken' }}
+        {{ sentence.isEditing ? "Verzenden" : "Bewerken" }}
       </button>
     </div>
   </div>
-  
 
-  <ElementsBackButton>
-  </ElementsBackButton>
-
+  <ElementsButton to="allStories"> 
+    Bekijk andere verhalen
+  </ElementsButton>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
-import { collection, onSnapshot, query, where, orderBy, limit, getDocs, updateDoc , serverTimestamp, doc} from 'firebase/firestore';
-import { db } from '~/firebase';
+import { ref, onMounted, watch } from "vue";
+import {
+  collection,
+  onSnapshot,
+  query,
+  where,
+  orderBy,
+  limit,
+  getDocs,
+  updateDoc,
+  serverTimestamp,
+  doc,
+} from "firebase/firestore";
+import { db } from "~/firebase";
 
 const sentences = ref([]);
-const name = ref('');
-const job = ref('');
+const name = ref("");
+const job = ref("");
 
 const currentUser = useCurrentUser();
 
 const fetchSentences = async (userId) => {
   try {
     const collectionRef = collection(db, "sentences");
-    const q2 = query(collectionRef, where("uid", "==", userId), orderBy("createdAt", "desc"), limit(1))
+    const q2 = query(
+      collectionRef,
+      where("uid", "==", userId),
+      orderBy("createdAt", "desc"),
+      limit(1)
+    );
 
     const querySnapshot = onSnapshot(q2, (snapshot) => {
-     
-
-      sentences.value = snapshot.docs.map(doc => {
-        const timestamp =  serverTimestamp();
-        const data = doc.data()
+      sentences.value = snapshot.docs.map((doc) => {
+        const timestamp = serverTimestamp();
+        const data = doc.data();
         return {
           id: doc.id,
           content: data.content,
           isEditing: false,
           uid: data.uid,
           name: data.name,
-          function: data.function,
+          job: data.job,
           createdAt: timestamp || null,
-          
-        }
-      }
-     );
-
-
-      
+          count: data.count,
+        };
+      });
     });
-    console.log({sentences})
+    console.log({ sentences });
   } catch (error) {
     console.error("Error fetching sentences: ", error);
   }
@@ -84,7 +98,6 @@ const toggleEdit = async (sentence) => {
     } catch (error) {
       console.error("Error updating sentence: ", error);
     }
-    
   }
   sentence.isEditing = !sentence.isEditing;
 };
@@ -96,16 +109,10 @@ watch(currentUser, (newValue) => {
     fetchSentences(newValue.uid);
   }
 });
-
-
-
-
 </script>
 <style>
-
 .disabled {
   background-color: #e9ecef;
   cursor: not-allowed;
 }
-
 </style>

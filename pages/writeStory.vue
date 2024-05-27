@@ -13,8 +13,11 @@
     <p><strong>Name:</strong> {{ randomSentence.name }}</p>
     <ElementsTagBlock></ElementsTagBlock>
     <p><strong>Job:</strong> {{ randomSentence.job }}</p>
-    <h2><strong>Sentence:</strong> {{ randomSentence.content }}</h2>
+    <h2><strong>Jouw zin voor deze week:</strong> {{ randomSentence.content }}</h2>
   </div>
+  <div v-if="!randomSentence">
+  <p>oeps geen zin gevonden, probeer het later nog een keer</p>
+</div>
     
   <label for="name">Mijn naam is</label>
   <input type="text" :placeholder="currentUser?.displayName || 'Vul hier je naam in'" v-model="nameInput"/>
@@ -95,14 +98,17 @@ const addSentence = () => {
   if (textInput.value === "") {
     return;
   }
-
+// const activeStory = admin.keuze
+// const activeStory = story.active
   addDoc(collection(db, "sentences"), {
     uid: currentUser.value.uid,
     content: textInput.value,
     name: nameInput.value,
     job: functionInput.value,
     createdAt: serverTimestamp(),
-    used: false
+    storyUID: "vq7I23zQK8iszSCXbMsj",
+    // storyUId: story.active
+
   })
   .then(() => {
     textInput.value = "";
@@ -152,4 +158,55 @@ onMounted(() => {
     fetchRandomSentence(currentUser.value.uid);
   }
 });
+const fetchSentenceForReaction = async (currentUserId) => {
+  try {
+    // Query the sentences collection to get the most recent sentence by a different user
+    const q = query(
+      collection(db, "sentences"),
+      where("createdBy", "!=", currentUserId), // Exclude sentences created by the current user
+      orderBy("createdAt", "desc"), // Order by creation time to get the most recent sentence
+      limit(1) // Limit to 1 sentence
+    );
+    
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      // Extract the most recent sentence document
+      const sentenceDoc = querySnapshot.docs[0];
+      const sentenceData = sentenceDoc.data();
+      
+      // Return the sentence data
+      return {
+        id: sentenceDoc.id,
+        content: sentenceData.content,
+        createdBy: sentenceData.createdBy
+      };
+    } else {
+      // No previous sentence found
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching sentence for reaction:", error);
+    return null;
+  }
+};
+
+// Lifecycle hook to fetch the sentence when the component is mounted
+onMounted(async () => {
+  try {
+    // Fetch the most recent sentence by a different user
+    const sentenceForReaction = await fetchSentenceForReaction(currentUser.value.uid);
+
+    if (sentenceForReaction) {
+      // Display the fetched sentence to the user for their reaction
+      // (You can set it to a reactive variable or display it directly in the UI)
+      randomSentence.value = sentenceForReaction;
+    } else {
+      // No previous sentence found, handle this case
+      console.log("No previous sentence found.");
+    }
+  } catch (error) {
+    console.error("Error fetching sentence for reaction:", error);
+  }
+})
 </script>
