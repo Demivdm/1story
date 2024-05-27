@@ -22,11 +22,14 @@
           :class="{ disabled: !sentence.isEditing }"
           v-model="sentence.content"
           class="sentence-input"
+          @input="limitCheck"
         />
 
         <button @click="toggleEdit(sentence)">
           {{ sentence.isEditing ? "Verzenden" : "Bewerken" }}
         </button>
+  <p>{{ remainingChar(sentence) }} tekens over</p>
+
       </div>
     </div>
 
@@ -53,6 +56,8 @@
   const sentences = ref([]);
   const name = ref("");
   const job = ref("");
+  const charLimit = 100;
+
 
   const currentUser = useCurrentUser();
 
@@ -98,6 +103,18 @@
     }
     sentence.isEditing = !sentence.isEditing;
   };
+
+  const limitCheck = (sentence) => {
+  if (sentence.content.length > charLimit) {
+    sentence.content = sentence.content.slice(0, charLimit);
+    console.log(sentence.content.lenght)
+  }
+};
+
+// Method to calculate remaining characters
+const remainingChar = (sentence) => {
+  return charLimit - sentence.content.length;
+};
 
   // Watch for changes to currentUser
   // ik heb een wachter nodig om te kijen of de waarde van de user veranderd, of de waarde van de uid veranded
