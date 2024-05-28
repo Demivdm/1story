@@ -81,6 +81,7 @@ const sentences = ref(<Sentence[]>[]);
 const newSentence = ref<String>('');
 const showConfirm = ref<boolean>(false);
   const currentUser = useCurrentUser();
+  console.log(currentUser.value);
 
 
 // let currentRandomSentence = ref<string>("Loading...");

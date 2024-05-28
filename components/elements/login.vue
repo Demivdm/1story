@@ -9,19 +9,15 @@
   </div>
 
   </template>
-  <style lang="sass" scoped>
-  
-  </style>
-  
   <script lang="ts" setup>
   
 
   import * as firebaseui from 'firebaseui'
   import 'firebaseui/dist/firebaseui.css'
+  import { checkAdmin } from '~/firebase/adminLoginUtil';
+  import { useIsCurrentUserLoaded } from 'vuefire';
 
-
-
-  const currentUser = useCurrentUser()
+  const isAdmin = ref(false);
   const auth = getAuth();
 const router = useRouter();
 
@@ -40,13 +36,24 @@ const router = useRouter();
       },
     },
   }
+  const checkisAdmin = async () => {
+    const userLoaded = await useIsCurrentUserLoaded();
+    console.log(userLoaded.value)
+    if(userLoaded.value) {
+    const currentUser = useCurrentUser();
+    console.log(currentUser);
+    isAdmin.value = await checkAdmin(db, currentUser.value);
 
-onMounted(() => {
-  if (currentUser.value) {
-    router.push('/');
-  } else {
-    ui.start("#firebaseui-auth-container", config);
+if (isAdmin.value) {
+  router.push('/admin');
+} else {
+  ui.start("#firebaseui-auth-container", config);
+}
+    }
   }
+
+  onMounted(() => {
+    checkisAdmin();
 });
   
 </script>
