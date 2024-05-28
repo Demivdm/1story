@@ -1,4 +1,5 @@
 <template>
+    <BlocksNav></BlocksNav>
     <div>
       <h1>Kies de titel</h1>
       <input v-model="title" placeholder="Voeg een titel toe" />
@@ -83,15 +84,15 @@
     sentence.isEditing = !sentence.isEditing;
   };
   
-  // Close the current story and open a new one
+  // Verhaal sluiten en een nieuw verhaal beginnen
   const closeStory = async () => {
     if (currentStoryId.value) {
       try {
         const storyRef = doc(db, "stories", currentStoryId.value);
         await updateDoc(storyRef, { closedAt: serverTimestamp() });
   
-        // Open a new story
-        const newStoryRef = await addDoc(storyCollection, { createdAt: serverTimestamp() });
+        // Nieuw verhaal beginnen 
+        const newStoryRef = await addDoc(storyCollection, { createdAt: serverTimestamp(), closedAt: null, });
         currentStoryId.value = newStoryRef.id;
         title.value = '';
         sentences.value = [];
