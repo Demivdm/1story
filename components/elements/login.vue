@@ -37,7 +37,7 @@ const router = useRouter();
     },
   }
   const checkisAdmin = async () => {
-    const userLoaded = await useIsCurrentUserLoaded();
+    const userLoaded = useIsCurrentUserLoaded();
     console.log(userLoaded.value)
     if(userLoaded.value) {
     const currentUser = useCurrentUser();
