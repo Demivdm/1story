@@ -7,9 +7,10 @@
       <p>
         Dit is de admin pagina, ga terug naar de homepage of login als admin
       </p>
-      <ElementsBackButton> Terug </ElementsBackButton>
+     
     </div>
   </div>
+  <ElementsBackButton> Terug </ElementsBackButton>
 </template>
 
 <script setup lang="ts">

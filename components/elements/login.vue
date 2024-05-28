@@ -9,51 +9,75 @@
   </div>
 
   </template>
-  <script lang="ts" setup>
-  
+<script lang="ts" setup>
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { getAuth, GoogleAuthProvider, EmailAuthProvider, getRedirectResult } from 'firebase/auth';
+import * as firebaseui from 'firebaseui';
+import 'firebaseui/dist/firebaseui.css';
+import { checkAdmin } from '~/firebase/adminLoginUtil';
+import { useCurrentUser, useFirebaseAuth, useIsCurrentUserLoaded } from 'vuefire'; 
 
-  import * as firebaseui from 'firebaseui'
-  import 'firebaseui/dist/firebaseui.css'
-  import { checkAdmin } from '~/firebase/adminLoginUtil';
-  import { useIsCurrentUserLoaded } from 'vuefire';
-
-  const isAdmin = ref(false);
-  const auth = getAuth();
+const isAdmin = ref(false);
 const router = useRouter();
+const auth = getAuth();
+const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(useFirebaseAuth());
 
-  const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(useFirebaseAuth());  
-  const config = {
-    signInOptions: [
-      GoogleAuthProvider.PROVIDER_ID,
-      EmailAuthProvider.PROVIDER_ID,
-    ],
-    signInSuccessUrl: "/",
-    callbacks: {
-      signInSuccessWithAuthResult() {
-        // router.push('/writeStory');
-        console.log("Successfully signed in");
-     
-      },
+const config = {
+  signInOptions: [
+    GoogleAuthProvider.PROVIDER_ID,
+    EmailAuthProvider.PROVIDER_ID,
+  ],
+  callbacks: {
+    signInSuccessWithAuthResult() {
+      console.log("Successfully signed in");
+      checkIsAdmin(); 
+      return false; 
     },
-  }
-  const checkisAdmin = async () => {
-    const userLoaded = useIsCurrentUserLoaded();
-    console.log(userLoaded.value)
-    if(userLoaded.value) {
+  },
+};
+
+const checkIsAdmin = async () => {
+  const userLoaded = useIsCurrentUserLoaded();
+
+  if (userLoaded.value) {
     const currentUser = useCurrentUser();
-    console.log(currentUser);
-    isAdmin.value = await checkAdmin(db, currentUser.value);
-
-if (isAdmin.value) {
-  router.push('/admin');
-} else {
-  ui.start("#firebaseui-auth-container", config);
-}
+    console.log("Current User:", currentUser.value);
+    if (currentUser.value && currentUser.value.uid) {
+      try {
+        isAdmin.value = await checkAdmin(db, currentUser.value.uid);
+        console.log("Is Admin:", isAdmin.value);
+        if (isAdmin.value) {
+          router.push('/admin');
+        } else {
+          router.push('/loginPage'); // Redirect to login welcome page if not admin
+         console.log("geen admin") 
+        }
+      } catch (error) {
+        console.error("Error checking admin status:", error);
+      }
+    } else {
+      ui.start("#firebaseui-auth-container", config); // Start Firebase UI if user not loaded
     }
-  }
+  } 
+};
 
-  onMounted(() => {
-    checkisAdmin();
+onMounted(() => {
+  getRedirectResult(auth)
+    .then((result) => {
+      if (result.user) {
+        console.log("Redirect result user:", result.user);
+        checkIsAdmin(); // Re-check admin status after redirect
+      } else {
+        ui.start("#firebaseui-auth-container", config); // Start Firebase UI if no user from redirect
+      }
+    })
+    .catch((error) => {
+      console.error("Error during sign-in redirect:", error);
+      ui.start("#firebaseui-auth-container", config); // Start Firebase UI in case of error
+    });
 });
-  
 </script>
+
+
+  
