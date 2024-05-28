@@ -2,6 +2,7 @@
 interface _GlobalComponents {
       'BlocksCard': typeof import("../components/blocks/card.vue")['default']
     'BlocksForm': typeof import("../components/blocks/form.vue")['default']
+    'BlocksModal': typeof import("../components/blocks/modal.vue")['default']
     'BlocksNav': typeof import("../components/blocks/nav.vue")['default']
     'BlocksUserTag': typeof import("../components/blocks/userTag.vue")['default']
     'ElementsButton': typeof import("../components/elements/Button.vue")['default']
@@ -34,6 +35,7 @@ interface _GlobalComponents {
     'Body': typeof import("../node_modules/nuxt/dist/head/runtime/components")['Body']
       'LazyBlocksCard': typeof import("../components/blocks/card.vue")['default']
     'LazyBlocksForm': typeof import("../components/blocks/form.vue")['default']
+    'LazyBlocksModal': typeof import("../components/blocks/modal.vue")['default']
     'LazyBlocksNav': typeof import("../components/blocks/nav.vue")['default']
     'LazyBlocksUserTag': typeof import("../components/blocks/userTag.vue")['default']
     'LazyElementsButton': typeof import("../components/elements/Button.vue")['default']
@@ -80,6 +82,7 @@ declare module 'vue' {
 
 export const BlocksCard: typeof import("../components/blocks/card.vue")['default']
 export const BlocksForm: typeof import("../components/blocks/form.vue")['default']
+export const BlocksModal: typeof import("../components/blocks/modal.vue")['default']
 export const BlocksNav: typeof import("../components/blocks/nav.vue")['default']
 export const BlocksUserTag: typeof import("../components/blocks/userTag.vue")['default']
 export const ElementsButton: typeof import("../components/elements/Button.vue")['default']
@@ -112,6 +115,7 @@ export const Html: typeof import("../node_modules/nuxt/dist/head/runtime/compone
 export const Body: typeof import("../node_modules/nuxt/dist/head/runtime/components")['Body']
 export const LazyBlocksCard: typeof import("../components/blocks/card.vue")['default']
 export const LazyBlocksForm: typeof import("../components/blocks/form.vue")['default']
+export const LazyBlocksModal: typeof import("../components/blocks/modal.vue")['default']
 export const LazyBlocksNav: typeof import("../components/blocks/nav.vue")['default']
 export const LazyBlocksUserTag: typeof import("../components/blocks/userTag.vue")['default']
 export const LazyElementsButton: typeof import("../components/elements/Button.vue")['default']
