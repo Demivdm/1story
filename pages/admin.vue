@@ -2,6 +2,10 @@
   <div>
     <div v-if="isAdmin">
       <h1>Welkom Admin!</h1>
+      <p>Het is tijd om het verhaal van de maand te publiceren. Mocht er iets aangepast moeten worden, kun je het nu nog veranderen. Wanneer je helemaal tevreden bent, kun je het verhaal verzenden.</p>
+      <ElementsButton to="adminDetail">
+        Controleer het verhaal
+      </ElementsButton>
     </div>
     <div v-else>
       <p>
@@ -10,7 +14,7 @@
      
     </div>
   </div>
-  <ElementsBackButton> Terug </ElementsBackButton>
+  <ElementsBackButton> Terug naar de homepage </ElementsBackButton>
 </template>
 
 <script setup lang="ts">
