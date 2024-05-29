@@ -33,10 +33,9 @@
 
 
   
-  // Fetch the current open story and its sentences on mount
   const fetchStoryData = async () => {
     try {
-      // Fetch the story where closedAt is null
+      // verhaal ophalen
       const storyQuery = query(storyCollection, where("closedAt", "==", null));
       const storySnapshot = await getDocs(storyQuery);
   
@@ -45,8 +44,9 @@
         currentStoryId.value = storyDoc.id;
         console.log("story doc id is",storyDoc.id)
         title.value = storyDoc.data().title || '';
-  
-        // Fetch sentences for the current story
+
+
+  // vullen met zinnen met hetzelfde id
         const sentenceQuery = query(sentenceCollection, where("storyUID", "==", currentStoryId.value));
         const sentenceSnapshot = await getDocs(sentenceQuery);
         console.log("Fetched sentences:", sentenceSnapshot.docs);
@@ -59,7 +59,7 @@
     }
   };
   
-  // Save the story title
+  // titel op kunnen slaan
   const saveTitle = async () => {
     if (currentStoryId.value) {
       try {
@@ -71,7 +71,7 @@
     }
   };
   
-  // Toggle edit mode for a sentence and save changes
+  // editten en updaten
   const toggleEdit = async (sentence) => {
     if (sentence.isEditing) {
       try {
