@@ -19,6 +19,9 @@
 <style>
 .breaker-sentence{
 text-align: center;
+margin: auto;
+padding: 5rem 0 5rem 0;
+width: 80vw;
 }
 .story-title{
   margin:  5rem 0 1rem 3rem;

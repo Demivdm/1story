@@ -23,11 +23,16 @@
           <ElementsTagBlock></ElementsTagBlock>
           
           {{ sentence.job }} </p>
-    
-        <span class="user-sentence" @mouseover="toggleHover(sentence)" @mouseleave="toggleHover(sentence)">{{ sentence.content }}
+
+          
+            <p class="user-sentence" :class="{ 'large-txt': index < 2 }" 
+            @mouseover="toggleHover(sentence)" @mouseleave="toggleHover(sentence)">{{ sentence.content }}
           {{ addPeriod(sentence.content) }}
 
-        </span>
+        </p>
+  
+    
+     
       </div>
     </section>
   </section>
@@ -126,6 +131,10 @@ const addPeriod = (content) => {
 
 .story-info{
   padding-top: 5rem;
+}
+.large-txt {
+ 
+  font-size: 20px; 
 }
 
 .user-sentence {

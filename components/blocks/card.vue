@@ -74,6 +74,8 @@ const formatDate = (date) => {
   margin-top: 2rem;
   display: flex;
   margin: 0 2rem 0 2rem;
+  justify-content: space-around;
+  flex-wrap: wrap;
 }
 .story-block{
   background: #FFFFFF;
