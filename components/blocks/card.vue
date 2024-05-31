@@ -10,14 +10,13 @@
       </div>
       <div class="content-wrapper">
         <h5 class="title">{{ story.title }}</h5>
-      <!-- <div v-for="sentence in filteredSentences" :key="sentence.id"> -->
-        <p>
-        Dit is de eerste zin...
-
+           
+          <p class="preview-sentence">{{filteredSentences[0].content }}
         </p>
-      </div>
-    
-        <!-- <span class="sentence">{{ sentence.content }}</span> -->
+  
+  </div>
+
+
   </Nuxtlink>
 
         </div>
@@ -30,14 +29,16 @@
 
 
 const stories = ref([]);
+const filteredSentences = ref([]);
 const sentences = ref([]);
-
 
 const storiesCollection = collection(db, "stories");
 const sentencesCollection = collection(db, "sentences");
+const q = query(sentencesCollection, orderBy("createdAt", "asc"));
+
 
 const storiesQuery = query(storiesCollection, orderBy("createdAt", "desc"));
-
+// stories en titles ophalen
 onMounted(() => {
   onSnapshot(storiesQuery, (querySnapshot) => {
     const fbStories = [];
@@ -57,6 +58,29 @@ const formatDate = (date) => {
   if (!date) return '';
   const options = { day: '2-digit', month: '2-digit', year: '2-digit' };
   return date.toLocaleDateString('nl-NL', options);
+};
+// eerste zin ophalen
+
+onSnapshot(q, (querySnapshot) => {
+  const fbSentences = [];
+  querySnapshot.forEach((doc) => {
+    const data = doc.data();
+    const sentence = {
+      id: doc.id,
+      content: data.content,
+      storyUID: data.storyUID,
+    };
+    fbSentences.push(sentence);
+  });
+  sentences.value = fbSentences;
+  filterSentences(); 
+});
+const filterSentences = () => {
+  // dit is welke de huidige is, dit kan ik later nog aanpassen zodat het reageert op wat de admin sluit.
+  const storyId = "vq7I23zQK8iszSCXbMsj"; 
+  filteredSentences.value = sentences.value.filter(
+    (sentence) => sentence.storyUID === storyId
+  );
 };
 </script>
 
@@ -90,5 +114,11 @@ const formatDate = (date) => {
 .story-block:hover {
   transition: .4s ease-in;
   background: linear-gradient(193deg, rgba(252,235,252,1) 40%, rgba(247,161,232,1) 70%);
+}
+.preview-sentence{
+  width:300px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+white-space: nowrap;
 }
 </style>

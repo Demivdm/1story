@@ -25,7 +25,7 @@
           {{ sentence.job }} </p>
 
           
-            <p class="user-sentence" :class="{ 'large-txt': index < 2 }" 
+          <p class="user-sentence" :class="{ 'large-txt': index < 2 }"
             @mouseover="toggleHover(sentence)" @mouseleave="toggleHover(sentence)">{{ sentence.content }}
           {{ addPeriod(sentence.content) }}
 
@@ -120,8 +120,6 @@ const addPeriod = (content) => {
   white-space: nowrap;
   align-items: baseline;
 
-
-
 }
 .story, 
 .story-info{
@@ -132,9 +130,12 @@ const addPeriod = (content) => {
 .story-info{
   padding-top: 5rem;
 }
-.large-txt {
+// .large-txt {
  
-  font-size: 20px; 
+//   font-size: 50px; 
+// }
+.user-sentence p:nth-child(-n + 2){
+  font-size: 50px;
 }
 
 .user-sentence {
@@ -149,7 +150,8 @@ const addPeriod = (content) => {
   opacity: 1;
   transition: opacity 0.3s;
   background: #fff;
-
+  box-shadow: 0px 4px 4px 0px #0103091A;
+  font-size: 14px;
   border-radius: 4px;
   width: max-content;
   padding: 8px;
