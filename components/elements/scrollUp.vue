@@ -1,6 +1,6 @@
 <template>
    <div class="wrapper">
-      <button v-if="isVisible" @click="scrollToTop" class="scroll-up-button">scroll up</button>
+      <button v-if="isVisible" @click="scrollToTop" class="scroll-up-button">scroll naar boven</button>
 
    </div>
 
@@ -29,12 +29,26 @@ onUnmounted(() => {
 });
 </script>
 <style>
+
 .wrapper{
    display: flex;
    justify-content: flex-end;
 }
 .scroll-up-button {
   position: fixed;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 700;
+ font-family: "syne" , "sans-serif";
+
+
+}
+.scroll-up-button::after {
+  content: "↑";
+  padding-left: 10px;
+
 
 }
 </style>

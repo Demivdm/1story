@@ -1,62 +1,24 @@
 <template>
   <main>
-    <!-- <div> -->
-    <BlocksNav></BlocksNav>
-    <!-- uitzoeken wat emit precies doet -->
-    <ElementsLogout @click="$emit('click')"> </ElementsLogout>
-    <!-- prevent is er in dit geval voor dat de pagina niet herlaadt elke keer als er iets wordt toegeveoegd -->
-    <!-- wat moet ik hier neerzetten met de verkorte functie -->
-    <!-- <form @submit.prevent="openConfirmation"> -->
-    <!-- <input v-model="newSentence" type="text" placeholder="Schrijf je zin"> -->
-    <!-- disabled is zodat er niet op verzenden geklikt kan worden wanneer het veld leeg is -->
-    <!-- op deze manier kan de db niet gevuld worden met lege velden -->
-    <!-- <ElementsButton :disabled="!newSentence">Deel jouw zin</ElementsButton> -->
-    <!-- </form> -->
 
-    <div>
-      <span v-if="currentUser">
-        <ElementsButton to="/writeStory"> Deel jouw zin nuxt </ElementsButton>
-        <!-- <ElementsButton href="https://nos.nl" target class="Demi Post">
-          Deel jouw zin a
-      </ElementsButton>
-      <ElementsButton click="">
-          Deel jouw zin btn
-      </ElementsButton> -->
-      </span>
-      <span v-else>
-        <NuxtLink to="/loginPage"> Deel jouw zin </NuxtLink>
-      </span>
-    </div>
+    <BlocksNav></BlocksNav>
 
     <h2>
       Verbind, creëer en deel samen verhalen - één zin per week, elke maand een
       nieuw avontuur!
     </h2>
+    <div class="buttons">
+      <span v-if="currentUser">
+        <ElementsButton to="/writeStory" class="share"> Deel jouw zin</ElementsButton>
+      </span>
+      <span v-else>
+        <NuxtLink to="/loginPage"> Deel jouw zin </NuxtLink>
+      </span>
+   
 
-    <ElementsButton> Bekijk andere verhalen </ElementsButton>
 
-    <!-- <h2>Dit zijn alle zinnen</h2> -->
-    <!-- werkt in combinatie met de ref beter omdat er niet de hele tijd naar alle elementen hierin gekeken moet worden -->
-    <!-- <div v-for="sentence in sentences" :key="sentence.id"> -->
-
-    <!-- <p>{{ sentence.content }}</p> -->
-    <!-- <pre>zinnen: {{ sentence.content }}</pre> -->
-
-    <!-- </div> -->
-
-    <!-- <div class="confirm-pop-up" v-if="showConfirm">
-      <div class="confirm-pop-up-content">
-        <p>Weet je zeker of je deze zin wilt toevoegen?</p> -->
-    <!-- BR ERUIT HALEN TIJDENS VORMGEVEN -->
-    <!-- {{ newSentence }}<br>
-        <button @click="() => confirmAddSentence()">Ja, ik wil mijn zin toevoegen</button>
-        <button @click="cancelAddSentence()">Nee, ik wil verder gaan met bewerken</button>
-      </div>
+      <ElementsScndButton class="more" to="/allStories"> Bekijk andere verhalen </ElementsScndButton>
     </div>
-
-    <h3>Dit is jouw willekeurige persoonlijke zin</h3>
-    <p>{{ currentRandomSentence }}</p>
-  </div> -->
   </main>
 </template>
 <script setup lang="ts">
@@ -145,10 +107,42 @@ onMounted(() => {
 });
 </script>
 <style lang="scss" scoped>
-@import "../scss/mixins/_index.scss";
+// @import "../scss/mixins/_index.scss";
+@import "../scss/mixins/index";
+@import "../scss/vars/breakpoints";
 
-main {
-  @include main-background;
+// $component: "home-page";
+
+// #{component}{
+  
+  main {
+
   height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
 }
+main h2{
+  width: 70vw;
+  text-align: center;
+}
+.buttons{
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  @include sm{
+    flex-direction: column;
+  }
+}
+.share{
+  @include primary-button;
+}
+.more{
+  @include secondary-button;
+}
+// }
+
 </style>

@@ -5,6 +5,8 @@ export default defineNuxtConfig({
   modules: [
     'nuxt-vuefire',
   ],
+  css: ["../scss/_index.scss"],
+
 
   imports: {
 

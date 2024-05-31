@@ -2,7 +2,7 @@
     <!-- er zijn verschillende links -->
     <!-- het bij een nuxtlink houden is beter want dan blijf je binnen de applicatie en dit is beter voor de performance -->
     <!-- anders moeten de calls naar de db steeds opnieuw aangeroepen worden -->
-    <NuxtLink class="custom-link" v-if="to" :to="to">
+    <NuxtLink v-if="to" :to="to">
       <slot></slot>
     </NuxtLink>
   
@@ -49,15 +49,13 @@
   @import "../scss/mixins/_index.scss";
 
   a {
-    z-index: 1;
-    @include primary-button;
+    @include secondary-button;
   
   }
   button {
-    @include primary-button;
+    @include secondary-button;
     width: max-content;
   
   }
-
   </style>
   

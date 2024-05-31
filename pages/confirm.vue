@@ -1,41 +1,71 @@
-  <template>
-    <div>
+  <template >
+    <section class="confirm-page">
+
       <BlocksNav></BlocksNav>
       
-      <h1>Bedankt voor het delen</h1>
-      <!-- er moet gereload worden voordat de gebruiker de zin kan bewerken fix dit later -->
-    
+      <div class="confirm-msg">
+        <h1>Bedankt voor het delen</h1>
+      <p>Hieronder kun je nogmaals zien wat je hebt ingevuld. Foutje gemaakt? Geen probleem, je kunt het nu nog aanpassen. Als alles naar wens is, kun je het tabblad sluiten of andere verhalen bekijken.</p>
+
+      </div>
+     
       <div
         v-for="sentence in sentences"
         :key="sentence.id"
         class="sentence-container"
       >
-    
-        <h2>Mijn naam is</h2>
+    <div class="confirm">
+
+    <BlocksModal>
+
+      <div class="recap-wrapper">
+
+    <span class="recap-field">
+      <h5>Mijn naam is</h5>
+      <h6>Voornaam</h6>
+
         <p>{{ sentence.name }}</p>
-        <h2>en ik werk als</h2>
+    </span>
+    <span class="recap-field">
+      <h5>en ik werk als</h5>
+      <h6>Functie</h6>
         <p>{{ sentence.job }}</p>
-        <h2>Mijn zin van de week</h2>
-        <p>{{ sentence.content }}</p>
-        <input
+    </span>
+    <span class="recap-field sentence-recap">
+      <h5>Mijn zin van de week</h5>
+      <h6>Zin van de week</h6>
+      <input
           :disabled="!sentence.isEditing"
           :class="{ disabled: !sentence.isEditing }"
           v-model="sentence.content"
           class="sentence-input"
           @input="limitCheck"
         />
+    </span>
+  </div>
+        
 
-        <button @click="toggleEdit(sentence)">
-          {{ sentence.isEditing ? "Verzenden" : "Bewerken" }}
-        </button>
+       
+
   <p>{{ remainingChar(sentence) }} tekens over</p>
+  <div class="button-wrapper">
+  <ElementsScndButton @click="toggleEdit(sentence)">
+          {{ sentence.isEditing ? "Verzenden" : "Bewerken" }}
+
+        </ElementsScndButton>
+        <ElementsButton to="allStories">
+          Bekijk andere verhalen
+        </ElementsButton>
+      
+</div>
+</BlocksModal>
+
 
       </div>
+            
     </div>
+  </section>
 
-    <ElementsButton to="allStories"> 
-      Bekijk andere verhalen
-    </ElementsButton>
   </template>
 
   <script setup>
@@ -112,9 +142,119 @@ const remainingChar = (sentence) => {
     }
   }, {immediate: true});
   </script>
-  <style>
+  <style lang="scss">
+ @import "/scss/vars/_breakpoints.scss";
+
+ .confirm-page{
+  background: #F6F7FE;
+
+ }
+
+.confirm{
+  padding:5rem;
+  @include sm{
+    padding: 1rem;
+  }
+
+}
+.confirm-msg{
+  padding: 10rem 4rem 0 4rem;
+  @include sm{
+    padding: 5rem 1rem 1rem 1rem;
+  }
+}
+  .recap-wrapper{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    @include sm{
+      flex-direction: column;
+    }
+   
+  }
+  .recap-field{
+    display: flex;
+    @include sm{
+      flex-direction: column;
+    }
+ 
+  }
+  .recap-field p{
+    padding-bottom: .5rem;
+    margin: .5rem 0 2rem .5rem;
+    flex-wrap: wrap;
+    width: 30vw;
+    font-size: 20px;
+    border-bottom: 1px solid black;
+    @include sm{
+     margin: 0;
+    }
+ 
+
+  }
+  .sentence-recap input{
+  /* width: 680px; */
+  width: 65vw;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid black;
+  font-size:20px ;
+  padding-left: .5rem;
+  color: #000;
+  @include sm{
+     padding: 0;
+    }
+  }
+  .sentence-recap h6{
+  /* width: 680px; */
+  white-space: nowrap;
+  padding-bottom: 1rem;
+  
+
+
+
+  }
+  .button-wrapper{
+    display: flex;
+    gap: 20px;
+    position: relative;
+    bottom: 1rem;
+    
+    @include sm{
+      bottom: 1rem;
+      flex-direction: column;
+    }
+    button{
+      @include sm{
+        width: 100%;
+
+    }
+      
+    }
+
+  
+  }
+  
   .disabled {
     background-color: #e9ecef;
     cursor: not-allowed;
   }
+  h6{
+    font-size:12px;
+    width: 0;
+    position: relative;
+    left: .5rem;
+    bottom: .5rem;
+    color: #010309;
+
+    @include sm{
+     inset: .2rem 0 0 0;
+    }
+    
+  }
+  h5, h6{
+    margin: 0;
+  }
+  
   </style>

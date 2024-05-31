@@ -1,10 +1,9 @@
 <template>
-     <div>
+     <div class="login">
+      <div id="firebaseui-auth-container">
     <h2>Login</h2>
-        <ElementsButton>
-        Bekijk andere verhalen
-    </ElementsButton>
-      <div id="firebaseui-auth-container"></div>
+        
+      </div>
     
   </div>
 
@@ -80,4 +79,32 @@ onMounted(() => {
 </script>
 
 
-  
+  <style lang="scss">
+  @import '/scss/mixins/_index.scss';
+.login{
+  height: 100vh;
+  background: #F6F7FE;
+}
+.firebaseui-container{
+  background: transparent;
+}
+#firebaseui-auth-container{
+
+  height: 50vh;
+  width:70vw;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  top:25vh;
+  margin: auto;
+  flex-direction: column;
+  justify-content: center;
+  @include primary-gradient;
+
+}
+/* voor het verwijderen van de stip */
+.firebaseui-list-item::before{
+  height: 0;
+}
+</style>

@@ -1,2 +1,7 @@
 // centered
-// add a centered layout here
+.layout {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+  }

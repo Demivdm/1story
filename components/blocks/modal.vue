@@ -1,29 +1,23 @@
 <template>
-    <div class="modal-overlay" @click.self="close">
+    <div class="modal" @click.self="close">
       <div class="modal-content">
-        <header class="modal-header">
-          <slot name="header"></slot>
-        </header>
-        <main class="modal-body">
-          <slot name="body"></slot>
+        <main>
+          <slot ></slot>
         </main>
-        <footer class="modal-footer">
-          <slot name="footer"></slot>
-        </footer>
       </div>
     </div>
   </template>
   
   <script setup>
-defineProps(){
-    props: ['close']
+// defineProps(){
+//     props: ['close']
 
-}
+// }
 
   </script>
   
-  <style scoped>
-  .modal-overlay {
+  <style lang="scss" scoped>
+  /* .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -43,6 +37,40 @@ defineProps(){
   .modal-header,
   .modal-footer {
     margin-bottom: 10px;
-  }
+  } */
+  @import "/scss/mixins/_index.scss";
+  @import "/scss/vars/_breakpoints.scss";
+  @import "/scss/vars/_colors.scss";
+
+ .modal{
+
+// height: 60vh;
+width:90vw;
+border-radius: 24px;
+position: relative;
+top: 25vh;
+left: 50%;
+transform: translate(-50%,-50%);
+margin: 0 5rem 0 0rem;
+padding: 0;
+
+@include primary-gradient;
+@include sm{
+  width: 100vw;
+  top: 15rem;
+  // margin: 1rem;
+}
+.modal-content{
+  padding: 3rem;
+min-height: min-content;
+@include sm{
+      padding:1rem;
+    }
+ 
+
+
+}
+
+}
   </style>
   
