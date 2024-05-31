@@ -1,5 +1,5 @@
 <template>
-  <section class="check">
+  <section class="story__check">
     <BlocksNav></BlocksNav>
    
     
@@ -14,27 +14,12 @@
     <h2>Het verhaal</h2>
     </div>
    
-    <section class="story">
-      <p>{{ defaultSentence.content }}</p>
-      <div v-for="sentence in filteredSentences" :key="sentence.id">
-        <p class="user-info" v-if="sentence.hover">
-          <ElementsTagBlock></ElementsTagBlock>
-          {{ sentence.name }}
-          <ElementsTagBlock></ElementsTagBlock>
-          
-          {{ sentence.job }} </p>
-
-          
-          <p class="user-sentence" :class="{ 'large-txt': index < 2 }"
-            @mouseover="toggleHover(sentence)" @mouseleave="toggleHover(sentence)">{{ sentence.content }}
-          {{ addPeriod(sentence.content) }}
-
-        </p>
-  
-    
-     
-      </div>
-    </section>
+    <article class="story__story">
+      <ElementsSentence :text="defaultSentence.content"/>
+      <template v-for="sentence in filteredSentences" :key="sentence.id">
+        <ElementsSentence :text="sentence.content" :info="{job: sentence.job, name: sentence.name}"/>
+      </template>
+    </article>
   </section>
 </template>
 
@@ -80,9 +65,7 @@ const filterSentences = () => {
     (sentence) => sentence.storyUID === storyId
   );
 };
-const toggleHover = (sentence) => {
-  sentence.hover = !sentence.hover;
-};
+
 const formatDate = (date) => {
   if (!date) return '';
   const options = { day: '2-digit', month: '2-digit', year: '2-digit' };
@@ -98,73 +81,131 @@ const addPeriod = (content) => {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 
-// $component: "story-detail";
+$component: "story";
 
-// .#{$component} {
+.#{$component} {
+  &__sentence-container {
+    cursor: text;
+  }
 
 
-.check {
+&__check {
   height: 300vh;
   background: linear-gradient(180deg, #FBFEFE 0%, #DBF3FA 100%);
   // padding: 0 20rem 0 20rem;
   width: 100vw;
-
 }
-
-.story {
-  // overflow-x: hidden;
-  display: flex;
-  flex-wrap: wrap;
-  white-space: nowrap;
-  align-items: baseline;
-
+&__story {
+    &:hover {
+      .#{$component}__user-sentence {
+        opacity: 1;
+        &:not(:hover) {
+          opacity: 0.3;
+        }
+      }
+      
+    }
+    &__user-info-list{
+    &:hover {
+      .#{$component}__user-info  {
+        opacity: 1;
+        &:not(:hover) {
+          opacity:0;
+        }
+      }
+      
+    }
+  
+  }
+  }
+  &__user-sentence, &__user-info {
+    transition: opacity 0.3s ease;
+    
+  }
+&__user-info{
+    position: absolute;
+    opacity: 0;
+    // transition: opacity 0.3s ease, transform 0.3s ease;
+    background: #fff;
+    box-shadow: 0px 4px 4px 0px #0103091A;
+    font-size: 14px;
+    border-radius: 4px;
+    padding: 8px;
+  
+width: max-content;
+  
 }
-.story, 
-.story-info{
-  width: 49rem;
-  margin: auto;
-}
+.#{$component}__user-info  {
+        opacity: 1;
+        background: #fff;
 
-.story-info{
-  padding-top: 5rem;
-}
+        &:not(:hover) {
+          opacity: 0;
+        }
+      }
+
+// &__story, 
+// &__story-info{
+//   width: 49rem;
+//   margin: auto;
+// }
+
+// &__story-info{
+//   padding-top: 5rem;
+// }
 // .large-txt {
  
 //   font-size: 50px; 
 // }
-.user-sentence p:nth-child(-n + 2){
+// om de eerste twee zinnen groter te maken
+&__user-sentence p:nth-child(-n + 2){
   font-size: 50px;
 }
 
-.user-sentence {
+&__user-sentence {
   display: inline;
   margin-right: 10px;
-}
-.user-info {
-  position: absolute; 
-  display: flex;
-  align-items: baseline;
-  text-transform: uppercase;
-  opacity: 1;
-  transition: opacity 0.3s;
-  background: #fff;
-  box-shadow: 0px 4px 4px 0px #0103091A;
-  font-size: 14px;
-  border-radius: 4px;
-  width: max-content;
-  padding: 8px;
-}
 
-.user-sentence:hover {
-  opacity: 1;
 }
+// .user-info {
+//   position: absolute; 
+//   display: flex;
+//   align-items: baseline;
+//   text-transform: uppercase;
+//   opacity: 0;
+//   transition: opacity 3s , 
+//               transform 0.3s,
+//               width .3s;
+//               background: #fff;
+//   box-shadow: 0px 4px 4px 0px #0103091A;
+//   font-size: 14px;
+  // width: max-content;
+//   margin-top: 1.5rem;
+//   transform: translateX(100%);
+//   transform-origin: bottom right;
+//   width: 0;
+//   border-radius: 50px;
+//   padding: 8px;
+
+ 
+// }
+
+// .user-sentence:hover , .user-info {
+//   opacity: 1;
+//   transform: translateX(0);
+//   width: max-content;
+//   height: max-content;
+//   border-radius: 4px;
+
+
+// }
 time{
   display: flex;
   align-items: baseline;
   position: relative;
   top: 2rem;
 }
-// }
+}
 </style>

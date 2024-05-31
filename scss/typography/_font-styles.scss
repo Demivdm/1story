@@ -121,21 +121,21 @@ body {
       }
     }
   }
-  ul {
-    li {
-      &::before {
-        content: "";
-        position: absolute;
-        display: block;
-        height: 8px;
-        width: 8px;
-        border-radius: 100px;
-        background: $color-text;
-        top: 8px;
-        left: 0;
-      }
-    }
-  }
+  // ul {
+  //   li {
+  //     &::before {
+  //       content: "";
+  //       position: absolute;
+  //       display: block;
+  //       height: 8px;
+  //       width: 8px;
+  //       border-radius: 100px;
+  //       background: $color-text;
+  //       top: 8px;
+  //       left: 0;
+  //     }
+  //   }
+  // }
   
   p {
     padding-bottom: 20px;
