@@ -24,7 +24,6 @@
 </template>
 
 <script setup>
-
 // Define reactive variables
 const sentences = ref([]);
 const filteredSentences = ref([]);
@@ -71,21 +70,18 @@ const formatDate = (date) => {
   const options = { day: '2-digit', month: '2-digit', year: '2-digit' };
   return date.toLocaleDateString('nl-NL', options);
 };
-const addPeriod = (content) => {
-// check of de zin een punt bevat
-  if (content.trim().charAt(content.trim().length - 1) !== '.') {
-    // voeg punt toe
-    return '.';
-  }
-  return '';
-};
+
 </script>
 
 <style scoped lang="scss">
+ @import "/scss/vars/_breakpoints.scss";
 
 $component: "story";
 
 .#{$component} {
+
+  
+
   &__sentence-container {
     cursor: text;
   }
@@ -95,11 +91,16 @@ $component: "story";
   height: 300vh;
   background: linear-gradient(180deg, #FBFEFE 0%, #DBF3FA 100%);
   // padding: 0 20rem 0 20rem;
-  width: 100vw;
+  max-width: 100vw;
+  padding: 5rem;
+  @include sm{
+  padding: 1rem;
+}
+  // overflow-x: hidden;
 }
 &__story {
     &:hover {
-      .#{$component}__user-sentence {
+      :deep(.sentence) {
         opacity: 1;
         &:not(:hover) {
           opacity: 0.3;
@@ -107,18 +108,7 @@ $component: "story";
       }
       
     }
-    &__user-info-list{
-    &:hover {
-      .#{$component}__user-info  {
-        opacity: 1;
-        &:not(:hover) {
-          opacity:0;
-        }
-      }
-      
-    }
-  
-  }
+    
   }
   &__user-sentence, &__user-info {
     transition: opacity 0.3s ease;
