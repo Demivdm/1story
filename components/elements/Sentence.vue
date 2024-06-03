@@ -97,31 +97,25 @@ $component: 'sentence';
   padding-right: 4px;
 
 
-  // &__sentence{
-  //   &--hovered {
-  //   z-index: -1;}
-  // }
-  &__info-hover{
-    position: relative;
-    z-index: 5;
+  &__sentence{
     &--hovered {
     z-index: -1;}
   }
+
  
 
   &__user-info-container {
     position: absolute;
     width: max-content;
-    z-index: -5;
+    z-index: -1;
     opacity: 0;
     pointer-events: none;
-    
-
     transition: all 0.3s ease;
     &--hovered {
-    z-index: 10;
+    z-index: 1;
     opacity: 1;
     pointer-events: auto;
+
   }
   }
 
