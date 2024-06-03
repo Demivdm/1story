@@ -2,8 +2,11 @@
   <span class="sentence" 
  ref="sentenceRef">
     <span class="sentence__info-hover" ref="textRef" @mouseover="showInfo" @mouseleave="hideInfo">{{ props.text }}</span>
+    <span class="sentence__dropdown-icon"></span>
    <!-- het moeten allemaal spans zijn want door block elementen kan de zin lengte niet meer accuraat gedetecteerd worden -->
-    <span class="sentence__user-info-container" :style="infoPos" :class="{ 'sentence__user-info-container--hovered': isHovered }" ref="infoListRef" v-if="props.info">
+
+
+   <span class="sentence__user-info-container" :style="infoPos" :class="{ 'sentence__user-info-container--hovered': isHovered }" ref="infoListRef" v-if="props.info">
       <ul class="sentence__user-info-list">
         <li class="user-info" v-if="props.info?.name">
         <ElementsTagBlock></ElementsTagBlock>
@@ -13,7 +16,9 @@
           {{ props.info.job }}</li>
       </ul>
     </span>
-  </span>
+</span>
+
+
 </template>
 
 <script setup lang="ts">
@@ -88,6 +93,8 @@ const hideInfo = () => {
 </script>
 
 <style scoped lang="scss">
+ @import "/scss/vars/_breakpoints.scss";
+
 
 $component: 'sentence';
 
@@ -95,6 +102,9 @@ $component: 'sentence';
 .#{$component} {
   margin-right: 4px;
   padding-right: 4px;
+  @include sm{
+    padding: 0;
+  }
 
 
   &__sentence{
@@ -132,6 +142,34 @@ $component: 'sentence';
 
     }
     padding:0; 
+  }
+  &__dropdown-icon{
+   display: none;
+   
+   
+   position: relative;
+   padding: 0 .5rem 0 .5rem;
+
+   @include sm{
+    display: inline-block;
+   }
+
+  }
+  &__dropdown-icon::after{
+    content: '⌄';
+    position: relative;
+    bottom: 3px;
+  }
+  &__dropdown-icon::before{
+    content: '';
+    position: absolute;
+   display: inline-block;
+    background: grey;
+   height: 15px;
+   width: 15px;
+   border-radius: 50%;
+   top: 5px;
+   left: 5px;
   }
 }
 </style>
