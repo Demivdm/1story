@@ -25,9 +25,12 @@
     <section class="modal-content">
       <span>
         <label for="name">Mijn naam is</label>
-        <input type="text" :placeholder="currentUser?.displayName || 'Voornaam'" v-model="nameInput" required/>
+        <input type="text" :placeholder="currentUser?.displayName || 'Voornaam'" v-model="nameInput" :class="{'wrong-input': inputValCheckNameInput}" required/>
         <label for="functie">en ik werk als</label>
-        <input type="text" placeholder="Functie" v-model="functionInput" required/>
+        <!-- eerst de class die je wilt toggelen en daarna de functie met de voorwaarden voor true of false erin -->
+        <input type="text" placeholder="Functie" v-model="functionInput" :class="{'wrong-input': inputValCheckFunctionInput}" required/>
+        <p v-if="inputValCheckFunctionInput || inputValCheckNameInput" class="error-message">Oeps je hebt een verkeerd karakter gebruikt. De volgende karakters mogen <strong>niet</strong>gebruikt worden: []{}+=-_|</p>
+
       </span>
       <span class="week-sentence">
   <label for="name">Mijn zin van de week is</label>
@@ -64,7 +67,7 @@
       
 </template>
 
-<script setup>
+<script setup lang="ts">
 
 
 const currentUser = useCurrentUser();
@@ -76,6 +79,9 @@ const auth = getAuth();
 const router = useRouter();
 const logoutMessage = ref('');
 const prevSentence = ref(null);
+// const inputValCheck = ref(false);
+const inputValCheckFunctionInput = ref(false);
+const inputValCheckNameInput = ref(false);
 
 const addSentence = () => {
   if (!currentUser.value || !currentUser.value.uid) {
@@ -163,6 +169,19 @@ onMounted(() => {
   }
   fetchLastSentence();
 });
+const invalidChars = /[=+\[\]{}\-|\/]/;
+
+
+// ik gebruik hier watcheffect omdat ik naar twee verschillende waarden
+// misschien kan alles wel in deze watcher?
+watchEffect(() => {
+  inputValCheckFunctionInput.value = invalidChars.test(functionInput.value);
+  inputValCheckNameInput.value = invalidChars.test(nameInput.value);
+  console.log("functie input waarde", inputValCheckFunctionInput.value);
+  console.log("naam input waarde", inputValCheckNameInput.value);
+});
+
+
 </script>
 <style lang="scss">
  @import "/scss/vars/_breakpoints.scss";
@@ -194,15 +213,7 @@ onMounted(() => {
 
 }
 
-input:required:valid,
-textarea:required:valid {
-  border-bottom: 1px solid black;
-}
 
-input:required:invalid,
-textarea:required:invalid {
-  border-bottom-color: red;
-}
 .info-tags{
   display: flex;
   flex-direction: row;
@@ -220,12 +231,13 @@ label{
 .modal-content{
   display: flex;
   flex-direction: column;
-  width: 1152px;
+  max-width: 1152px;
   padding-top: 1rem;
   @include sm{
   
   padding: 1rem;
 }
+
 }
 
 input,
@@ -247,15 +259,40 @@ textarea{
 }
 input{
   width: 380px;
+  @include sm{
+  width: 100%;
+  
+}
+@include md{
+  width: 100%;
+  margin: 0;
+  
+  
+}
 }
 textarea{
   position: relative;
-  width: 830px;
+  max-width: 830px;
+
+@include md{
+
+  margin: 0;
+ 
+  
+}
 }
 .week-sentence{
   display: flex;
   align-items: baseline;
-  padding-top: 3rem;
+  padding-top: 4rem;
+  @include sm{
+ flex-direction: column;
+  
+}
+  @include md{
+ flex-direction: column;
+  
+}
 }
 
 .button-wrapper{
@@ -267,6 +304,21 @@ textarea{
   left: 1rem;
 }
 
+
+
 }
+.wrong-input {
+  background: red;
+  border-bottom: solid red;
+  z-index: 1;
+}
+.error-message{
+
+  position: absolute;
+//  margin-bottom: 1rem;
+
+
+}
+
 
 </style>

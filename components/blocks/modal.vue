@@ -22,6 +22,7 @@ $component: "modal";
   position: relative;
   top: 25vh;
   left: 50%;
+  max-height: 904px;
   transform: translate(-50%, -50%);
   padding: 0;
 
