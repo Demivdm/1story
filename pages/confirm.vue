@@ -219,7 +219,6 @@ const remainingChar = (sentence) => {
   border-bottom: 1px solid black;
   font-size:20px ;
   margin-left:1rem;
-  color: grey;
   @include sm{
      padding: 0;
     }

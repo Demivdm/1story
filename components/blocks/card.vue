@@ -78,11 +78,10 @@ const filterSentences = () => {
 $component: "card";
 
 .#{$component} {
-  margin-top: 2rem;
-  display: flex;
 
-  justify-content: space-between;
-  flex-wrap: wrap;
+  display: flex;
+  gap:3rem;
+  margin-bottom: 3rem;
 
   &__tag-wrapper {
     display: flex;
@@ -98,7 +97,8 @@ $component: "card";
     border-radius: 20px;
     width: 360px;
     height: 254px;
-    margin: 1rem;
+
+   
   }
   &__title {
     margin: 0;
@@ -109,7 +109,6 @@ $component: "card";
   }
   &__preview-sentence {
     width: 300px;
-    height: 200px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;

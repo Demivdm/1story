@@ -6,10 +6,11 @@
     <NuxtLink to="/storyDetail">
 
  <BlocksCard></BlocksCard>
+<BlocksCard></BlocksCard>
+
   </NuxtLink>
 
 <h2 class="breaker-sentence">Zin voor zin, een verhaal van en voor ons allemaal dat ons verbindt en inspireert.</h2>
-<BlocksCard></BlocksCard>
 
   </section>
 </template>
@@ -19,15 +20,16 @@
 <style>
 .stories{
 
-  margin:  6rem 5rem 5rem 5rem;
-
-  
+  margin: 2rem auto 0;
+  padding-top: 5rem;
+  max-width: 1152px;
+ height: 100%;
 }
 .breaker-sentence{
 text-align: center;
 margin: auto;
 padding: 5rem 0 5rem 0;
-width: 80vw;
+
 }
 
 </style>
