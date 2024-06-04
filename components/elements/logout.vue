@@ -1,6 +1,6 @@
 <template>
-  <span v-if="currentUser">
-    <ElementsButton :user="currentUser" @click="logout">
+  <span v-if="currentUser" class="logout">
+    <ElementsButton :user="currentUser" @click="logout" class="logout-button">
       Logout
     </ElementsButton>
     <p>{{ logoutMessage }}</p>
@@ -27,3 +27,22 @@ const logout = async () => {
   }
 };
 </script>
+<style scoped lang="scss">
+$component: "logout";
+
+#{$component} {
+  &__logout-button{
+    &__button {
+    position: relative;
+    border-radius: 0;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    height: 2rem; 
+    width: 100px;
+  }
+
+  }
+
+}
+
+</style>

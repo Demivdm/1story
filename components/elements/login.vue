@@ -46,9 +46,10 @@ const config = {
 
 const checkIsAdmin = async () => {
   const userLoaded = useIsCurrentUserLoaded();
+  const currentUser = useCurrentUser();
+
 
   if (userLoaded.value) {
-    const currentUser = useCurrentUser();
     console.log("Current User:", currentUser.value);
     if (currentUser.value && currentUser.value.uid) {
       try {
@@ -56,41 +57,53 @@ const checkIsAdmin = async () => {
         console.log("Is Admin:", isAdmin.value);
         if (isAdmin.value) {
           router.push("/admin");
-        } else {
+        } if(currentUser) {
           // stuur door naar login pagina als gebruiker geen admin is
           // dit is waarschijnlijk ook waardoor je niet meer op de homepage kan komen
           router.push("/loginPage"); 
           console.log("geen admin");
+        }
+        else if(!currentUser){
+          router.push("/"); 
+
+      ui.start("#firebaseui-auth-container", config); 
+
         }
        
       } catch (error) {
         console.error("Error checking admin status:", error);
       }
     } else {
-      ui.start("#firebaseui-auth-container", config); // Start Firebase UI if user not loaded
+      // Start Firebase UI if user not loaded
+      router.push("/"); 
+
     }
   }
 };
 
 onMounted(() => {
+  const currentUser = useCurrentUser();
+
   getRedirectResult(auth)
     .then((result) => {
-      if (result.user) {
-        console.log("Redirect result user:", result.user);
-        checkIsAdmin(); // Re-check admin status after redirect
+      if (result.currentUser) {
+        console.log("Redirect result user:", result.currentUser);
+        checkIsAdmin();
       } else {
         ui.start("#firebaseui-auth-container", config); // Start Firebase UI if no user from redirect
       }
     })
     .catch((error) => {
       console.error("Error during sign-in redirect:", error);
-      ui.start("#firebaseui-auth-container", config); // Start Firebase UI in case of error
+      ui.start("#firebaseui-auth-container", config);
     });
 });
 </script>
 
 <style lang="scss">
 @import "/scss/mixins/_index.scss";
+@import "/scss/vars/breakpoints";
+
 
 $component: "login-modal";
 
@@ -109,5 +122,9 @@ $component: "login-modal";
   flex-direction: column;
   justify-content: center;
   @include primary-gradient;
+  @include sm{
+    width: 100vw;
+
+  }
 }
 </style>

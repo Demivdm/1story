@@ -18,7 +18,7 @@
   </section>
   </template>
   
-  <script setup>
+  <script setup lang="ts">
   
 // props en types doorgeven
   const props = defineProps({
@@ -48,6 +48,7 @@
   .#{$component} {
   a {
     z-index: 1;
+    text-align: center;
     @include primary-button;
   
   }

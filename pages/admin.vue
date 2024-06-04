@@ -34,8 +34,8 @@ const isAdmin = ref(false);
 if (currentUser.value) {
   isAdmin.value = await checkAdmin(db, currentUser.value.uid);
 } else {
-  // Redirect to login if no user is logged in
-  console.log("niet ingelogd");
+  // misschien dat hier het probleem ligt, waardoor de gebruiker niet naar de homepage kan
+  router.push("/");
   
 }
 </script>

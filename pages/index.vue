@@ -1,8 +1,9 @@
 <template>
+    <!-- <ElementsLogout></ElementsLogout> -->
+
   <main>
 
     <BlocksNav></BlocksNav>
-    <ElementsLogout></ElementsLogout>
 
     <h2>
       Verbind, creëer en deel samen verhalen - één zin per week, elke maand een
@@ -13,19 +14,18 @@
         <ElementsButton to="/writeStory" class="share"> Deel jouw zin</ElementsButton>
       </span>
       <span v-else>
-        <NuxtLink to="/loginPage"> Deel jouw zin </NuxtLink>
+        <ElementsButton to="/loginPage"> Deel jouw zin</ElementsButton>
       </span>
    
-
-
-      <ElementsScndButton class="more" to="/allStories"> Bekijk andere verhalen </ElementsScndButton>
+      <ElementsScndButton to="/allStories"> Bekijk andere verhalen </ElementsScndButton>
     </div>
   </main>
 </template>
 <script setup lang="ts">
-definePageMeta({
-  middleware: ["auth"],
-});
+// onderstaande regel was om te checken of de gebruiker bestaat voordat alles wordt gemount
+// definePageMeta({
+//   middleware: ["auth"],
+// });
 
 // waarom type je hier binnen de ref maar in een functie is het achter de dubbele punt
 
@@ -139,9 +139,6 @@ main h2{
   }
 }
 
-.more{
-  @include secondary-button;
-}
-// }
+
 
 </style>
