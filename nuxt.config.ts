@@ -32,10 +32,7 @@ export default defineNuxtConfig({
         from: 'vue',
         imports: ['onMounted', 'ref', 'watch', 'defineProps']
       },
-      {
-        from: 'vue-fire',
-        imports: ['useCurrentUser']
-      },
+    
       {
         from: 'firebase/auth',
         imports: ['signOut', 'EmailAuthProvider', 'getAuth', 'GoogleAuthProvider']

@@ -1,5 +1,5 @@
 <template>
-    <!-- <ElementsLogout></ElementsLogout> -->
+    <ElementsLogout></ElementsLogout>
 
   <main>
 

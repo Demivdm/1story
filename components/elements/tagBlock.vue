@@ -6,8 +6,8 @@ $component: "tag-block";
 
 .#{$component} {
 
-    height: 10px;
-    width: 10px;
+    height: 16px;
+    width: 16px;
     background-color: pink;
     margin-right: 5px;
 

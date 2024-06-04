@@ -17,13 +17,12 @@
 $component: "modal";
 
 .#{$component} {
-  width: 90vw;
+  max-width: 1296px;
   border-radius: 24px;
   position: relative;
   top: 25vh;
   left: 50%;
   transform: translate(-50%, -50%);
-  margin: 0 5rem 0 0rem;
   padding: 0;
 
   @include primary-gradient;
@@ -32,7 +31,7 @@ $component: "modal";
     top: 15rem;
   }
   &__modal-content {
-    padding: 3rem;
+    padding:72px;
     min-height: min-content;
     @include sm {
       padding: 1rem;

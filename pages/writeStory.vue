@@ -1,14 +1,14 @@
 <template>
 <BlocksNav></BlocksNav>
-  <section class="story-wrapper">
+  <section class="story-container">
     <!-- <span v-if="currentUser">
     <ElementsButton @click="logout()">
       Logout
     </ElementsButton>
     <p>{{ logoutMessage }} </p>
     </span> -->
-
-  <div v-if="prevSentence">
+<div class="story-wrapper">
+  <div v-if="prevSentence" class="info-wrapper">
     <div class="info-tags">
       <ElementsTagBlock></ElementsTagBlock>
     <p>{{ prevSentence.name }}</p>
@@ -29,7 +29,7 @@
         <label for="functie">en ik werk als</label>
         <input type="text" placeholder="Functie" v-model="functionInput" required/>
       </span>
-      <span>
+      <span class="week-sentence">
   <label for="name">Mijn zin van de week is</label>
   <textarea
     v-model="textInput"
@@ -40,6 +40,7 @@
     name="sentence"
     required
   ></textarea>
+</span>
   
   <p>{{ remainingChar }} tekens over</p>
 
@@ -49,11 +50,10 @@
   </ElementsButton>
     
 </section>
-</span>
 </section>
 
 </BlocksModal>
-
+</div>
 
 </section>
 
@@ -168,18 +168,30 @@ onMounted(() => {
  @import "/scss/vars/_breakpoints.scss";
  h2{
 
-  margin: 0 0 2rem 0;
+  margin: 0 0 5rem 0;
  }
-.story-wrapper{
+.story-container{
   /* background-color: #F6F7FE; */
-  height: 100vh;
+  min-height:100vh;
   position: relative;
-  background: #F6F7FE;
-  padding: 5rem;
+  width: 100vw;
+  background: #F6F7FE ;
+
+
   @include sm{
-    padding: 7rem 1rem 1rem 1rem;
+    padding-top: 5rem ;
+    width: 100vw;
 
   }
+}
+.story-wrapper{
+  max-width: 1296px;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%,-10%);
+  padding-top:8rem ;
+  background: transparent;
+
 }
 
 input:required:valid,
@@ -197,6 +209,7 @@ textarea:required:invalid {
   align-items: baseline;
   gap: 10px;
   text-transform: uppercase;
+  padding-top: 5rem;
 }
 .info-tags p{
   padding-right: 20px;
@@ -205,9 +218,10 @@ label{
   font-size: 28px;
 }
 .modal-content{
-  padding: 2rem;
   display: flex;
   flex-direction: column;
+  width: 1152px;
+  padding-top: 1rem;
   @include sm{
   
   padding: 1rem;
@@ -221,9 +235,9 @@ textarea{
   border-bottom: 1px solid black;
   font-size: 20px;
   margin: 0 1rem 0 1rem;
-  width: max-content;
   padding: .5rem 0 .5rem 0;
-  width: 30%;
+  font-family: 'syne';
+
 @include sm{
   width: 100%;
   margin: 0;
@@ -231,10 +245,19 @@ textarea{
 }
   
 }
+input{
+  width: 380px;
+}
 textarea{
   position: relative;
-  top: 13px;
+  width: 830px;
 }
+.week-sentence{
+  display: flex;
+  align-items: baseline;
+  padding-top: 3rem;
+}
+
 .button-wrapper{
   display: flex;
   position: relative;

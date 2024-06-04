@@ -18,20 +18,19 @@
 
     <BlocksModal>
 
-      <div class="recap-wrapper">
+      <div class="modal-content">
 
     <span class="recap-field">
       <h5>Mijn naam is</h5>
       <h6>Voornaam</h6>
 
         <p>{{ sentence.name }}</p>
-    </span>
-    <span class="recap-field">
+
       <h5>en ik werk als</h5>
       <h6>Functie</h6>
         <p>{{ sentence.job }}</p>
     </span>
-    <span class="recap-field sentence-recap">
+    <span class="sentence-recap">
       <h5>Mijn zin van de week</h5>
       <h6>Zin van de week</h6>
       <input
@@ -163,8 +162,19 @@ const remainingChar = (sentence) => {
     padding: 5rem 1rem 1rem 1rem;
   }
 }
+
+.modal-content{
+  display: flex;
+  flex-direction: column;
+  width: 1152px;
+  padding-top: 3rem;
+  @include sm{
+  padding: 1rem;
+}
+}
+
   .recap-wrapper{
-    display: flex;
+   
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
@@ -185,7 +195,7 @@ const remainingChar = (sentence) => {
     padding-bottom: .5rem;
     margin: .5rem 0 2rem .5rem;
     flex-wrap: wrap;
-    width: 30vw;
+    width:380px;
     font-size: 20px;
     border-bottom: 1px solid black;
     @include sm{
@@ -194,15 +204,22 @@ const remainingChar = (sentence) => {
  
 
   }
+
+  .recap-field h5{
+    padding-right: 1rem;
+
+  }
+  .sentence-recap{
+    display: flex;
+  }
   .sentence-recap input{
-  /* width: 680px; */
-  width: 65vw;
+    width: 845px;
   background: transparent;
   border: 0;
   border-bottom: 1px solid black;
   font-size:20px ;
-
-  color: #000;
+  margin-left:1rem;
+  color: grey;
   @include sm{
      padding: 0;
     }
@@ -210,7 +227,10 @@ const remainingChar = (sentence) => {
   .sentence-recap h6{
   /* width: 680px; */
   white-space: nowrap;
-  padding-bottom: 1rem;
+  margin-top: .5rem;
+  left: 1rem;
+
+  // padding-bottom: 1rem;
   
 
 
@@ -221,6 +241,7 @@ const remainingChar = (sentence) => {
     gap: 20px;
     position: relative;
     bottom: 1rem;
+    justify-content: flex-end;
     
     @include sm{
       bottom: 1rem;
