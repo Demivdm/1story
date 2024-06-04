@@ -23,7 +23,6 @@ const goBack = () => {
 $component: 'back';
 
 .#{$component} {
-  
   font-size: 18px;
   font-family: "Syne", sans-serif;
   font-weight: 700;

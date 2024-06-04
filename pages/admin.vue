@@ -20,7 +20,7 @@
 <script setup lang="ts">
 import { getFirestore } from "firebase/firestore";
 import { useCurrentUser } from "vuefire";
-import { checkAdmin } from "@/firebase/adminLoginUtil"; // Adjust the path based on your project structure
+import { checkAdmin } from "@/firebase/adminLoginUtil"; 
 
 definePageMeta({
   middleware: ["auth"],
@@ -36,5 +36,6 @@ if (currentUser.value) {
 } else {
   // Redirect to login if no user is logged in
   console.log("niet ingelogd");
+  
 }
 </script>

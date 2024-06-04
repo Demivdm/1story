@@ -1,26 +1,34 @@
 <template>
-     <div class="login">
-      <div id="firebaseui-auth-container">
-    <h2>Login</h2>
-        
-      </div>
-    
-  </div>
-
-  </template>
+  <section class="login__modal">
+    <div id="firebaseui-auth-container">
+      <h2>Login</h2>
+    </div>
+  </section>
+</template>
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-import { getAuth, GoogleAuthProvider, EmailAuthProvider, getRedirectResult } from 'firebase/auth';
-import * as firebaseui from 'firebaseui';
-import 'firebaseui/dist/firebaseui.css';
-import { checkAdmin } from '~/firebase/adminLoginUtil';
-import { useCurrentUser, useFirebaseAuth, useIsCurrentUserLoaded } from 'vuefire'; 
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  EmailAuthProvider,
+  getRedirectResult,
+} from "firebase/auth";
+import * as firebaseui from "firebaseui";
+import "firebaseui/dist/firebaseui.css";
+import { checkAdmin } from "~/firebase/adminLoginUtil";
+import {
+  useCurrentUser,
+  useFirebaseAuth,
+  useIsCurrentUserLoaded,
+} from "vuefire";
 
 const isAdmin = ref(false);
 const router = useRouter();
 const auth = getAuth();
-const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(useFirebaseAuth());
+const ui =
+  firebaseui.auth.AuthUI.getInstance() ||
+  new firebaseui.auth.AuthUI(useFirebaseAuth());
 
 const config = {
   signInOptions: [
@@ -30,8 +38,8 @@ const config = {
   callbacks: {
     signInSuccessWithAuthResult() {
       console.log("Successfully signed in");
-      checkIsAdmin(); 
-      return false; 
+      checkIsAdmin();
+      return false;
     },
   },
 };
@@ -47,18 +55,21 @@ const checkIsAdmin = async () => {
         isAdmin.value = await checkAdmin(db, currentUser.value.uid);
         console.log("Is Admin:", isAdmin.value);
         if (isAdmin.value) {
-          router.push('/admin');
+          router.push("/admin");
         } else {
-          router.push('/loginPage'); // Redirect to login welcome page if not admin
-         console.log("geen admin") 
+          // stuur door naar login pagina als gebruiker geen admin is
+          // dit is waarschijnlijk ook waardoor je niet meer op de homepage kan komen
+          router.push("/loginPage"); 
+          console.log("geen admin");
         }
+       
       } catch (error) {
         console.error("Error checking admin status:", error);
       }
     } else {
       ui.start("#firebaseui-auth-container", config); // Start Firebase UI if user not loaded
     }
-  } 
+  }
 };
 
 onMounted(() => {
@@ -78,33 +89,25 @@ onMounted(() => {
 });
 </script>
 
+<style lang="scss">
+@import "/scss/mixins/_index.scss";
 
-  <style lang="scss">
-  @import '/scss/mixins/_index.scss';
-.login{
+$component: "login-modal";
+
+#{component} {
   height: 100vh;
-  background: #F6F7FE;
+  width: 100vw;
 }
-.firebaseui-container{
-  background: transparent;
-}
-#firebaseui-auth-container{
-
+#firebaseui-auth-container {
   height: 50vh;
-  width:70vw;
+  width: 30vw;
   border-radius: 24px;
   display: flex;
   align-items: center;
   position: relative;
-  top:25vh;
   margin: auto;
   flex-direction: column;
   justify-content: center;
   @include primary-gradient;
-
-}
-/* voor het verwijderen van de stip */
-.firebaseui-list-item::before{
-  height: 0;
 }
 </style>

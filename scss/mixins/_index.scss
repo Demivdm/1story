@@ -1,62 +1,50 @@
 @mixin primary-button {
-    
-
-    border-radius: 40px;
-    background-color: black;
-    cursor: pointer;
-    position: relative;
-    display: inline-block;
-    border: 0;
-    padding: 16px 28px 16px 28px;
-    color: #fff;
-    font-family: "Syne", sans-serif;
-    font-weight: 700;
-    font-size: 18px;
-    &:hover,
-    &.is-active {
-        transition: .4s ease-in;
-        background-color: #4C66E6;
-        
-    }
+  border-radius: 40px;
+  background-color: black;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  border: 0;
+  padding: 16px 28px 16px 28px;
+  font-family: "Syne", sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: white;
+  &:hover,
+  &.is-active {
+    transition: 0.4s ease-in;
+    background-color: #4c66e6;
+  }
 }
 @mixin secondary-button {
-    border-radius: 40px;
-    background-color:transparent;
-    cursor: pointer;
-    position: relative;
-    display: inline-block;
-    color: #000;
-    padding: 16px 28px 16px 28px;
-    font-family: "Syne", sans-serif;
-    font-size: 18px;
-    border: 1px solid black;
+  border-radius: 40px;
+  background-color: transparent;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  color: #000;
+  padding: 16px 28px 16px 28px;
+  font-family: "Syne", sans-serif;
+  font-size: 18px;
+  border: 1px solid black;
 
-    
-    &:hover,
-    &.is-active {
-        transition: .4s ease-in;
-        color: #fff;
-       background-color: #4C66E6;
-        border: 1px solid  #4C66E6;
-
-        
-        
-    }
+  &:hover,
+  &.is-active {
+    transition: 0.4s ease-in;
+    color: #fff;
+    background-color: #4c66e6;
+    border: 1px solid #4c66e6;
+  }
 }
 
 @mixin primary-background {
-    background: radial-gradient(50% 50% at 50% 50%, #C5CDF7 0%, #F2F4FD 100%) no-repeat;
- 
-    }
+  background: radial-gradient(50% 50% at 50% 50%, #c5cdf7 0%, #f2f4fd 100%)
+    no-repeat;
+}
 
-
-    @mixin primary-gradient{
-      background: linear-gradient(89.98deg, #D1D6FA 0.02%, #E8EAFD 99.98%);
-        
-     
-        }
-        @mixin secondary-gradient{
-            background: linear-gradient(180deg, #FBFEFE 0%, #DBF3FA 100%);
-              
-           
-              }
+@mixin primary-gradient {
+  background: linear-gradient(89.98deg, #d1d6fa 0.02%, #e8eafd 99.98%);
+}
+@mixin secondary-gradient {
+  background: linear-gradient(180deg, #fbfefe 0%, #dbf3fa 100%);
+}

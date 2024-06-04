@@ -1,18 +1,18 @@
 <template>
     <BlocksNav></BlocksNav>
 
-  <div class="login-wrapper">
-    <span v-if="!currentUser">
+  <div class="login" :class="{ 'login__login-background': !currentUser }">
+    <span v-if="!currentUser" >
         <ElementsLogin></ElementsLogin>
       </span>
-    <span v-else-if="currentUser">
+    <span v-else-if="currentUser" class="login__page-wrapper" >
         <h2>
-        Deel jouw zin van de week {{ currentUser.displayName }}
+        Deel jouw zin
         </h2>
         <p>Je bent nu ingelogd, er is een begin gemaakt aan het verhaal van de maand. Deel nu jouw zin met je collega's om het verhaal voort te zetten.</p>
-        <div class="buttons" >
-          <ElementsButton to="/writeStory">Deel je zin</ElementsButton>
-      <ElementsScndButton to="/allStories">Bekijk alle verhalen</ElementsScndButton>
+        <div class="login__buttons" >
+          <ElementsButton to="/writeStory">Starten</ElementsButton>
+      <!-- <ElementsScndButton to="/allStories">Bekijk alle verhalen</ElementsScndButton> -->
         </div>
 
       </span>
@@ -27,8 +27,37 @@
 </script>
 <style lang="scss">
 @import "../scss/vars/_breakpoints.scss";
+@import "/scss/mixins/index" ;
+@import "/scss/vars/colors";
 
-.buttons{
+$component: "login";
+
+.#{$component} {
+
+
+display: grid;
+place-items: center;
+height: 100vh;
+text-align: center;
+margin: auto;
+@include primary-background;
+
+
+
+@include sm{
+    width: 80vw;
+  }
+
+
+  &__login-background {
+
+  background: $secondary-background;
+  }
+
+
+
+
+&__buttons{
   display: flex;
   gap: 20px;
   justify-content: center;
@@ -36,21 +65,13 @@
     flex-direction: column;
   }
 }
-.login-wrapper{
-display: grid;
-place-items: center;
-height: 100vh;
-text-align: center;
-width: 50vw;
-margin: auto;
-// background: #F6F7FE;
 
 
-@include sm{
-    width: 80vw;
-  }
+&__page-wrapper{
+  width: 50vw;
 }
 span p{
   color: #010309;
+}
 }
 </style>

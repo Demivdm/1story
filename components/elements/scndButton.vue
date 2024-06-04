@@ -1,10 +1,14 @@
 <template>
+  <section class="scnd-button">
+
     <!-- er zijn verschillende links -->
     <!-- het bij een nuxtlink houden is beter want dan blijf je binnen de applicatie en dit is beter voor de performance -->
-    <!-- anders moeten de calls naar de db steeds opnieuw aangeroepen worden -->
+   <!-- anders moeten de calls naar de db steeds opnieuw aangeroepen worden -->
     <NuxtLink v-if="to" :to="to">
       <slot></slot>
     </NuxtLink>
+
+    <!-- wat doet blank en self -->
   
     <a v-else-if="href" :href="href" :target="target === true ? '_blank': '_self'">
       <slot></slot>
@@ -13,9 +17,11 @@
     <button v-else>
         <slot></slot>
     </button>
+  </section>
+
   </template>
   
-  <script setup>
+  <script setup lang="ts">
   
   
   // Define props with appropriate types
@@ -37,16 +43,13 @@
       default: ""
     }
   });
-  
-//   const emit = defineEmits(['click']);
-  
-//   const handleClick = (event) => {
-//     emit('click', event);
-//   };
   </script>
   <style lang="scss" scoped>
 
   @import "../scss/mixins/_index.scss";
+  $component: "scnd-button";
+
+#{$component} {
 
   a {
     @include secondary-button;
@@ -54,8 +57,9 @@
   }
   button {
     @include secondary-button;
+    
     width: max-content;
   
-  }
+  }}
   </style>
   

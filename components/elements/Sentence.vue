@@ -174,6 +174,9 @@ $component: 'sentence';
     bottom: 4px;
     right: 2.5px;
   }
+  &__bigger-sentence {
+    font-size: 50px;
+  }
 
 }
 </style>

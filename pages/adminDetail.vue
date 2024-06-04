@@ -19,7 +19,7 @@
       <button @click="closeStory">Verhaal Sluiten</button>
     </div>
   </template>
-  <script setup>
+  <script setup lang="ts">
   import { ref, onMounted } from 'vue';
   import { useRouter } from 'vue-router';
   import { collection, doc, updateDoc, addDoc, query, where, getDocs, serverTimestamp } from 'firebase/firestore';

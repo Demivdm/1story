@@ -1,33 +1,24 @@
 <template>
-  <section class="stories">
-
-    <div v-for="story in stories" :key="story.id" class="story-block">
-    <Nuxtlink to="/storyDetail">
-      <div class="tag-wrapper">
-        
-      <ElementsTagBlock></ElementsTagBlock>
-      <p>{{ formatDate(story.createdAt) }}</p>
-      </div>
-      <div class="content-wrapper">
-        <h5 class="title">{{ story.title }}</h5>
-           
-          <p class="preview-sentence">{{filteredSentences[0].content }}
-        </p>
-  
-  </div>
-
-
-  </Nuxtlink>
-
+  <section class="card">
+    <div v-for="story in stories" :key="story.id" class="card__story-block">
+      <Nuxtlink to="/storyDetail">
+        <div class="card__tag-wrapper">
+          <ElementsTagBlock></ElementsTagBlock>
+          <p>{{ formatDate(story.createdAt) }}</p>
         </div>
-    <!-- </div> -->
+        <div class="card__content-wrapper">
+          <h5 class="card__title">{{ story.title }}</h5>
 
+          <p class="card__preview-sentence">
+            {{ filteredSentences[0].content }}
+          </p>
+        </div>
+      </Nuxtlink>
+    </div>
   </section>
 </template>
 
 <script setup>
-
-
 const stories = ref([]);
 const filteredSentences = ref([]);
 const sentences = ref([]);
@@ -35,7 +26,6 @@ const sentences = ref([]);
 const storiesCollection = collection(db, "stories");
 const sentencesCollection = collection(db, "sentences");
 const q = query(sentencesCollection, orderBy("createdAt", "asc"));
-
 
 const storiesQuery = query(storiesCollection, orderBy("createdAt", "desc"));
 // stories en titles ophalen
@@ -55,9 +45,9 @@ onMounted(() => {
   });
 });
 const formatDate = (date) => {
-  if (!date) return '';
-  const options = { day: '2-digit', month: '2-digit', year: '2-digit' };
-  return date.toLocaleDateString('nl-NL', options);
+  if (!date) return "";
+  const options = { day: "2-digit", month: "2-digit", year: "2-digit" };
+  return date.toLocaleDateString("nl-NL", options);
 };
 // eerste zin ophalen
 
@@ -73,52 +63,56 @@ onSnapshot(q, (querySnapshot) => {
     fbSentences.push(sentence);
   });
   sentences.value = fbSentences;
-  filterSentences(); 
+  filterSentences();
 });
 const filterSentences = () => {
   // dit is welke de huidige is, dit kan ik later nog aanpassen zodat het reageert op wat de admin sluit.
-  const storyId = "vq7I23zQK8iszSCXbMsj"; 
+  const storyId = "vq7I23zQK8iszSCXbMsj";
   filteredSentences.value = sentences.value.filter(
     (sentence) => sentence.storyUID === storyId
   );
 };
 </script>
 
-<style scoped>
-.tag-wrapper{
-  display: flex;
-  align-items: baseline;
-}
-.content-wrapper{
-  /* padding: 40px, 36px, 74px, 36px; */
-  padding: 0 1rem 1rem 1rem;
+<style scoped lang="scss">
+$component: "card";
 
-}
-.stories {
+.#{$component} {
   margin-top: 2rem;
   display: flex;
-  margin: 0 2rem 0 2rem;
-  justify-content: space-around;
-  flex-wrap: wrap;
-}
-.story-block{
-  background: #FFFFFF;
-  border-radius: 20px ;
-  width: 360px;
-  margin: 1rem;
 
-}
-.title{
-  margin: 0;
-}
-.story-block:hover {
-  transition: .4s ease-in;
-  background: linear-gradient(270deg, #FFFAFE 0%, #FDECFA 100%);
-}
-.preview-sentence{
-  width:300px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-white-space: nowrap;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  &__tag-wrapper {
+    display: flex;
+    align-items: baseline;
+    padding-left: 1rem;
+  }
+  &__content-wrapper {
+    padding: 0 1rem 1rem 1rem;
+  }
+
+  &__story-block {
+    background: #ffffff;
+    border-radius: 20px;
+    width: 360px;
+    height: 254px;
+    margin: 1rem;
+  }
+  &__title {
+    margin: 0;
+  }
+  &__story-block:hover {
+    transition: 0.4s ease-in;
+    background: linear-gradient(270deg, #fffafe 0%, #fdecfa 100%);
+  }
+  &__preview-sentence {
+    width: 300px;
+    height: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
 }
 </style>

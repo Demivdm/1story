@@ -2,6 +2,7 @@
   <main>
 
     <BlocksNav></BlocksNav>
+    <ElementsLogout></ElementsLogout>
 
     <h2>
       Verbind, creëer en deel samen verhalen - één zin per week, elke maand een
@@ -137,9 +138,7 @@ main h2{
     flex-direction: column;
   }
 }
-.share{
-  @include primary-button;
-}
+
 .more{
   @include secondary-button;
 }

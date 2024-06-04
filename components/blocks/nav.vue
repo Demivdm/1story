@@ -1,24 +1,19 @@
 <template>
-  
-        <a href="/">
-        <h1>1Story</h1>
-        </a>
-
-   
+  <section class="nav">
+    <a href="/">
+      <h1>1Story</h1>
+    </a>
+  </section>
 </template>
-<style lang="scss" scoped>
- @import "/scss/vars/_breakpoints.scss";
+<style scoped lang="scss">
+$component: "nav";
 
-h1{
+.#{$component} {
   margin: 0;
-  top: 50px;
+  top: 60px;
   position: absolute;
- left: 50%;
- transform: translate(-50%, -50%);
- z-index: 1;
- @include sm{
-        font-size: 30px;
- }
-
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
 }
 </style>
