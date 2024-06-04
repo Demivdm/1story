@@ -113,7 +113,7 @@ const filterSentences = () => {
 }
 .story-block:hover {
   transition: .4s ease-in;
-  background: linear-gradient(193deg, rgba(252,235,252,1) 40%, rgba(247,161,232,1) 70%);
+  background: linear-gradient(270deg, #FFFAFE 0%, #FDECFA 100%);
 }
 .preview-sentence{
   width:300px;

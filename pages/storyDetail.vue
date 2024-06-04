@@ -6,11 +6,12 @@
     <div class="story-info">
       <ElementsBackButton></ElementsBackButton>
     <ElementsScrollUp></ElementsScrollUp>
-      <time>
+      <date class="story__time">
       <ElementsTagBlock></ElementsTagBlock>
       <!-- {{ formatDate(story.createdAt) }} -->
-      27-05-2024
-    </time>
+        27.05.2024
+      </date>
+  
     <h2>Het verhaal</h2>
     </div>
    
@@ -19,6 +20,7 @@
       <template v-for="sentence in filteredSentences" :key="sentence.id">
         <ElementsSentence :text="sentence.content" :info="{job: sentence.job, name: sentence.name}"/>
       </template>
+      
     </article>
   </section>
 </template>
@@ -127,28 +129,17 @@ $component: "story";
 width: max-content;
   
 }
-.#{$component}__user-info  {
-        opacity: 1;
-        background: #fff;
+&__time{
+  display: flex;
+  align-items: baseline;
 
-        &:not(:hover) {
-          opacity: 0;
-        }
-      }
 
-// &__story, 
-// &__story-info{
-//   width: 49rem;
-//   margin: auto;
-// }
+  padding-top: 5rem;
+  
+}
 
-// &__story-info{
-//   padding-top: 5rem;
-// }
-// .large-txt {
- 
-//   font-size: 50px; 
-// }
+
+
 // om de eerste twee zinnen groter te maken
 &__user-sentence p:nth-child(-n + 2){
   font-size: 50px;
@@ -159,43 +150,9 @@ width: max-content;
   margin-right: 10px;
 
 }
-// .user-info {
-//   position: absolute; 
-//   display: flex;
-//   align-items: baseline;
-//   text-transform: uppercase;
-//   opacity: 0;
-//   transition: opacity 3s , 
-//               transform 0.3s,
-//               width .3s;
-//               background: #fff;
-//   box-shadow: 0px 4px 4px 0px #0103091A;
-//   font-size: 14px;
-  // width: max-content;
-//   margin-top: 1.5rem;
-//   transform: translateX(100%);
-//   transform-origin: bottom right;
-//   width: 0;
-//   border-radius: 50px;
-//   padding: 8px;
-
- 
-// }
-
-// .user-sentence:hover , .user-info {
-//   opacity: 1;
-//   transform: translateX(0);
-//   width: max-content;
-//   height: max-content;
-//   border-radius: 4px;
 
 
-// }
-time{
-  display: flex;
-  align-items: baseline;
-  position: relative;
-  top: 2rem;
-}
+
+
 }
 </style>

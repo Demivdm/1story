@@ -7,6 +7,7 @@
    
 </template>
 <style lang="scss" scoped>
+ @import "/scss/vars/_breakpoints.scss";
 
 h1{
   margin: 0;
@@ -15,6 +16,9 @@ h1{
  left: 50%;
  transform: translate(-50%, -50%);
  z-index: 1;
+ @include sm{
+        font-size: 30px;
+ }
 
 }
 </style>

@@ -1,11 +1,10 @@
 <template>
   <span class="sentence" 
  ref="sentenceRef">
-    <span class="sentence__info-hover" ref="textRef" @mouseover="showInfo" @mouseleave="hideInfo">{{ props.text }}</span>
-    <span class="sentence__dropdown-icon"></span>
+    <span class="sentence__info-hover" ref="textRef" @mouseover="showInfo" @mouseleave="hideInfo">{{ processedText }}</span>
+    
+    <button class="sentence__dropdown-icon" @click="toggleDropdown" :class="{ 'rotated': isHovered }"></button>
    <!-- het moeten allemaal spans zijn want door block elementen kan de zin lengte niet meer accuraat gedetecteerd worden -->
-
-
    <span class="sentence__user-info-container" :style="infoPos" :class="{ 'sentence__user-info-container--hovered': isHovered }" ref="infoListRef" v-if="props.info">
       <ul class="sentence__user-info-list">
         <li class="user-info" v-if="props.info?.name">
@@ -42,7 +41,7 @@ const infoListRef = ref<HTMLElement | null>(null);
 const isHovered = ref<Boolean>(false);
 const textRef = ref<HTMLElement | null>(null);
 
-
+// positionering van de user info
 const infoPos = computed(() => {
   if (sentenceRef.value && infoListRef.value && textRef.value) {
     const sentence = sentenceRef.value;
@@ -68,6 +67,7 @@ const infoPos = computed(() => {
   }
   return {};
 });
+// toggle voor de hover
 
 const showInfo = () => {
   isHovered.value = true;
@@ -77,19 +77,25 @@ const hideInfo = () => {
   isHovered.value = false;
   
 };
+// toevoegen van de punt
 
-// const addPeriod = (text: string) => {
-//   const trimmedText = text.trim();
-//   const lastChar = trimmedText.charAt(trimmedText.length - 1);
+const addPeriod = (text: string) => {
+  const trimmedText = text.trim();
+  const lastChar = trimmedText.charAt(trimmedText.length - 1);
 
-//   if (lastChar !== '.' && lastChar !== '!' && lastChar !== '?') {
-//     return trimmedText + '.';
-//   }
-//   return text;
-// };
-// const processedText = computed(() => {
-//   return addPeriod(props.text);
-// });
+  if (lastChar !== '.' && lastChar !== '!' && lastChar !== '?') {
+    return trimmedText + '.';
+  }
+  return text;
+};
+const processedText = computed(() => {
+  return addPeriod(props.text);
+});
+
+// dropdown
+const toggleDropdown = () => {
+  isHovered.value = !isHovered.value;
+};
 </script>
 
 <style scoped lang="scss">
@@ -145,31 +151,29 @@ $component: 'sentence';
   }
   &__dropdown-icon{
    display: none;
-   
-   
+     background: #A5E1F3;
+
+   height: 15px;
+   width: 15px;
+   border: none;
+   border-radius: 50%;
    position: relative;
-   padding: 0 .5rem 0 .5rem;
 
    @include sm{
     display: inline-block;
    }
+   &.rotated {
+      transform: rotate(180deg);
+    }
 
   }
   &__dropdown-icon::after{
     content: '⌄';
     position: relative;
-    bottom: 3px;
+    color: white;
+    bottom: 4px;
+    right: 2.5px;
   }
-  &__dropdown-icon::before{
-    content: '';
-    position: absolute;
-   display: inline-block;
-    background: grey;
-   height: 15px;
-   width: 15px;
-   border-radius: 50%;
-   top: 5px;
-   left: 5px;
-  }
+
 }
 </style>

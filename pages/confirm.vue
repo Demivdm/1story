@@ -142,7 +142,7 @@ const remainingChar = (sentence) => {
     }
   }, {immediate: true});
   </script>
-  <style lang="scss">
+  <style scoped lang="scss">
  @import "/scss/vars/_breakpoints.scss";
 
  .confirm-page{
@@ -175,6 +175,7 @@ const remainingChar = (sentence) => {
   }
   .recap-field{
     display: flex;
+    align-items: baseline;
     @include sm{
       flex-direction: column;
     }
@@ -200,7 +201,7 @@ const remainingChar = (sentence) => {
   border: 0;
   border-bottom: 1px solid black;
   font-size:20px ;
-  padding-left: .5rem;
+
   color: #000;
   @include sm{
      padding: 0;
@@ -245,7 +246,7 @@ const remainingChar = (sentence) => {
     width: 0;
     position: relative;
     left: .5rem;
-    bottom: .5rem;
+    bottom: 1.7rem;
     color: #010309;
 
     @include sm{
