@@ -97,8 +97,12 @@ flex-wrap: wrap;
 
   &__tag-wrapper {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     padding-left: 1rem;
+    p{
+      padding: 0;
+    }
+
   }
   &__content-wrapper {
     padding: 0 1rem 1rem 1rem;
