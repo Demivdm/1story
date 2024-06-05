@@ -174,8 +174,10 @@ $component: 'sentence';
     bottom: 4px;
     right: 2.5px;
   }
-  &__bigger-sentence {
-    font-size: 50px;
+ 
+  &:nth-child(-n+2) {
+    font-size: 30px;
+    display: block;
   }
 
 }

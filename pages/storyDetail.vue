@@ -15,10 +15,11 @@
 
     <article class="story__story">
       <ElementsSentence :text="defaultSentence.content" />
-      <template v-for="sentence in filteredSentences" :key="sentence.id">
+      <template v-for="(sentence, index) in filteredSentences" :key="sentence.id">
         <ElementsSentence
           :text="sentence.content"
           :info="{ job: sentence.job, name: sentence.name }"
+          :class="{'bigger-font': index < 2}"
         />
       </template>
     </article>
@@ -31,7 +32,7 @@ const filteredSentences = ref([]);
 const defaultSentence = {
   name: "Demi",
   job: "Stagiair",
-  content: "Er was eens",
+  content: "Er was eens...",
 };
 
 onMounted(() => {
@@ -65,6 +66,8 @@ const filterSentences = () => {
     (sentence) => sentence.storyUID === storyId
   );
 };
+
+
 
 const formatDate = (date) => {
   if (!date) return "";
@@ -133,5 +136,9 @@ $component: "story";
     display: inline;
     margin-right: 10px;
   }
+ &__story__sentence:nth-child(-n+2) {
+    font-size: 20px; /* or any other desired font size */
+  }
+
 }
 </style>
