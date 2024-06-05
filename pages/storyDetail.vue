@@ -127,17 +127,9 @@ $component: "story";
     padding-top: 5rem;
   }
 
-  // om de eerste twee zinnen groter te maken
-  &__user-sentence p:nth-child(-n + 2) {
-    font-size: 50px;
-  }
-
   &__user-sentence {
     display: inline;
     margin-right: 10px;
-  }
- &__story__sentence:nth-child(-n+2) {
-    font-size: 20px; /* or any other desired font size */
   }
 
 }
