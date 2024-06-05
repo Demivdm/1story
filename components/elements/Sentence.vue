@@ -108,6 +108,7 @@ $component: 'sentence';
 .#{$component} {
   margin-right: 4px;
   padding-right: 4px;
+  line-height: 35px;
   @include sm{
     padding: 0;
   }
@@ -117,9 +118,6 @@ $component: 'sentence';
     &--hovered {
     z-index: -1;}
   }
-
- 
-
   &__user-info-container {
     position: absolute;
     width: max-content;
@@ -178,6 +176,15 @@ $component: 'sentence';
   &:nth-child(-n+2) {
     font-size: 30px;
     display: block;
+    @include sm{
+    font-size: 20px;
+   }
+  }
+  &:nth-child(2) {
+    margin-bottom: 2rem;
+    @include sm{
+    font-size: 20px;
+   }
   }
 
 }
