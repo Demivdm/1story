@@ -75,13 +75,25 @@ const filterSentences = () => {
 </script>
 
 <style scoped lang="scss">
+@import '/scss/vars/breakpoints';
+@import '/scss/vars/colors';
+
 $component: "card";
 
 .#{$component} {
 
   display: flex;
   gap:3rem;
-  margin-bottom: 3rem;
+  margin: 0 2rem 3rem 2rem;
+  @include sm{
+flex-direction: column;
+align-items: center;
+}
+  @include md{
+
+flex-wrap: wrap;
+
+  }
 
   &__tag-wrapper {
     display: flex;
@@ -95,7 +107,7 @@ $component: "card";
   &__story-block {
     background: #ffffff;
     border-radius: 20px;
-    width: 360px;
+    max-width: 360px;
     height: 254px;
 
    
@@ -108,10 +120,11 @@ $component: "card";
     background: linear-gradient(270deg, #fffafe 0%, #fdecfa 100%);
   }
   &__preview-sentence {
-    width: 300px;
+    max-width: 300px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
   }
+
 }
 </style>

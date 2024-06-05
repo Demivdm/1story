@@ -4,8 +4,8 @@
       <BlocksNav></BlocksNav>
       
       <div class="confirm-msg">
-        <h1>Bedankt voor het delen</h1>
-      <p>Hieronder kun je nogmaals zien wat je hebt ingevuld. Foutje gemaakt? Geen probleem, je kunt het nu nog aanpassen. Als alles naar wens is, kun je het tabblad sluiten of andere verhalen bekijken.</p>
+        <h2>Bedankt voor het delen</h2>
+      <p class="confirm-intro">Hieronder kun je nogmaals zien wat je hebt ingevuld. Foutje gemaakt? Geen probleem, je kunt het nu nog aanpassen. Als alles naar wens is, kun je het tabblad sluiten of andere verhalen bekijken.</p>
 
       </div>
      
@@ -21,14 +21,18 @@
       <div class="modal-content">
 
     <span class="recap-field">
-      <h5>Mijn naam is</h5>
-      <h6>Voornaam</h6>
-
+      <span class="name-recap">
+        <h5>Mijn naam is</h5>
+        <h6>Voornaam</h6>
         <p>{{ sentence.name }}</p>
+      </span>
 
-      <h5>en ik werk als</h5>
+<span class="job-recap">
+  <h5>en ik werk als</h5>
       <h6>Functie</h6>
         <p>{{ sentence.job }}</p>
+</span>
+     
     </span>
     <span class="sentence-recap">
       <h5>Mijn zin van de week</h5>
@@ -157,70 +161,179 @@ const remainingChar = (sentence) => {
 
 }
 .confirm-msg{
-  padding: 10rem 4rem 0 4rem;
+  padding: 5rem 4rem 0 5rem;
+
   @include sm{
     padding: 5rem 1rem 1rem 1rem;
   }
+  @include md{
+    padding: 5rem 10rem 10rem 5rem;
+  }
+  @include lg{
+    padding: 5rem 12rem 1rem 12rem;
+  }
+  p{
+    width: 50vw;
+    @include sm{
+    width: 100%;
+  }
+  }
 }
+.confirm-intro{
 
+  @include sm{
+    padding-bottom: 120px;
+  }
+}
 .modal-content{
   display: flex;
   flex-direction: column;
-  width: 1152px;
+  max-width: 1152px;
   padding-top: 3rem;
   @include sm{
   padding: 1rem;
+  
+
+
+
 }
 }
 
   .recap-wrapper{
    
     flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
+    max-width: 380px;
+
     @include sm{
       flex-direction: column;
     }
-   
+    @include md{
+      display: block;
+    }
+  
   }
   .recap-field{
     display: flex;
     align-items: baseline;
+    max-width: 1152px;
+
     @include sm{
       flex-direction: column;
     }
+    @include md{
+      flex-direction: column;
+    }
+    
+   
  
   }
+
+  .recap-field h6{
+  padding-bottom: .5rem;
+
+  }
+  .job-recap,
+  .name-recap{
+    display: flex;
+    align-items: baseline;
+    padding-bottom: 1rem;
+    min-width: 400px;
+
+    
+    @include sm{
+      flex-direction: column;
+      width: 100%;
+      min-width: 200px;
+
+    }
+    @include md{
+      // flex-direction: column;
+      width: 100%;
+
+    }
+   
+
+  }
+
+  .job-recap{
+    @include sm{
+      padding-bottom: 2rem;
+    }
+  }
+
+  .name-recap{
+    @include sm{
+      padding-bottom: 2rem;
+    }
+  }
   .recap-field p{
-    padding-bottom: .5rem;
-    margin: .5rem 0 2rem .5rem;
+    padding-bottom: .7rem;
+    margin: .5rem 1.5rem 2rem .5rem;
     flex-wrap: wrap;
     width:380px;
     font-size: 20px;
     border-bottom: 1px solid black;
     @include sm{
      margin: 0;
+    font-size: 16px;
+    width: 100%;
+    
+
     }
+    // @include md{
+    //   max-width:380px;
+
+
+    // }
  
 
   }
 
   .recap-field h5{
     padding-right: 1rem;
+    @include sm{
+     padding-bottom: .5rem;
+
+    }
 
   }
   .sentence-recap{
     display: flex;
+    align-items: center;
+    @include sm{
+     flex-direction: column;
+     align-items: flex-start;
+    }
+    h5{
+ 
+      @include md{
+    padding-right: 2.5rem;
+    }
+    }
+   
+    
+  }
+  .sentence-recap{
+   
+    @include sm{
+    padding-right: 1rem;
+    }
+    
   }
   .sentence-recap input{
-    width: 845px;
+  width: 890px;
   background: transparent;
   border: 0;
   border-bottom: 1px solid black;
   font-size:20px ;
   margin-left:1rem;
+  padding: 1rem 0 1rem 0;
   @include sm{
-     padding: 0;
+     padding: .5rem 0 1rem 0;
+     margin: 0;
+    font-size: 16px;
+    width: 100%;
+
     }
   }
   .sentence-recap h6{
@@ -228,6 +341,13 @@ const remainingChar = (sentence) => {
   white-space: nowrap;
   margin-top: .5rem;
   left: 1rem;
+  text-transform: uppercase;
+  padding-bottom: .5rem;
+
+  @include sm{
+   left: 0;
+    }
+
 
   // padding-bottom: 1rem;
   
@@ -246,13 +366,7 @@ const remainingChar = (sentence) => {
       bottom: 1rem;
       flex-direction: column;
     }
-    button{
-      @include sm{
-        width: 100%;
-
-    }
-      
-    }
+ 
 
   
   }
@@ -268,9 +382,12 @@ const remainingChar = (sentence) => {
     left: .5rem;
     bottom: 1.7rem;
     color: #010309;
+   text-transform: uppercase;
+
 
     @include sm{
      inset: .2rem 0 0 0;
+      
     }
     
   }

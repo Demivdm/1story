@@ -5,8 +5,8 @@
 
     <NuxtLink to="/storyDetail">
 
- <BlocksCard></BlocksCard>
-<BlocksCard></BlocksCard>
+ <BlocksCard ></BlocksCard>
+<BlocksCard ></BlocksCard>
 
   </NuxtLink>
 
@@ -17,7 +17,11 @@
 
 <script setup>
 </script>
-<style>
+<style scoped lang="scss">
+
+.story-title{
+  margin-left: 2rem;
+}
 .stories{
 
   margin: 2rem auto 0;

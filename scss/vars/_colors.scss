@@ -10,7 +10,20 @@ $color-quinary:#EDEF80;
 $color-senary:#F7A1E8;
 $color-septenary:#7DE8C1;
 
+// color array
+
+$colors: 
+  #4C66E6,
+  #90DBEF,
+  #FF9999,
+  #EDEF80,
+  #F7A1E8,
+  #7DE8C1,
+;
+
 $secondary-background: #F6F7FE;
+
+
 
 // text colors
 
@@ -19,6 +32,7 @@ $color-text: $color-black;
 
 // button colors
 
+
 $color-button-bg--primary: $color-black;
 $color-button-text--primary: $color-white;
 
@@ -26,3 +40,4 @@ $color-button-text--primary: $color-white;
     transition: ease-in-out all 10s !important;
 
 }
+

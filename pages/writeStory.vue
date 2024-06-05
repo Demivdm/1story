@@ -211,6 +211,14 @@ watchEffect(() => {
   padding-top:8rem ;
   background: transparent;
 
+
+}
+
+.info-wrapper{
+  @include sm{
+  // padding-left:1.5rem;
+  padding: 0 2rem 0 2rem;
+ }
 }
 
 
@@ -234,7 +242,6 @@ label{
   max-width: 1152px;
   padding-top: 1rem;
   @include sm{
-  
   padding: 1rem;
 }
 
@@ -247,7 +254,7 @@ textarea{
   border-bottom: 1px solid black;
   font-size: 20px;
   margin: 0 1rem 0 1rem;
-  padding: .5rem 0 .5rem 0;
+  padding: 1rem 0 1rem 0;
   font-family: 'syne';
 
 @include sm{
@@ -284,7 +291,7 @@ textarea{
 .week-sentence{
   display: flex;
   align-items: baseline;
-  padding-top: 4rem;
+  padding-top: 3.5rem;
   @include sm{
  flex-direction: column;
   
@@ -308,8 +315,8 @@ textarea{
 
 }
 .wrong-input {
-  background: red;
-  border-bottom: solid red;
+  background: #FF9999;
+
   z-index: 1;
 }
 .error-message{
