@@ -2,8 +2,11 @@
   <section class="card">
     <div v-for="story in stories" :key="story.id" class="card__story-block">
       <Nuxtlink to="/storyDetail">
-        <div class="card__tag-wrapper">
-          <ElementsTagBlock></ElementsTagBlock>
+        <div class="card__tag-wrapper" >
+      
+
+          <ElementsTagBlock >
+        </ElementsTagBlock>
           <p>{{ formatDate(story.createdAt) }}</p>
         </div>
         <div class="card__content-wrapper">
@@ -18,7 +21,7 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const stories = ref([]);
 const filteredSentences = ref([]);
 const sentences = ref([]);
@@ -28,6 +31,7 @@ const sentencesCollection = collection(db, "sentences");
 const q = query(sentencesCollection, orderBy("createdAt", "asc"));
 
 const storiesQuery = query(storiesCollection, orderBy("createdAt", "desc"));
+
 // stories en titles ophalen
 onMounted(() => {
   onSnapshot(storiesQuery, (querySnapshot) => {
@@ -72,6 +76,8 @@ const filterSentences = () => {
     (sentence) => sentence.storyUID === storyId
   );
 };
+
+
 </script>
 
 <style scoped lang="scss">
@@ -79,6 +85,8 @@ const filterSentences = () => {
 @import '/scss/vars/colors';
 
 $component: "card";
+// kleuren variatie
+;
 
 .#{$component} {
 
@@ -104,6 +112,7 @@ flex-wrap: wrap;
     }
 
   }
+  
   &__content-wrapper {
     padding: 0 1rem 1rem 1rem;
   }

@@ -87,7 +87,7 @@ $component: "story";
   }
 
   &__check {
-    height: 300vh;
+    min-height:100vh ;
     background: linear-gradient(180deg, #fbfefe 0%, #dbf3fa 100%);
     max-width: 100vw;
     padding: 5rem;
