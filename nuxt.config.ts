@@ -8,13 +8,16 @@ export default defineNuxtConfig({
   css: ["../scss/_index.scss"],
   app: {
     head: {
-      title: 'One story', // Add your desired title here
+      title: 'One story', 
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { hid: 'description', name: 'description', content: 'Explore captivating stories with our Nuxt.js application. Each story is uniquely highlighted with vibrant colors and enriched with engaging sentences to connect and inspire our community.' }
-        // Add more meta tags as needed
-      ]
+     
+      ],
+      htmlAttrs: {
+        lang: 'nl', 
+      }
     }
   },
 
