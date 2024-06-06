@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="admin">
     <div v-if="isAdmin">
       <h1>Welkom Admin!</h1>
       <p>Het is tijd om het verhaal van de maand te publiceren. Mocht er iets aangepast moeten worden, kun je het nu nog veranderen. Wanneer je helemaal tevreden bent, kun je het verhaal verzenden.</p>
@@ -34,8 +34,19 @@ const isAdmin = ref(false);
 if (currentUser.value) {
   isAdmin.value = await checkAdmin(db, currentUser.value.uid);
 } else {
-  // misschien dat hier het probleem ligt, waardoor de gebruiker niet naar de homepage kan
   router.push("/");
   
 }
 </script>
+<style lang="scss" scoped>
+
+ $component: "admin";
+
+ .#{$component}{
+height: 100vh;
+display: grid;
+    place-items: center;
+  
+
+ }
+</style>
