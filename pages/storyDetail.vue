@@ -87,10 +87,14 @@ const formatDate = (date) => {
 $component: "story";
 
 .#{$component} {
-
+width: 100vw;
   &__detail{
-    width: 900px;
+    max-width: 900px;
     margin: auto;
+    @include sm{
+      margin: 1rem ;
+    }
+   
   }
   &__sentence-container {
     cursor: text;
@@ -100,10 +104,8 @@ $component: "story";
     min-height:100vh ;
     background: linear-gradient(180deg, #fbfefe 0%, #dbf3fa 100%);
     width: 100vw;
-    padding: 5rem;
-    @include sm {
-      padding: 1rem;
-    }
+    padding-top: 5rem;
+   
   }
   &__story {
     &:hover {
@@ -133,8 +135,7 @@ $component: "story";
   &__time {
     display: flex;
     align-items: baseline;
-
-    padding-top: 5rem;
+    padding-top: 1rem;
   }
 
   &__user-sentence {
