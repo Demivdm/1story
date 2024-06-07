@@ -12,7 +12,7 @@
       <slot></slot>
     </a>
 
-    <button v-else>
+    <button v-else :disabled="disabled">
         <slot></slot>
     </button>
   </section>
@@ -37,6 +37,10 @@
     click: {
       type: String,
       default: ""
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
     }
   });
   </script>
@@ -55,7 +59,9 @@
   button {
     @include primary-button;
     width: max-content;
-  
+    &:disabled {
+      opacity: 0.5;
+    }
   }
 }
 

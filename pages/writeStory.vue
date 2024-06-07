@@ -23,17 +23,34 @@
   </div>
   <BlocksModal>
     <section class="modal-content">
-      <span>
+      <div class="name-function-input">
+      <span class="name-input">
         <label for="name">Mijn naam is</label>
+        <div class="input-container">
         <input type="text" :placeholder="currentUser?.displayName || 'Voornaam'" v-model="nameInput" :class="{'wrong-input': inputValCheckNameInput}" required/>
-        <label for="functie">en ik werk als</label>
-        <!-- eerst de class die je wilt toggelen en daarna de functie met de voorwaarden voor true of false erin -->
-        <input type="text" placeholder="Functie" v-model="functionInput" :class="{'wrong-input': inputValCheckFunctionInput}" required/>
-        <p v-if="inputValCheckFunctionInput || inputValCheckNameInput" class="error-message">Oeps je hebt een verkeerd karakter gebruikt. De volgende karakters mogen <strong>niet</strong>gebruikt worden: []{}+=-_|</p>
-
+        <p v-if="inputValCheckNameInput" class="error-message">De volgende karakters mogen NIET in je naam worden gebruikt: []{}+=-_|</p>
+       
+      </div>
       </span>
-      <span class="week-sentence">
+
+       <span class="function-input">
+        <label for="functie">en ik werk als</label>
+        <div class="input-container">
+
+<!-- eerst de class die je wilt toggelen en daarna de functie met de voorwaarden voor true of false erin -->
+<input type="text" placeholder="Functie" v-model="functionInput" :class="{'wrong-input': inputValCheckFunctionInput}" required/>
+
+<p v-if="inputValCheckFunctionInput" class="error-message">
+  De volgende karakters mogen NIET in je functie worden gebruikt: []{}+=-_|
+</p>
+</div>
+
+       </span>
+      
+</div>
+      <div class="week-sentence">
   <label for="name">Mijn zin van de week is</label>
+  <div class="week-input-container">
   <textarea
     v-model="textInput"
     @input="limitCheck"
@@ -43,12 +60,13 @@
     name="sentence"
     required
   ></textarea>
-</span>
+  <p class="remaining-char">{{ remainingChar }} tekens over</p>
+</div>
+      </div>
   
-  <p>{{ remainingChar }} tekens over</p>
 
   <section class="button-wrapper">
-<ElementsButton @click="addSentence">
+<ElementsButton @click="addSentence" :disabled="!disabled">
     Verzenden
   </ElementsButton>
     
@@ -82,6 +100,11 @@ const prevSentence = ref(null);
 // const inputValCheck = ref(false);
 const inputValCheckFunctionInput = ref(false);
 const inputValCheckNameInput = ref(false);
+
+const disabled = computed(() => 
+  textInput.value !== '' && nameInput.value !== '' && functionInput.value !== ''
+);
+console.log(disabled.value)
 
 const addSentence = () => {
   if (!currentUser.value || !currentUser.value.uid) {
@@ -187,7 +210,12 @@ watchEffect(() => {
  @import "/scss/vars/_breakpoints.scss";
  h2{
 
-  margin: 0 0 5rem 0;
+  margin: 0 0 2rem 0;
+  @include sm{
+
+  
+  
+}
  }
 .story-container{
   /* background-color: #F6F7FE; */
@@ -235,15 +263,22 @@ watchEffect(() => {
 }
 label{
   font-size: 28px;
+
+@include md{
+  font-size: 25px;
+  
+  
+}
 }
 .modal-content{
-  display: flex;
-  flex-direction: column;
+  display: inline;
+  // flex-direction: column;
   max-width: 1152px;
-  padding-top: 1rem;
-  @include sm{
-  padding: 1rem;
-}
+//   @include sm{
+//   padding: 1rem;
+
+// }
+
 
 }
 
@@ -253,7 +288,6 @@ textarea{
   border: 0;
   border-bottom: 1px solid black;
   font-size: 20px;
-  margin: 0 1rem 0 1rem;
   padding: 1rem 0 1rem 0;
   font-family: 'syne';
 
@@ -265,13 +299,38 @@ textarea{
   
 }
 input{
-  width: 380px;
+  // max-width: 400px;
+
   @include sm{
-  width: 100%;
+  width: 90%;
+  margin: 0 ;
+  margin-right: 1rem;
   
 }
 @include md{
+  margin: 0;
   width: 100%;
+
+}
+
+@include lg{
+// min-width: 280px;
+width: 100%;
+
+  
+}
+@include xl{
+  // min-width: 350px;
+  width: 100%;
+
+  margin: 0;
+  
+  
+}
+@include xxl{
+  // min-width: 380px;
+  width: 100%;
+
   margin: 0;
   
   
@@ -279,21 +338,59 @@ input{
 }
 textarea{
   position: relative;
-  max-width: 830px;
-
-@include md{
+@include sm{
+  // max-width: 270px;
 
   margin: 0;
+
  
   
 }
 }
+.week-input-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0 1rem;
+  flex-grow: 2;
+  @include sm{
+  width: 90%;
+
+}
+@include md{
+  width: 100%;
+
+}
+}
+.input-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0 1rem;
+  flex-grow: 2;
+  @include sm{
+  width: 100%;
+
+}
+@include md{
+  width: 100%;
+
+}
+}
+.remaining-char{
+  text-align: right;
+}
+.input-wrapper{
+  display: flex;
+  flex-direction: column;
+}
 .week-sentence{
   display: flex;
   align-items: baseline;
-  padding-top: 3.5rem;
+  padding-top: 5rem;
+
   @include sm{
  flex-direction: column;
+ padding-top: 3rem;
+
   
 }
   @include md{
@@ -315,14 +412,94 @@ textarea{
 
 }
 .wrong-input {
-  background: #FF9999;
-
+// position: absolute;
+width: inherit;
+height:max-content;// margin: 0;
+// padding: 0;
+  color: red;
+width: 90%;
   z-index: 1;
+
+margin: 0;
+    font-size: 20px;
+
 }
 .error-message{
 
-  position: absolute;
-//  margin-bottom: 1rem;
+  max-width: 300px;
+  color:red;
+ position: absolute;
+width: 100%;
+ top: 100px;
+  p{
+    margin: 0;
+  }
+  @include sm{
+    position: relative;
+    top: 0;
+  }
+  @include md{
+    // position: relative;
+    // top: 80px;
+  max-width: 100%;
+
+  }
+}
+.name-function-input{
+
+  display: flex;
+  
+  @include sm{
+  flex-direction: column;
+  
+  
+}
+  @include md{
+
+  flex-direction: column;
+  
+  
+}
+}
+
+.name-input,
+.function-input{
+  display: flex;
+  align-items: baseline;
+  width: 100%;
+  label{
+    min-width: fit-content;
+  }
+  @include sm{
+  flex-direction: column;
+  
+  
+}
+
+}
+.function-input{
+  .error-message{
+    margin-top: 7rem;
+    @include sm{
+    margin-top:1rem; 
+}
+  }
+ 
+@include md{
+    margin-top:3rem;
+  
+  
+}
+}
+.buttons{
+ 
+  margin: 2rem 2rem 0 0;
+  @include sm{
+    width: 100%;
+
+  
+  
+}
 
 
 }

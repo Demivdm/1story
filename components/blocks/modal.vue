@@ -20,23 +20,27 @@ $component: "modal";
   max-width: 1296px;
   border-radius: 24px;
   position: relative;
-  top: 25vh;
   left: 50%;
   max-height: 904px;
   transform: translate(-50%, -50%);
   padding: 0;
 
+
+  top: 20vh;
+
+
   @include primary-gradient;
   @include sm {
     width: 100vw;
-    top: 15rem;
+    top: 25rem;
   }
   &__modal-content {
-    padding:72px;
+    padding:40px;
     min-height: min-content;
     @include sm {
       padding: 1rem;
     }
+    
   }
 }
 </style>
