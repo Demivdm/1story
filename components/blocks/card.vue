@@ -122,6 +122,8 @@ flex-wrap: wrap;
     border-radius: 20px;
     max-width: 360px;
     height: 254px;
+    transition: .3s ease-in-out;
+
 
    
   }
@@ -129,7 +131,6 @@ flex-wrap: wrap;
     margin: 0;
   }
   &__story-block:hover {
-    transition: 0.4s ease-in;
     background: linear-gradient(270deg, #fffafe 0%, #fdecfa 100%);
   }
   &__preview-sentence {
