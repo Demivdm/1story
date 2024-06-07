@@ -22,17 +22,18 @@ $component: "modal";
   position: relative;
   left: 50%;
   max-height: 904px;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 0);
   padding: 0;
 
-  
-  top: 20vh;
+
+
 
 
   @include primary-gradient;
   @include sm {
     width: 100vw;
-    top: 25rem;
+    transform: translate(-50%, 0);
+
   }
   &__modal-content {
     padding:40px;
