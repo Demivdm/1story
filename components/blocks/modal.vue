@@ -36,7 +36,7 @@ $component: "modal";
   }
   &__modal-content {
     // padding:40px;
-    padding: 90px 72px 72px 72px;
+    padding: 60px 72px 72px 60px;
     min-height: min-content;
     @include sm {
       padding: 1rem;
