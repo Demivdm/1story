@@ -25,7 +25,7 @@ $component: "modal";
   transform: translate(-50%, -50%);
   padding: 0;
 
-
+  
   top: 20vh;
 
 
