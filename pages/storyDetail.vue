@@ -1,92 +1,146 @@
 <template>
-  <section class="check">
-
-
+  <section class="story__check">
+    
     <BlocksNav></BlocksNav>
-  <ElementsBackButton></ElementsBackButton>
-  <ElementsScrollUp></ElementsScrollUp>
-
-  <time>27-02-2024</time>
-
-  <h2>Het verhaal</h2>
-  <!-- werkt in combinatie met de ref beter omdat er niet de hele tijd naar alle elementen hierin gekeken moet worden -->
-  <section class="story">
-    <div v-for="sentence in sentences" :key="sentence.id">
-    <span class="sentence">{{ sentence.content }}</span>
-
-    <h2>naam</h2>
-    <span class="sentence">{{ sentence.name }}</span>
-    <ElementsTagBlock></ElementsTagBlock> 
-    <h2>functie</h2>
-    <span class="sentence">{{ sentence.function }}</span>
-    <ElementsTagBlock></ElementsTagBlock> 
+    <ElementsBackButton></ElementsBackButton>
+    <div class="story__detail">
 
 
+    <div class="story-info">
+      <ElementsScrollUp></ElementsScrollUp>
+      <date class="story__time">
+        <ElementsTagBlock></ElementsTagBlock>
+        27.05.2024
+      </date>
+
+      <h2>Het verhaal</h2>
+    </div>
+
+    <article class="story__story">
+      <ElementsSentence :text="defaultSentence.content" />
+      <template v-for="(sentence, index) in filteredSentences" :key="sentence.id">
+        <ElementsSentence
+          :text="sentence.content"
+          :info="{ job: sentence.job, name: sentence.name }"
+          :class="{'bigger-font': index < 2}"
+        />
+      </template>
+    </article>
   </div>
+
   </section>
-</section>
-
 </template>
-<script setup>
-import { collection, onSnapshot, query, orderBy, serverTimestamp } from "firebase/firestore";
-import { db } from "~/firebase";
 
-
+<script setup lang="ts">
 const sentences = ref([]);
-
+const filteredSentences = ref([]);
+const defaultSentence = {
+  name: "Demi",
+  job: "Stagiair",
+  content: "Er was eens...",
+};
 
 onMounted(() => {
-  // collection is een firestore object, om dit makkelijk te kunnen gebruiken maak ik er een variabele van
   const sentencesCollection = collection(db, "sentences");
-  // hier binnen maak ik een query van mijn collection en sorteer deze op ingestuurde datum
-  const q = query(sentencesCollection, orderBy('createdAt', 'asc')); 
-
+  const q = query(sentencesCollection, orderBy("createdAt", "asc"));
 
   onSnapshot(q, (querySnapshot) => {
     const fbSentences = [];
     querySnapshot.forEach((doc) => {
-      // doc.data in een data variabele zodat ik minder hoef te typen
       const data = doc.data();
-
-      // dit is alles wat ik binnen de sentence nodig heb. 
       const sentence = {
         id: doc.id,
         content: data.content,
         name: data.name,
-        function: data.function,
-        // dit pakt de createdat data uit de db als die er is
-        // dan wordt het veranderd naar een date die js kan gebruiken
-        // als createdAt niet bestaat dan wordt deze op null gezet
-        createdAt: data.createdAt ? data.createdAt.toDate() : null, 
+        job: data.job,
+        storyUID: data.storyUID,
+        createdAt: data.createdAt ? data.createdAt.toDate() : null,
       };
-      // sentence wordt hier in de lege fbsentences gegooid
       fbSentences.push(sentence);
     });
-    // hier wordt mijn reactive ref geupdate
     sentences.value = fbSentences;
-
-    // check of alles mee is gekomen
-    console.log(fbSentences);
+    filterSentences();
   });
 });
-</script>
-<style>
-.check{
-  height: 300vh;
-}
-.story{
-  overflow-x: hidden;
-  display: flex;
-  flex-wrap: wrap;
-  white-space: nowrap;
 
-}
-.sentences{
- width: max-content;
- 
-}
-.sentence {
-display: inline;
-  margin-right: 8px; 
+// functie om zinnen te filteren op story id
+const filterSentences = () => {
+  // dit is welke de huidige is, dit kan ik later nog aanpassen zodat het reageert op wat de admin sluit.
+  const storyId = "vq7I23zQK8iszSCXbMsj";
+  filteredSentences.value = sentences.value.filter(
+    (sentence) => sentence.storyUID === storyId
+  );
+};
+
+
+
+const formatDate = (date) => {
+  if (!date) return "";
+  const options = { day: "2-digit", month: "2-digit", year: "2-digit" };
+  return date.toLocaleDateString("nl-NL", options);
+};
+</script>
+
+<style scoped lang="scss">
+@import "/scss/vars/_breakpoints.scss";
+
+$component: "story";
+
+.#{$component} {
+
+  &__detail{
+    width: 900px;
+    margin: auto;
+  }
+  &__sentence-container {
+    cursor: text;
+  }
+
+  &__check {
+    min-height:100vh ;
+    background: linear-gradient(180deg, #fbfefe 0%, #dbf3fa 100%);
+    width: 100vw;
+    padding: 5rem;
+    @include sm {
+      padding: 1rem;
+    }
+  }
+  &__story {
+    &:hover {
+      :deep(.sentence) {
+        opacity: 1;
+        &:not(:hover) {
+          opacity: 0.3;
+        }
+      }
+    }
+  }
+  &__user-sentence,
+  &__user-info {
+    transition: opacity 0.3s ease;
+  }
+  &__user-info {
+    position: absolute;
+    opacity: 0;
+    background: #fff;
+    box-shadow: 0px 4px 4px 0px #0103091a;
+    font-size: 14px;
+    border-radius: 4px;
+    padding: 8px;
+
+    width: max-content;
+  }
+  &__time {
+    display: flex;
+    align-items: baseline;
+
+    padding-top: 5rem;
+  }
+
+  &__user-sentence {
+    display: inline;
+    margin-right: 10px;
+  }
+
 }
 </style>

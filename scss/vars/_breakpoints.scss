@@ -44,3 +44,8 @@ $xxlMinWidth: 1480px;
         @content;
     }
 }
+.button{
+    @include sm {
+        width: 100vw;
+    }
+}

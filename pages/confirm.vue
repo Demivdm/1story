@@ -1,85 +1,398 @@
-<template>
-  <div v-if="sentence">
-    <h2>Bedankt voor het delen</h2>
-    <p>Hieronder kun je nogmaals zien wat je hebt ingevuld. Foutje gemaakt? Geen probleem, je kunt het nu nog aanpassen. Als alles naar wens is, kun je het tabblad sluiten of andere verhalen bekijken.</p>
-    <span class="name">Naam: {{ name.name }}</span>
-    <span class="job">Functie: {{ job.function }}</span>
-    <span class="sentence">{{ sentence.content }}</span>
+  <template >
+    <section class="confirm-page">
 
-    <template v-if="!editing">
-      <span class="sentence">{{ sentence.content }}</span>
-      <button @click="toggleEditing">Bewerken</button>
-    </template>
-    <template v-else>
-      <input type="text" v-model="editedContent">
-      <button @click="saveEdit">Opslaan</button>
-    </template>
-    <ElementsButton>
-      <NuxtLink to="/allStories">
-        Bekijk andere verhalen
-      </NuxtLink>
-    </ElementsButton>
+      <BlocksNav></BlocksNav>
+      
+      <div class="confirm-msg">
+        <h2>Bedankt voor het delen</h2>
+      <p class="confirm-intro">Hieronder kun je nogmaals zien wat je hebt ingevuld. Foutje gemaakt? Geen probleem, je kunt het nu nog aanpassen. Als alles naar wens is, kun je het tabblad sluiten of andere verhalen bekijken.</p>
+
+      </div>
+     
+      <div
+        v-for="sentence in sentences"
+        :key="sentence.id"
+        class="sentence-container"
+      >
+    <div class="confirm">
+
+    <BlocksModal>
+
+      <div class="modal-content">
+
+    <span class="recap-field">
+      <span class="name-recap">
+        <h5>Mijn naam is</h5>
+        <h6>Voornaam</h6>
+        <p>{{ sentence.name }}</p>
+      </span>
+
+<span class="job-recap">
+  <h5>en ik werk als</h5>
+      <h6>Functie</h6>
+        <p>{{ sentence.job }}</p>
+</span>
+     
+    </span>
+    <span class="sentence-recap">
+      <h5>Mijn zin van de week</h5>
+      <h6>Zin van de week</h6>
+      <input
+          :disabled="!sentence.isEditing"
+          :class="{ disabled: !sentence.isEditing }"
+          v-model="sentence.content"
+          class="sentence-input"
+          @input="limitCheck"
+        />
+    </span>
   </div>
-  <div v-else>
-   loading.....
-  </div>
-</template>
-
-<script setup>
-import { ref, onMounted } from 'vue';
-import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
-import { db } from '~/firebase';
-
-// de waarde hiervan is null zodat ik deze later kan vullen met de data die uit de db komt
-const sentence = ref(null);
-const name = ref(null);
-const job = ref(null);
-const editing = ref(false);
-const editedContent = ref('');
-
-
-onMounted(() => {
-  const sentencesCollection = collection(db, "sentences");
-  const q = query(sentencesCollection, orderBy('createdAt', 'asc'));
-
-  onSnapshot(q, (querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      // hier vul ik sentence,job en name met de waarden van de laatste zin
-      // dit is als het goed is de zin van de gebruiker door de timestamps
-      sentence.value = {
         
+
+       
+
+  <p>{{ remainingChar(sentence) }} tekens over</p>
+  <div class="button-wrapper">
+  <ElementsScndButton @click="toggleEdit(sentence)">
+          {{ sentence.isEditing ? "Verzenden" : "Bewerken" }}
+
+        </ElementsScndButton>
+        <ElementsButton to="allStories">
+          Bekijk andere verhalen
+        </ElementsButton>
+      
+</div>
+</BlocksModal>
+
+
+      </div>
+            
+    </div>
+  </section>
+
+  </template>
+
+  <script setup>
+
+  const sentences = ref([]);
+  const name = ref("");
+  const job = ref("");
+  const charLimit = 100;
+
+
+  const currentUser = useCurrentUser();
+
+  const fetchSentences = async (userId) => {
+    try {
+      const collectionRef = collection(db, "sentences");
+      const q2 = query(
+        collectionRef,
+        where("uid", "==", userId),
+        orderBy("createdAt", "desc"),
+        limit(1)
+      );
+
+      // dit wacht totdat de query opgehaald is, dan wordt er door de sentenes heen gemapt. 
+      const querySnapshot = await getDocs(q2);
+       sentences.value = querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
         content: data.content,
-        function: data.function,
-        createdAt: data.createdAt ? data.createdAt.toDate() : null,
-      };
-      name.value = {
+        isEditing: false,
+        uid: data.uid,
         name: data.name,
-
-      }
-      job.value = {
-        function: data.function,
-
-      }
-      // Hier breek ik de loop zodat alleen de eerste zin wordt getoond 
-      return;
+        job: data.job,
+        createdAt: data.createdAt || null,
+      };
     });
-  });
-});
-// EDITING WERKT NIET, FIX DIT
-// function toggleEditing() {
-//   editing.value = !editing.value;
-//   editedContent.value = sentence.value.content; 
-// }
+      console.log({ sentences });
+    } catch (error) {
+      console.error("Error fetching sentences: ", error);
+    }
+  };
+  const toggleEdit = async (sentence) => {
+    if (sentence.isEditing) {
+      try {
+        const sentenceRef = doc(db, "sentences", sentence.id);
+        await updateDoc(sentenceRef, {
+          content: sentence.content,
+        });
+      } catch (error) {
+        console.error("Error updating sentence: ", error);
+      }
+    }
+    sentence.isEditing = !sentence.isEditing;
+  };
 
-// function saveEdit() {
-//   sentence.value.content = editedContent.value;
-//   editing.value = false;
-// }
-</script>
-
-<script>
-export default {
-  name: 'confirm'
+  const limitCheck = (sentence) => {
+  if (sentence.content.length > charLimit) {
+    sentence.content = sentence.content.slice(0, charLimit);
+    console.log(sentence.content.lenght)
+  }
 };
-</script>
+
+// Method to calculate remaining characters
+const remainingChar = (sentence) => {
+  return charLimit - sentence.content.length;
+};
+
+  // Watch for changes to currentUser
+  // ik heb een wachter nodig om te kijen of de waarde van de user veranderd, of de waarde van de uid veranded
+  watch(currentUser, (newValue) => {
+    if (newValue && newValue.uid) {
+      console.log({currentUser, newValue})
+      fetchSentences(newValue.uid);
+    }
+  }, {immediate: true});
+  </script>
+  <style scoped lang="scss">
+ @import "/scss/vars/_breakpoints.scss";
+
+ .confirm-page{
+  background: #F6F7FE;
+
+ }
+
+.confirm{
+  padding:5rem;
+  @include sm{
+    padding: 1rem;
+  }
+
+}
+.confirm-msg{
+  padding: 5rem 4rem 0 5rem;
+
+  @include sm{
+    padding: 5rem 1rem 1rem 1rem;
+  }
+  @include md{
+    padding: 5rem 10rem 10rem 5rem;
+  }
+  @include lg{
+    padding: 5rem 12rem 1rem 12rem;
+  }
+  p{
+    width: 50vw;
+    @include sm{
+    width: 100%;
+  }
+  }
+}
+.confirm-intro{
+
+  @include sm{
+    padding-bottom: 120px;
+  }
+}
+.modal-content{
+  display: flex;
+  flex-direction: column;
+  max-width: 1152px;
+  padding-top: 3rem;
+  @include sm{
+  padding: 1rem;
+  
+
+
+
+}
+}
+
+  .recap-wrapper{
+   
+    flex-direction: row;
+    max-width: 380px;
+
+    @include sm{
+      flex-direction: column;
+    }
+    @include md{
+      display: block;
+    }
+  
+  }
+  .recap-field{
+    display: flex;
+    align-items: baseline;
+    max-width: 1152px;
+
+    @include sm{
+      flex-direction: column;
+    }
+    @include md{
+      flex-direction: column;
+    }
+    
+   
+ 
+  }
+
+  .recap-field h6{
+  padding-bottom: .5rem;
+
+  }
+  .job-recap,
+  .name-recap{
+    display: flex;
+    align-items: baseline;
+    padding-bottom: 1rem;
+    min-width: 400px;
+
+    
+    @include sm{
+      flex-direction: column;
+      width: 100%;
+      min-width: 200px;
+
+    }
+    @include md{
+      // flex-direction: column;
+      width: 100%;
+
+    }
+   
+
+  }
+
+  .job-recap{
+    @include sm{
+      padding-bottom: 2rem;
+    }
+  }
+
+  .name-recap{
+    @include sm{
+      padding-bottom: 2rem;
+    }
+  }
+  .recap-field p{
+    padding-bottom: .7rem;
+    margin: .5rem 1.5rem 2rem .5rem;
+    flex-wrap: wrap;
+    width:380px;
+    font-size: 20px;
+    border-bottom: 1px solid black;
+    @include sm{
+     margin: 0;
+    font-size: 16px;
+    width: 100%;
+    
+
+    }
+    // @include md{
+    //   max-width:380px;
+
+
+    // }
+ 
+
+  }
+
+  .recap-field h5{
+    padding-right: 1rem;
+    @include sm{
+     padding-bottom: .5rem;
+
+    }
+
+  }
+  .sentence-recap{
+    display: flex;
+    align-items: center;
+    @include sm{
+     flex-direction: column;
+     align-items: flex-start;
+    }
+    h5{
+ 
+      @include md{
+    padding-right: 2.5rem;
+    }
+    }
+   
+    
+  }
+  .sentence-recap{
+   
+    @include sm{
+    padding-right: 1rem;
+    }
+    
+  }
+  .sentence-recap input{
+  width: 890px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid black;
+  font-size:20px ;
+  margin-left:1rem;
+  padding: 1rem 0 1rem 0;
+  @include sm{
+     padding: .5rem 0 1rem 0;
+     margin: 0;
+    font-size: 16px;
+    width: 100%;
+
+    }
+  }
+  .sentence-recap h6{
+  /* width: 680px; */
+  white-space: nowrap;
+  margin-top: .5rem;
+  left: 1rem;
+  text-transform: uppercase;
+  padding-bottom: .5rem;
+
+  @include sm{
+   left: 0;
+    }
+
+
+  // padding-bottom: 1rem;
+  
+
+
+
+  }
+  .button-wrapper{
+    display: flex;
+    gap: 20px;
+    position: relative;
+    bottom: 1rem;
+    justify-content: flex-end;
+    
+    @include sm{
+      bottom: 1rem;
+      flex-direction: column;
+    }
+ 
+
+  
+  }
+  
+  .disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+  }
+  h6{
+    font-size:12px;
+    width: 0;
+    position: relative;
+    left: .5rem;
+    bottom: 1.7rem;
+    color: #010309;
+   text-transform: uppercase;
+
+
+    @include sm{
+     inset: .2rem 0 0 0;
+      
+    }
+    
+  }
+  h5, h6{
+    margin: 0;
+  }
+  
+  </style>

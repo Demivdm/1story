@@ -1,5 +1,5 @@
 body {
-    font-family: $font-regular;
+    font-family: "Syne", sans-serif;
     color: $color-text;
     line-height: $general-line-height;
     font-size: $font-size--p;
@@ -19,13 +19,17 @@ body {
   h4,
   h5,
   h6 {
-    font-family: $font-title;
+    font-family: "Syne", sans-serif;
     font-weight: normal;
     line-height: $general-line-height;
   }
+  textarea{
+    font-family: "Syne", sans-serif;
+  }
   
   h1 {
-    font-size: $font-size--h1;
+    font-weight: 800;
+  
     @include md {
       font-size: $font-size--h1-tab;
     }
@@ -117,21 +121,21 @@ body {
       }
     }
   }
-  ul {
-    li {
-      &::before {
-        content: "";
-        position: absolute;
-        display: block;
-        height: 8px;
-        width: 8px;
-        border-radius: 100px;
-        background: $color-text;
-        top: 8px;
-        left: 0;
-      }
-    }
-  }
+  // ul {
+  //   li {
+  //     &::before {
+  //       content: "";
+  //       position: absolute;
+  //       display: block;
+  //       height: 8px;
+  //       width: 8px;
+  //       border-radius: 100px;
+  //       background: $color-text;
+  //       top: 8px;
+  //       left: 0;
+  //     }
+  //   }
+  // }
   
   p {
     padding-bottom: 20px;

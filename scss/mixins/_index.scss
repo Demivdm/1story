@@ -1,24 +1,66 @@
-@mixin rounded-button {
-    
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #222425;
-    cursor: pointer;
-    position: relative;
-    display: inline-block;
-    
-    &:hover,
-    &.is-active {
-        
-        background: linear-gradient(135deg, #1ce3f0 0%, #1391f8 100%);
-        
-    }
+@import '/scss/vars/breakpoints';
+@mixin primary-button {
+  border-radius: 40px;
+  background-color: black;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  border: 0;
+  padding: 16px 28px 16px 28px;
+  font-family: "Syne", sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: white;
+  transition: 0.3s ease-in-out;
+
+  &:hover,
+  &.is-active {
+
+    background-color: #4c66e6;
+  }
+  @include sm{
+    width: 100%;
+    margin: 0;
+    padding: 1rem 0 1rem 0;
+  }
+ 
+}
+@mixin secondary-button {
+  border-radius: 40px;
+  font-weight: 700;
+  background-color: transparent;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  color: #000;
+  padding: 16px 28px 16px 28px;
+  font-family: "Syne", sans-serif;
+  font-size: 18px;
+  border: 1px solid black;
+  transition: 0.3s ease-in-out;
+
+
+  &:hover,
+  &.is-active {
+    color:white;
+    background-color: #4c66e6;
+    border: 1px solid #4c66e6;
+  }
+  @include sm{
+    width: 100%;
+    margin: 0;
+    padding: 1rem 0 1rem 0;
+  }
 }
 
-@mixin main-background {
-    
-    background: radial-gradient(50% 50% at 50% 50%, #C5CDF7 0%, #F2F4FD 100%);
+@mixin primary-background {
+  background: radial-gradient(50% 50% at 50% 50%, #c5cdf7 0%, #f2f4fd 100%)
+    no-repeat;
+}
 
-        
-    }
+@mixin primary-gradient {
+  background: linear-gradient(89.98deg, #d1d6fa 0.02%, #e8eafd 99.98%);
+}
+@mixin secondary-gradient {
+  background: linear-gradient(180deg, #fbfefe 0%, #dbf3fa 100%);
+}
