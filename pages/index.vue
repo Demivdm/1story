@@ -89,6 +89,7 @@ console.log(showConfirm);
 
 // voor het ophalen van de zinnen uit de db
 onMounted(() => {
+  document.title = 'One story';
   // waarom kan sentence hier niet met <type>
   onSnapshot(collection(db, "sentences"), (querySnapshot) => {
     const fbSentences: Sentence[] = [];
@@ -105,6 +106,7 @@ onMounted(() => {
     // getRandomSentence();
   });
 });
+
 </script>
 <style lang="scss" scoped>
 // @import "../scss/mixins/_index.scss";

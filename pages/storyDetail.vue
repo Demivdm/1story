@@ -1,9 +1,12 @@
 <template>
   <section class="story__check">
+    
     <BlocksNav></BlocksNav>
+    <ElementsBackButton></ElementsBackButton>
+    <div class="story__detail">
+
 
     <div class="story-info">
-      <ElementsBackButton></ElementsBackButton>
       <ElementsScrollUp></ElementsScrollUp>
       <date class="story__time">
         <ElementsTagBlock></ElementsTagBlock>
@@ -23,6 +26,8 @@
         />
       </template>
     </article>
+  </div>
+
   </section>
 </template>
 
@@ -82,6 +87,11 @@ const formatDate = (date) => {
 $component: "story";
 
 .#{$component} {
+
+  &__detail{
+    width: 900px;
+    margin: auto;
+  }
   &__sentence-container {
     cursor: text;
   }
@@ -89,7 +99,7 @@ $component: "story";
   &__check {
     min-height:100vh ;
     background: linear-gradient(180deg, #fbfefe 0%, #dbf3fa 100%);
-    max-width: 100vw;
+    width: 100vw;
     padding: 5rem;
     @include sm {
       padding: 1rem;
