@@ -3,6 +3,7 @@
 ## Project Overview
 
 1Story is a collaborative storytelling platform built using Vue 3, Nuxt 3, and Firebase. The platform aims to connect office colleagues through a unique, ongoing story that each user contributes to, one sentence at a time. Each user gets to add a new sentence to the story, continuing from where the previous user left off, fostering creativity, engagement, and a sense of community within the office.
+![1story-mockups](https://github.com/Demivdm/1story/assets/112861166/fd738496-435c-4c36-8a0a-6dd4d2495a6c)
 
 
 ## Navigation
@@ -17,7 +18,7 @@
 - [Project Structure](#project-structure)
 - [Contributing](#contributing)
 - [License](#license)
-- [Acknowledgements](#acknowledgements)
+- [Sources](#sources)
 
 
 ## Features
