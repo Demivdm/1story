@@ -24,6 +24,7 @@ $component: 'back';
 
 .#{$component} {
   font-size: 18px;
+  padding-left: .5rem;
   font-family: "Syne", sans-serif;
   font-weight: 700;
   position: absolute;

@@ -122,7 +122,7 @@ flex-wrap: wrap;
     border-radius: 20px;
     max-width: 360px;
     height: 254px;
-    transition: .3s ease-in-out;
+    transition: 1s ease-in-out;
 
 
    
