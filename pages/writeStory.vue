@@ -430,7 +430,7 @@ margin: 0;
   color:red;
  position: absolute;
 width: 100%;
- top: 100px;
+ top: 140px;
   p{
     margin: 0;
   }
@@ -441,9 +441,11 @@ width: 100%;
   @include md{
     // position: relative;
     // top: 80px;
-  max-width: 100%;
+    position: relative;
+    top: 0;
 
   }
+  
 }
 .name-function-input{
 
@@ -479,7 +481,7 @@ width: 100%;
 }
 .function-input{
   .error-message{
-    margin-top: 7rem;
+    // margin-top: 7rem;
     @include sm{
     margin-top:1rem; 
 }

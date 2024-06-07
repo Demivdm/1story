@@ -32,11 +32,11 @@ $component: "modal";
   @include primary-gradient;
   @include sm {
     width: 100vw;
-    transform: translate(-50%, 0);
-
+   
   }
   &__modal-content {
-    padding:40px;
+    // padding:40px;
+    padding: 90px 72px 72px 72px;
     min-height: min-content;
     @include sm {
       padding: 1rem;
