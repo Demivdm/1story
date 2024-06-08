@@ -1,51 +1,40 @@
 <template>
-    <div class="tag">
-        <div class="tag__tag-blocks">
-            <div class="tag__tag-block" :style="{ backgroundColor: getRandomColor() }"></div>
-            
-
-            
-               </div>
+  <div class="tag">
+    <div class="tag__tag-blocks">
+      <div
+        class="tag__tag-block"
+        :style="{ backgroundColor: getRandomColor() }"
+      ></div>
     </div>
+  </div>
 </template>
 <script setup lang="ts">
-
-const colorArray = [ 
-  '#4C66E6',
-  '#90DBEF',
-  '#FF9999',
-  '#EDEF80',
-  '#F7A1E8',
-  '#7DE8C1',]
-  const getRandomColor = () => {
+const colorArray = [
+  "#4C66E6",
+  "#90DBEF",
+  "#FF9999",
+  "#EDEF80",
+  "#F7A1E8",
+  "#7DE8C1",
+];
+const getRandomColor = () => {
   const randomIndex = Math.floor(Math.random() * colorArray.length);
   return colorArray[randomIndex];
 };
 </script>
 
-
-
 <style scoped lang="scss">
 $component: "tag";
-@import '/scss/vars/colors';
+@import "/scss/vars/colors";
 
 .#{$component} {
-    &__tag-blocks {
-        display: flex;
-    }
-    // dit werkt niet als het element geen siblings heeft
-
-    // @for $i from 1 through length($colors) {
-    //     &__tag-block:nth-child(#{$i}) {
-    //         background-color: nth($colors, $i);
-    //     }
-    // }
-
-
-    &__tag-block {
-        height: 16px;
-        width: 16px;
-        margin-right: 5px;
-    }
+  &__tag-blocks {
+    display: flex;
+  }
+  &__tag-block {
+    height: 16px;
+    width: 16px;
+    margin-right: 5px;
+  }
 }
 </style>

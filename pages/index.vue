@@ -1,6 +1,7 @@
 <template>
 
-  <main>
+  <main class="home-page">
+
 
     <BlocksNav></BlocksNav>
 
@@ -8,9 +9,9 @@
       Verbind, creëer en deel samen verhalen - één zin per week, elke maand een
       nieuw avontuur!
     </h2>
-    <div class="buttons">
+    <div class="home-page__buttons">
       <span v-if="currentUser">
-        <ElementsButton to="/writeStory" class="share"> Deel jouw zin</ElementsButton>
+        <ElementsButton to="/writeStory"> Deel jouw zin</ElementsButton>
       </span>
       <span v-else>
         <ElementsButton to="/loginPage"> Deel jouw zin</ElementsButton>
@@ -19,6 +20,7 @@
       <ElementsScndButton to="/allStories"> Bekijk andere verhalen </ElementsScndButton>
     </div>
   </main>
+
 </template>
 <script setup lang="ts">
 // onderstaande regel was om te checken of de gebruiker bestaat voordat alles wordt gemount
@@ -113,33 +115,38 @@ onMounted(() => {
 @import "../scss/mixins/index";
 @import "../scss/vars/breakpoints";
 
-// $component: "home-page";
+$component: "home-page";
 
-// #{component}{
-  
-  main {
+.#{$component}{
 
   height: 100vh;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
-}
-main h2{
+
+ h2{
   width: 70vw;
   text-align: center;
+  @include sm{
+    font-size: 30px;
+  }
 }
-.buttons{
+&__buttons{
   display: flex;
   justify-content: center;
+  align-items: center;
+  position: relative;
   gap: 20px;
+  
   @include sm{
     flex-direction: column;
+    gap: 0;
+    width: 100%;
   }
 }
 
-
+}
 
 </style>

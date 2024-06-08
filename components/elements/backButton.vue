@@ -4,7 +4,7 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 
@@ -20,15 +20,15 @@ const goBack = () => {
 <style scoped lang="scss">
 @import "/scss/vars/_breakpoints.scss";
 
-$component: 'back';
+$component: "back";
 
 .#{$component} {
   font-size: 18px;
-  padding-left: .5rem;
+  padding-left: 0.5rem;
   font-family: "Syne", sans-serif;
   font-weight: 700;
   position: absolute;
-  top: 2.5rem;
+  top: 3rem;
   cursor: pointer;
 
   &:before {
