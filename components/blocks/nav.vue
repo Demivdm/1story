@@ -6,8 +6,9 @@
   </section>
 </template>
 <style scoped lang="scss">
-$component: "nav";
+@import "/scss/vars/_breakpoints.scss";
 
+$component: "nav";
 .#{$component} {
   margin: 0;
   top: 60px;
@@ -15,5 +16,18 @@ $component: "nav";
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
+  @include sm{
+  transform: translate(-50%, -100%);
+      
+     
+    }
+  h1{
+    @include sm{
+      font-size: 30px;
+      margin: 0;
+     
+    }
+    }
+  
 }
 </style>

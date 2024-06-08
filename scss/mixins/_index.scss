@@ -13,15 +13,16 @@
   color: white;
   transition: 0.3s ease-in-out;
 
+
   &:hover,
   &.is-active {
 
     background-color: #4c66e6;
   }
   @include sm{
-    width: 100%;
-    margin: 0;
-    padding: 1rem 0 1rem 0;
+   
+    margin-bottom: 2rem;
+
   }
  
 }
@@ -47,9 +48,8 @@
     border: 1px solid #4c66e6;
   }
   @include sm{
-    width: 100%;
+  
     margin: 0;
-    padding: 1rem 0 1rem 0;
   }
 }
 

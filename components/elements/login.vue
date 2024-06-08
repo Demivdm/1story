@@ -48,7 +48,6 @@ const checkIsAdmin = async () => {
   const userLoaded = useIsCurrentUserLoaded();
   const currentUser = useCurrentUser();
 
-
   if (userLoaded.value) {
     console.log("Current User:", currentUser.value);
     if (currentUser.value && currentUser.value.uid) {
@@ -57,26 +56,23 @@ const checkIsAdmin = async () => {
         console.log("Is Admin:", isAdmin.value);
         if (isAdmin.value) {
           router.push("/admin");
-        } if(currentUser) {
+        }
+        if (currentUser) {
           // stuur door naar login pagina als gebruiker geen admin is
           // dit is waarschijnlijk ook waardoor je niet meer op de homepage kan komen
-          router.push("/loginPage"); 
+          router.push("/loginPage");
           console.log("geen admin");
-        }
-        else if(!currentUser){
-          router.push("/"); 
+        } else if (!currentUser) {
+          router.push("/");
 
-      ui.start("#firebaseui-auth-container", config); 
-
+          ui.start("#firebaseui-auth-container", config);
         }
-       
       } catch (error) {
         console.error("Error checking admin status:", error);
       }
     } else {
       // Start Firebase UI if user not loaded
-      router.push("/"); 
-
+      router.push("/");
     }
   }
 };
@@ -104,7 +100,6 @@ onMounted(() => {
 @import "/scss/mixins/_index.scss";
 @import "/scss/vars/breakpoints";
 
-
 $component: "login-modal";
 
 #{component} {
@@ -112,8 +107,8 @@ $component: "login-modal";
   width: 100vw;
 }
 #firebaseui-auth-container {
-  height: 50vh;
-  width: 30vw;
+  height: 70vh;
+  width: 50vw;
   border-radius: 24px;
   display: flex;
   align-items: center;
@@ -122,9 +117,15 @@ $component: "login-modal";
   flex-direction: column;
   justify-content: center;
   @include primary-gradient;
-  @include sm{
+  @include sm {
     width: 100vw;
-
+    height: 60vh;
   }
+  h2 {
+    margin-bottom: 2rem;
+  }
+}
+.firebaseui-page-provider-sign-in {
+  background: transparent;
 }
 </style>

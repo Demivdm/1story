@@ -31,18 +31,15 @@ const logout = async () => {
 $component: "logout";
 
 #{$component} {
-  &__logout-button{
+  &__logout-button {
     &__button {
-    position: relative;
-    border-radius: 0;
-    padding: 0.5rem 1rem;
-    font-size: 0.8rem;
-    height: 2rem; 
-    width: 100px;
+      position: relative;
+      border-radius: 0;
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+      height: 2rem;
+      width: 100px;
+    }
   }
-
-  }
-
 }
-
 </style>

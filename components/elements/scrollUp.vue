@@ -1,18 +1,17 @@
 <template>
-   <div class="wrapper">
-      <button v-if="isVisible" @click="scrollToTop" class="scroll-up-button">scroll naar boven</button>
-
-   </div>
-
+  <section class="scroll-up">
+    <div class="scroll-up__wrapper">
+      <button v-if="isVisible" @click="scrollToTop">scroll naar boven</button>
+    </div>
+  </section>
 </template>
 <script setup>
-
 const isVisible = ref(false);
 
 const scrollToTop = () => {
   window.scrollTo({
     top: 0,
-    behavior: 'smooth',
+    behavior: "smooth",
   });
 };
 
@@ -21,34 +20,35 @@ const handleScroll = () => {
 };
 
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll);
+  window.addEventListener("scroll", handleScroll);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll);
+  window.removeEventListener("scroll", handleScroll);
 });
 </script>
-<style>
+<style scoped lang="scss">
+$component: "scroll-up";
 
-.wrapper{
-   display: flex;
-   justify-content: flex-end;
-}
-.scroll-up-button {
-  position: fixed;
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-  font-size: 18px;
-  font-weight: 700;
- font-family: "syne" , "sans-serif";
+.#{$component} {
+  &__wrapper {
+    display: flex;
+    justify-content: flex-end;
+  }
 
-
-}
-.scroll-up-button::after {
-  content: "↑";
-  padding-left: 10px;
-
-
+  button {
+    position: fixed;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    font-size: 18px;
+    font-weight: 700;
+    font-family: "syne", "sans-serif";
+    ::after {
+      content: "↑";
+      padding-left: 10px;
+    }
+  }
 }
 </style>
