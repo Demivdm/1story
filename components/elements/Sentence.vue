@@ -1,5 +1,5 @@
 <template>
-  <span class="sentence" ref="sentenceRef" v-if="!deadlineMet">
+  <span class="sentence" ref="sentenceRef">
     <span
       class="sentence__info-hover"
       ref="textRef"
@@ -54,7 +54,6 @@ const sentenceRef = ref<HTMLElement | null>(null);
 const infoListRef = ref<HTMLElement | null>(null);
 const isHovered = ref<Boolean>(false);
 const textRef = ref<HTMLElement | null>(null);
-const deadlineMet = ref<Boolean>(false);
 
 // positionering van de user info
 const infoPos = computed(() => {
@@ -112,28 +111,8 @@ const processedText = computed(() => {
 const toggleDropdown = () => {
   isHovered.value = !isHovered.value;
 };
-// bepalen van deadline
-const deadline = computed(() => {
-  const today = new Date();
-  const currentMonth = today.getMonth();
-  let nextMonth = currentMonth + 1;
-  let year = today.getFullYear();
 
-  // van get month krijg je een getal tussen de 0 en 11
-  if (nextMonth === 12) {
-    nextMonth = 0; // January
-    year++;
-  }
 
-  // The deadline is de 25ste van elke maand
-  return new Date(year, nextMonth, 8);
-});
-
-// const isFormDisabled = computed(() => deadline.value < new Date());
-
-watch(deadline, (newDeadline) => {
-  deadlineMet.value = newDeadline <= new Date();
-});
 </script>
 
 <style scoped lang="scss">

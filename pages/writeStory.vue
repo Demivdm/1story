@@ -36,7 +36,7 @@
                   type="text"
                   :placeholder="currentUser?.displayName || 'Voornaam'"
                   v-model="nameInput"
-                  :class="{ 'wrong-input': inputValCheckNameInput }"
+                  :class="{ 'wrong-input': inputValCheckNameInput, 'disabled-pointer': isDeadlinePassed}"
                   required
                 />
                 <p
@@ -60,7 +60,7 @@
                   type="text"
                   placeholder="Functie"
                   v-model="functionInput"
-                  :class="{ 'wrong-input': inputValCheckFunctionInput }"
+                  :class="{ 'wrong-input': inputValCheckFunctionInput,'disabled-pointer': isDeadlinePassed }"
                   required
                 />
 
@@ -79,7 +79,7 @@
             <div class="story-container__week-input-container">
               <textarea
               :disabled="isDeadlinePassed"
-
+              :class="{'disabled-pointer': isDeadlinePassed}"
                 v-model="textInput"
                 @input="limitCheck"
                 cols="60"
@@ -115,6 +115,7 @@ const auth = getAuth();
 const router = useRouter();
 const logoutMessage = ref("");
 const prevSentence = ref(null);
+
 // const inputValCheck = ref(false);
 const inputValCheckFunctionInput = ref(false);
 const inputValCheckNameInput = ref(false);
@@ -128,8 +129,9 @@ const deadline = computed(() => {
   
 
   // van get month krijg je een getal tussen de 0 en 11
+  // dit is ervoor om het jaar te resetten zodat er niet vanaf 12 wordt verder geteld
   if (nextMonth === 12) {
-    nextMonth = 0; // January
+    nextMonth = 0; // reset naar Januari
     year++;
   }
 
@@ -139,24 +141,27 @@ const deadline = computed(() => {
 const isDeadlinePassed = computed(() => {
   const today = new Date();
   // dag van de deadline zetten
-  const deadline = new Date(today.getFullYear(), today.getMonth(), 25); 
+  // dit gaaat wel werken met een nieuwe maand omdat de huidige maand wordt 
+  const deadline = new Date(today.getFullYear(), today.getMonth(), 2); 
   return today > deadline;
 });
+// waarom blijft dit ding op 1 juni loggen terwijl ik bovenin 25 heb neetgezzet
+console.log('deadline is ',deadline.value)
+
 // aanpassen om evoor te zogen dat input niet standaard disabled is.  
 const isSubmitEnabled = computed(() => {
   return !isDeadlinePassed.value && textInput.value !== "" && nameInput.value !== "" && functionInput.value !== "";
 });
 
-console.log('is submit enabled',isSubmitEnabled.value)
-const disabled = computed(
-  () =>
-    textInput.value !== "" &&
-    nameInput.value !== "" &&
-    functionInput.value !== "" &&
-    deadline.value < new Date()
+// console.log('is submit enabled',isSubmitEnabled.value)
+// const disabled = computed(
+//   () =>
+//     textInput.value !== "" &&
+//     nameInput.value !== "" &&
+//     functionInput.value !== "" &&
+//     deadline.value < new Date()
 
-);
-console.log(disabled.value);
+// );
 
 const addSentence = () => {
   if (!currentUser.value || !currentUser.value.uid) {
@@ -187,7 +192,6 @@ const addSentence = () => {
       console.error("Error adding sentence, please try again later", error);
     });
 };
-console.log('deadline is ',deadline.value)
 
 
 const remainingChar = computed(() => {
@@ -488,5 +492,9 @@ $component: "story-container";
       width: 100%;
     }
   }
+
 }
+.disabled-pointer {
+    cursor: not-allowed;
+  }
 </style>
