@@ -1,10 +1,8 @@
 <template>
     <BlocksNav></BlocksNav>
     <div>
-      <h1>Kies de titel</h1>
-      <input v-model="title" placeholder="Voeg een titel toe" />
-      <button @click="saveTitle">Opslaan Titel</button>
-      <h2>Verhaal Zinnen</h2>
+  
+      <h1>Controleer het verhaal</h1>
 
       <div v-for="sentence in sentences" :key="sentence.id">
         <input 
@@ -15,7 +13,9 @@
         <p @click="toggleEdit(sentence)">{{ sentence.content }}</p>
         
       </div>
-  
+      <h3>Kies de titel</h3>
+      <input v-model="title" placeholder="Voeg een titel toe" />
+      <button @click="saveTitle">Opslaan Titel</button>
       <button @click="closeStory">Verhaal Sluiten</button>
     </div>
   </template>

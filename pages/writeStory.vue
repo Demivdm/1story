@@ -9,7 +9,7 @@
     <p>{{ logoutMessage }} </p>
     </span> -->
     <div class="story-container__story-wrapper">
-      <div v-if="prevSentence" class="story-container__info-wrapper">
+      <div v-if="prevSentence && !isDeadlinePassed" class="story-container__info-wrapper">
         <div class="story-container__info-tags">
           <ElementsTagBlock></ElementsTagBlock>
           <p>{{ prevSentence.name }}</p>
@@ -22,6 +22,9 @@
       <div v-if="!prevSentence">
         <p>oeps geen zin gevonden, probeer het later nog een keer</p>
       </div>
+      <div v-if="isDeadlinePassed">
+        <p>Oeps de deadline is verstreken. Geen zorgen we sturen je een mailtje als je weer mee kunt doen!</p>
+      </div>
       <BlocksModal>
         <section class="story-container__modal-content">
           <div class="story-container__name-function-input">
@@ -29,6 +32,7 @@
               <label for="name">Mijn naam is</label>
               <div class="story-container__input-container">
                 <input
+                :disabled="isDeadlinePassed"
                   type="text"
                   :placeholder="currentUser?.displayName || 'Voornaam'"
                   v-model="nameInput"
@@ -50,6 +54,9 @@
               <div class="story-container__input-container">
                 <!-- eerst de class die je wilt toggelen en daarna de functie met de voorwaarden voor true of false erin -->
                 <input
+                :disabled="isDeadlinePassed"
+
+
                   type="text"
                   placeholder="Functie"
                   v-model="functionInput"
@@ -71,6 +78,8 @@
             <label for="name">Mijn zin van de week is</label>
             <div class="story-container__week-input-container">
               <textarea
+              :disabled="isDeadlinePassed"
+
                 v-model="textInput"
                 @input="limitCheck"
                 cols="60"
@@ -86,7 +95,7 @@
           </div>
 
           <section class="story-container__button-wrapper">
-            <ElementsButton @click="addSentence" :disabled="!disabled">
+            <ElementsButton @click="addSentence" :disabled="!isSubmitEnabled">
               Verzenden
             </ElementsButton>
           </section>
@@ -110,11 +119,42 @@ const prevSentence = ref(null);
 const inputValCheckFunctionInput = ref(false);
 const inputValCheckNameInput = ref(false);
 
+// deadline
+const deadline = computed(() => {
+  const today = new Date();
+  const currentMonth = today.getMonth();
+  let nextMonth = currentMonth + 1;
+  let year = today.getFullYear();
+  
+
+  // van get month krijg je een getal tussen de 0 en 11
+  if (nextMonth === 12) {
+    nextMonth = 0; // January
+    year++;
+  }
+
+  // The deadline is de 25ste van elke maand
+  return new Date(year, currentMonth, );
+});
+const isDeadlinePassed = computed(() => {
+  const today = new Date();
+  // dag van de deadline zetten
+  const deadline = new Date(today.getFullYear(), today.getMonth(), 25); 
+  return today > deadline;
+});
+// aanpassen om evoor te zogen dat input niet standaard disabled is.  
+const isSubmitEnabled = computed(() => {
+  return !isDeadlinePassed.value && textInput.value !== "" && nameInput.value !== "" && functionInput.value !== "";
+});
+
+console.log('is submit enabled',isSubmitEnabled.value)
 const disabled = computed(
   () =>
     textInput.value !== "" &&
     nameInput.value !== "" &&
-    functionInput.value !== ""
+    functionInput.value !== "" &&
+    deadline.value < new Date()
+
 );
 console.log(disabled.value);
 
@@ -147,6 +187,8 @@ const addSentence = () => {
       console.error("Error adding sentence, please try again later", error);
     });
 };
+console.log('deadline is ',deadline.value)
+
 
 const remainingChar = computed(() => {
   return charLimit - textInput.value.length;
