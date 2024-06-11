@@ -3,10 +3,7 @@
   <section class="stories">
     <h2 class="stories__story-title">Alle verhalen</h2>
 
-    <NuxtLink to="/storyDetail">
       <BlocksCard></BlocksCard>
-      <BlocksCard></BlocksCard>
-    </NuxtLink>
 
     <h2 class="stories__breaker-sentence">
       Zin voor zin, een verhaal van en voor ons allemaal dat ons verbindt en
@@ -15,7 +12,30 @@
   </section>
 </template>
 
-<script setup></script>
+<script setup lang="ts">
+const stories = ref<Story[]>([]);
+
+const storiesCollection = collection(db, "stories");
+
+onMounted(() => {
+  const q = query(storiesCollection);
+  onSnapshot(q, (querySnapshot: QuerySnapshot) => {
+    const fbStories: Story[] = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const story: Story = {
+        id: doc.id,
+        title: data.title,
+        createdAt: data.createdAt ? data.createdAt.toDate() : null,
+        closedAt: data.createdAt ? data.createdAt.toDate() : null,
+
+      };
+      fbStories.push(story);
+    });
+    stories.value = fbStories;
+  });
+});
+</script>
 <style scoped lang="scss">
 $component: "stories";
 
