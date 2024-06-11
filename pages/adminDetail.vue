@@ -1,9 +1,8 @@
 <template>
     <BlocksNav></BlocksNav>
     <div>
-  
       <h1>Controleer het verhaal</h1>
-
+      <ElementsScrollUp></ElementsScrollUp>
       <div v-for="sentence in sentences" :key="sentence.id">
         <input 
           v-if="sentence.isEditing" 
@@ -91,7 +90,7 @@
         const storyRef = doc(db, "stories", currentStoryId.value);
         await updateDoc(storyRef, { closedAt: serverTimestamp() });
   
-        // Nieuw verhaal beginnen 
+        // Nieuw verhaal beginnen en titel kiezen
         const newStoryRef = await addDoc(storyCollection, { createdAt: serverTimestamp(), closedAt: null, });
         currentStoryId.value = newStoryRef.id;
         title.value = '';
