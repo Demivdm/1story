@@ -13,7 +13,8 @@
           <h5 class="card__title">{{ story.title }}</h5>
 
           <p class="card__preview-sentence">
-            {{ filteredSentences[0]?.content }}
+            {{ story.firstSentence }}
+
           </p>
         </div>
       </Nuxtlink>
@@ -34,8 +35,8 @@ const q = query(sentencesCollection, orderBy("createdAt", "asc"));
 // const storiesQuery = query(storiesCollection, orderBy("createdAt", "desc"));
 const storiesQuery = query(
   storiesCollection,
-  where('closedAt', '!=', null), // Filter by closeddate
-  orderBy('createdAt', 'desc')    // Order by createdAt in descending order
+  where('closedAt', '!=', null), // Filter op closeddate
+  orderBy('createdAt', 'desc')    // Order createdAt in descending order
 );
 
 // types importeren
@@ -57,6 +58,8 @@ onMounted(() => {
       fbStories.push(story);
     });
     stories.value = fbStories;
+    matchSentences();
+
   });
 });
 const formatDate = (date: Date | null) => {
@@ -78,15 +81,26 @@ onSnapshot(q, (querySnapshot: QuerySnapshot<Document>) => {
     fbSentences.push(sentence);
   });
   sentences.value = fbSentences;
-  filterSentences();
+  matchSentences();
 });
-const filterSentences = () => {
-  // dit is welke de huidige is, dit kan ik later nog aanpassen zodat het reageert op wat de admin sluit.
-  const storyId = "vq7I23zQK8iszSCXbMsj";
-  filteredSentences.value = sentences.value.filter(
-    (sentence) => sentence.storyUID === storyId
-  );
+
+const matchSentences = () => {
+  stories.value.forEach(story => {
+    const firstSentence = sentences.value.find(sentence => sentence.storyUID === story.id);
+    if (firstSentence) {
+      story.firstSentence = firstSentence.content;
+    }
+  });
 };
+
+
+// const filterSentences = () => {
+//   // dit is welke de huidige is, dit kan ik later nog aanpassen zodat het reageert op wat de admin sluit.
+//   const storyId = "vq7I23zQK8iszSCXbMsj";
+//   filteredSentences.value = sentences.value.filter(
+//     (sentence) => sentence.storyUID === storyId
+//   );
+// };
 </script>
 
 <style scoped lang="scss">
