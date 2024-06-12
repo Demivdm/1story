@@ -17,7 +17,7 @@
         <ElementsButton to="/loginPage"> Deel jouw zin</ElementsButton>
       </span>
    
-      <ElementsScndButton to="/allStories"> Bekijk andere verhalen </ElementsScndButton>
+      <ElementsScndButton to="/storyOverview"> Bekijk andere verhalen </ElementsScndButton>
     </div>
   </main>
 

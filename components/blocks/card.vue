@@ -2,28 +2,34 @@
     <div class="card__no-stories" v-if="stories.length === 0">
           <h5>Er zijn op het moment nog geen verhalen, kom later terug</h5>
         </div>
+        
   <section v-else class="card">
     <div v-for="story in stories" :key="story.id" class="card__story-block">
-      <Nuxtlink to="/storyDetail">
-        <div class="card__tag-wrapper">
-          <ElementsTagBlock> </ElementsTagBlock>
-          <p>{{ formatDate(story.createdAt) }}</p>
-        </div>
-        <div class="card__content-wrapper">
-          <h5 class="card__title">{{ story.title }}</h5>
-
-          <p class="card__preview-sentence">
-            {{ story.firstSentence }}
-
-          </p>
-        </div>
-      </Nuxtlink>
-    </div>
-  
+<!-- link naar storydetail met het bijpassende story id -->
+    <NuxtLink :to="`/storyOverview/${story.id}`" class="card__link">
+          <div class="card__tag-wrapper">
+            <ElementsTagBlock></ElementsTagBlock>
+            <p>{{ formatDate(story.createdAt) }}</p>
+          </div>
+          <div class="card__content-wrapper">
+            <h5 class="card__title">{{ story.title }}</h5>
+            <p class="card__preview-sentence">
+              {{ story.firstSentence }}
+            </p>
+          </div>
+    </NuxtLink>
+  </div>
   </section>
 </template>
 
 <script setup lang="ts">
+
+const props = defineProps({
+  story: {
+    type: Object,
+    required: true
+  }
+});
 const stories = ref<Story>([]);
 const filteredSentences = ref<Sentence[]>([]);
 const sentences = ref<Sentence[]>([]);
@@ -32,15 +38,18 @@ const storiesCollection = collection(db, "stories");
 const sentencesCollection = collection(db, "sentences");
 const q = query(sentencesCollection, orderBy("createdAt", "asc"));
 
+
+
 // const storiesQuery = query(storiesCollection, orderBy("createdAt", "desc"));
 const storiesQuery = query(
   storiesCollection,
   where('closedAt', '!=', null), // Filter op closeddate
-  orderBy('createdAt', 'desc')    // Order createdAt in descending order
+  orderBy('createdAt', 'desc')    // Order createdAt descending
 );
 
 // types importeren
 import type { Story, Sentence, FirestoreDocument } from "@/types/index";
+import router from "~/composable/useRouter";
 
 // stories en titles ophalen
 onMounted(() => {
@@ -92,6 +101,7 @@ const matchSentences = () => {
     }
   });
 };
+// router.push({ name: 'StoryDetail', params: { storyId: story.id }});
 
 
 // const filterSentences = () => {

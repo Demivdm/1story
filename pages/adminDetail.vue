@@ -91,7 +91,11 @@
         await updateDoc(storyRef, { closedAt: serverTimestamp() });
   
         // Nieuw verhaal beginnen en titel kiezen
-        const newStoryRef = await addDoc(storyCollection, { createdAt: serverTimestamp(), closedAt: null, });
+        const newStoryRef = await addDoc(storyCollection, { 
+          title: null,
+          createdAt: serverTimestamp(), 
+          closedAt: null, 
+        });
         currentStoryId.value = newStoryRef.id;
         title.value = '';
         sentences.value = [];
