@@ -8,7 +8,7 @@
         <ElementsScrollUp></ElementsScrollUp>
         <date class="story__time">
           <ElementsTagBlock></ElementsTagBlock>
-          27.05.2024
+          <p>{{ formatDate(currentstory.createdAt) }}</p>
         </date>
         <h2>{{ currentstory.title }}</h2>
 
@@ -28,14 +28,13 @@
     </div>
 
     <div v-else>
-      <p>Story still in progress....</p>
+      <p>Het verhaal wordt nog geschreven...</p>
     </div>
 
   </section>
 </template>
 
 <script setup lang="ts">
-import { documentId } from "firebase/firestore"; 
 
 
 const route = useRoute();
@@ -73,6 +72,7 @@ const storiesQuery = query(
   // andWhere(documentId(), '==', currentStoryId.value), // Filter op closeddate
 );
 onMounted(() => {
+
 
   // Get sentences data from query response
   onSnapshot(sentencesQuery, (querySnapshot: QuerySnapshot<Document>) => {
