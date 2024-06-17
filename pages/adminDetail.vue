@@ -25,13 +25,11 @@
   
   const title = ref('');
   const sentences = ref([]);
-  const currentStoryId = ref(null);
+  const currentStoryId = ref();
   
   const storyCollection = collection(db, "stories");
   const sentenceCollection = collection(db, "sentences");
 
-
-  
   const fetchStoryData = async () => {
     try {
       // verhaal ophalen
@@ -84,29 +82,58 @@
   };
   
   // Verhaal sluiten en een nieuw verhaal beginnen
-  const closeStory = async () => {
-    if (currentStoryId.value) {
-      try {
-        const storyRef = doc(db, "stories", currentStoryId.value);
-        await updateDoc(storyRef, { closedAt: serverTimestamp() });
+  // const closeStory = async () => {
+  //   if (currentStoryId.value) {
+  //     try {
+  //       const storyRef = doc(db, "stories", currentStoryId.value);
+  //       await updateDoc(storyRef, { closedAt: serverTimestamp() });
   
-        // Nieuw verhaal beginnen en titel kiezen
-        const newStoryRef = await addDoc(storyCollection, { 
-          title: null,
-          createdAt: serverTimestamp(), 
-          closedAt: null, 
-        });
-        currentStoryId.value = newStoryRef.id;
-        title.value = '';
-        sentences.value = [];
-      } catch (error) {
-        console.error("Error closing story: ", error);
-      }
-    }
-  };
+  //       // Nieuw verhaal beginnen en titel kiezen
+  //       const newStoryRef = await addDoc(storyCollection, { 
+  //         title: null,
+  //         createdAt: serverTimestamp(), 
+  //         closedAt: null, 
+  //       });
+  //       currentStoryId.value = newStoryRef.id;
+  //       title.value = '';
+  //       sentences.value = [];
+  //     } catch (error) {
+  //       console.error("Error closing story: ", error);
+  //     }
+  //   }
+  // };
   
   onMounted(() => {
     fetchStoryData();
   });
+
+  // const closeStory = async () => {
+  //     if (currentStoryId.value) {
+  //       try {
+  //         const storyRef = doc(db, "stories", currentStoryId.value);
+  //         await updateDoc(storyRef, { closedAt: serverTimestamp() });
+
+  //         // Nieuw verhaal beginnen en titel kiezen
+  //         const newStoryRef = await addDoc(storyCollection, { 
+  //           title: null,
+  //           createdAt: serverTimestamp(), 
+  //           closedAt: null, 
+  //         });
+
+  //         // Set new story ID using the composable
+  //         setCurrentStoryId(newStoryRef.id);
+
+  //         currentStoryId.value = newStoryRef.id;
+  //         title.value = '';
+  //         sentences.value = [];
+  //       } catch (error) {
+  //         console.error("Error closing story: ", error);
+  //       }
+  //     }
+  //   };
+  
+  // onMounted(() => {
+  //   fetchStoryData();
+  // });
   </script>
   

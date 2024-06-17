@@ -106,6 +106,9 @@
 </template>
 
 <script setup lang="ts">
+  import { useCurrentStory} from '../composable/useCurrentStory';
+  
+const { currentStoryId } = useCurrentStory();
 const currentUser = useCurrentUser();
 const charLimit = 100;
 const textInput = ref("");
@@ -142,7 +145,7 @@ const isDeadlinePassed = computed(() => {
   const today = new Date();
   // dag van de deadline zetten
   // dit gaaat wel werken met een nieuwe maand omdat de huidige maand wordt 
-  const deadline = new Date(today.getFullYear(), today.getMonth(), 2); 
+  const deadline = new Date(today.getFullYear(), today.getMonth(), 25); 
   return today > deadline;
 });
 // waarom blijft dit ding op 1 juni loggen terwijl ik bovenin 25 heb neetgezzet
@@ -179,8 +182,16 @@ const addSentence = () => {
     name: nameInput.value,
     job: functionInput.value,
     createdAt: serverTimestamp(),
-    storyUID: "vq7I23zQK8iszSCXbMsj",
+    
+    // storyuid matchen met die van currentstory
+    // storyUID: "vq7I23zQK8iszSCXbMsj",
+    // perhaps i shoudl fill with currentStoryid.
+    storyUID: currentStoryId.value,
+
+
   })
+  console.log('current story id is',currentStoryId.value)
+
     .then(() => {
       textInput.value = "";
       nameInput.value = "";
