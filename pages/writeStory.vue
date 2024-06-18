@@ -107,8 +107,12 @@
 
 <script setup lang="ts">
   import { useCurrentStory} from '../composable/useCurrentStory';
+  import { useDeadline} from '../composable/useDeadline';
+
   
 const { currentStoryId } = useCurrentStory();
+const {isDeadlinePassed } = useDeadline();
+
 const currentUser = useCurrentUser();
 const charLimit = 100;
 const textInput = ref("");
@@ -123,38 +127,13 @@ const prevSentence = ref(null);
 const inputValCheckFunctionInput = ref(false);
 const inputValCheckNameInput = ref(false);
 
-// deadline
-const deadline = computed(() => {
-  const today = new Date();
-  const currentMonth = today.getMonth();
-  let nextMonth = currentMonth + 1;
-  let year = today.getFullYear();
-  
 
-  // van get month krijg je een getal tussen de 0 en 11
-  // dit is ervoor om het jaar te resetten zodat er niet vanaf 12 wordt verder geteld
-  if (nextMonth === 12) {
-    nextMonth = 0; // reset naar Januari
-    year++;
-  }
-
-  // The deadline is de 25ste van elke maand
-  return new Date(year, currentMonth, );
-});
-const isDeadlinePassed = computed(() => {
-  const today = new Date();
-  // dag van de deadline zetten
-  // dit gaaat wel werken met een nieuwe maand omdat de huidige maand wordt 
-  const deadline = new Date(today.getFullYear(), today.getMonth(), 25); 
-  return today > deadline;
-});
-// waarom blijft dit ding op 1 juni loggen terwijl ik bovenin 25 heb neetgezzet
-console.log('deadline is ',deadline.value)
 
 // aanpassen om evoor te zogen dat input niet standaard disabled is.  
 const isSubmitEnabled = computed(() => {
   return !isDeadlinePassed.value && textInput.value !== "" && nameInput.value !== "" && functionInput.value !== "";
 });
+console.log('deadline passed is',isDeadlinePassed.value)
 
 // console.log('is submit enabled',isSubmitEnabled.value)
 // const disabled = computed(

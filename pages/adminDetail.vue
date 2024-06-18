@@ -1,6 +1,8 @@
 <template>
+  <section class="admin-detail">
+
     <BlocksNav></BlocksNav>
-    <div>
+    <div v-if="isDeadlinePassed">
       <h1>Controleer het verhaal</h1>
       <ElementsScrollUp></ElementsScrollUp>
       <div v-for="sentence in sentences" :key="sentence.id">
@@ -12,17 +14,27 @@
         <p @click="toggleEdit(sentence)">{{ sentence.content }}</p>
         
       </div>
+      <!-- modal -->
       <h3>Kies de titel</h3>
       <input v-model="title" placeholder="Voeg een titel toe" />
       <button @click="saveTitle">Opslaan Titel</button>
       <button @click="closeStory">Verhaal Sluiten</button>
     </div>
+    <div v-else class="admin-deadline">
+        <p>De deadline is nog niet verstreken. Je kunt het verhaal vanaf {{ formattedDeadline }} controleren</p>
+    </div>
+  </section>
+
   </template>
   <script setup lang="ts">
   import { ref, onMounted } from 'vue';
   import { useRouter } from 'vue-router';
   import { collection, doc, updateDoc, addDoc, query, where, getDocs, serverTimestamp } from 'firebase/firestore';
+  import { useDeadline} from '../composable/useDeadline';
   
+  
+  const {isDeadlinePassed, formattedDeadline } = useDeadline();
+
   const title = ref('');
   const sentences = ref([]);
   const currentStoryId = ref();
@@ -136,4 +148,17 @@
   //   fetchStoryData();
   // });
   </script>
+  <style lang="scss" scoped>
+  .admin-detail{
+    // height: 100vh;
+  }
+  .admin-deadline{
+    display: grid;
+    height: 100vh;
+    place-items: center;
+    margin: auto;
+    text-align: center;
+    // background: red;
+  }
+  </style>
   

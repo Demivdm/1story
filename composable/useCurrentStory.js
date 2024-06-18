@@ -1,6 +1,6 @@
 // useCurrentStory.js
 import { ref, onMounted } from 'vue';
-import { collection, doc, updateDoc, addDoc, query, where, getDocs, serverTimestamp } from 'firebase/firestore';
+import { collection,query, where, getDocs, } from 'firebase/firestore';
 
 const currentStoryId = ref(null);
 const title = ref('');
