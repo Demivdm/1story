@@ -97,26 +97,26 @@
   };
   
   // Verhaal sluiten en een nieuw verhaal beginnen
-  // const closeStory = async () => {
-  //   if (currentStoryId.value) {
-  //     try {
-  //       const storyRef = doc(db, "stories", currentStoryId.value);
-  //       await updateDoc(storyRef, { closedAt: serverTimestamp() });
+  const closeStory = async () => {
+    if (currentStoryId.value) {
+      try {
+        const storyRef = doc(db, "stories", currentStoryId.value);
+        await updateDoc(storyRef, { closedAt: serverTimestamp() });
   
-  //       // Nieuw verhaal beginnen en titel kiezen
-  //       const newStoryRef = await addDoc(storyCollection, { 
-  //         title: null,
-  //         createdAt: serverTimestamp(), 
-  //         closedAt: null, 
-  //       });
-  //       currentStoryId.value = newStoryRef.id;
-  //       title.value = '';
-  //       sentences.value = [];
-  //     } catch (error) {
-  //       console.error("Error closing story: ", error);
-  //     }
-  //   }
-  // };
+        // Nieuw verhaal beginnen en titel kiezen
+        const newStoryRef = await addDoc(storyCollection, { 
+          title: null,
+          createdAt: serverTimestamp(), 
+          closedAt: null, 
+        });
+        currentStoryId.value = newStoryRef.id;
+        title.value = '';
+        sentences.value = [];
+      } catch (error) {
+        console.error("Error closing story: ", error);
+      }
+    }
+  };
   
   onMounted(() => {
     fetchStoryData();

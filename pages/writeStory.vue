@@ -145,44 +145,45 @@ console.log('deadline passed is',isDeadlinePassed.value)
 
 // );
 
-const addSentence = () => {
-  if (!currentUser.value || !currentUser.value.uid) {
-    console.error("User not authenticated or UID is missing");
-    return;
-  }
+// const addSentence = () => {
+//   if (!currentUser.value || !currentUser.value.uid) {
+//     console.error("User not authenticated or UID is missing");
+//     return;
+//   }
 
-  if (textInput.value === "") {
-    return;
-  }
+//   if (textInput.value === "") {
+//     return;
+//   }
 
-  addDoc(collection(db, "sentences"), {
-    uid: currentUser.value.uid,
-    content: textInput.value,
-    name: nameInput.value,
-    job: functionInput.value,
-    createdAt: serverTimestamp(),
-    
-    // storyuid matchen met die van currentstory
-    // storyUID: "vq7I23zQK8iszSCXbMsj",
-    // perhaps i shoudl fill with currentStoryid.
-    storyUID: currentStoryId.value,
+  const addSentence = async () => {
+    if (!currentUser.value || !currentUser.value.uid) {
+      console.error("User not authenticated or UID is missing");
+      return;
+    }
 
+    if (textInput.value === "") {
+      return;
+    }
 
-  })
-  console.log('current story id is',currentStoryId.value)
+    try {
+      await addDoc(collection(db, "sentences"), {
+        uid: currentUser.value.uid,
+        content: textInput.value,
+        name: nameInput.value,
+        job: functionInput.value,
+        createdAt: serverTimestamp(),
+        storyUID: currentStoryId.value,
+      });
 
-    .then(() => {
       textInput.value = "";
       nameInput.value = "";
       functionInput.value = "";
 
       router.push("confirm");
-    })
-    .catch((error) => {
+    } catch (error) {
       console.error("Error adding sentence, please try again later", error);
-    });
-};
-
+    }
+  };
 
 const remainingChar = computed(() => {
   return charLimit - textInput.value.length;
@@ -197,6 +198,7 @@ const limitCheck = () => {
 watch(textInput, () => {
   limitCheck();
 });
+
 
 const logout = async () => {
   try {
@@ -226,13 +228,20 @@ const fetchLastSentence = async () => {
         id: doc.id,
         ...doc.data(),
       };
-    } else {
-      prevSentence.value = null;
+
+      if (prevSentence.value.storyUID !== currentStoryId.value) {
+        prevSentence.value = {
+          name: "Demi",
+          job: "Stagiair",
+          content: "Er was eens...",
+        };
+      }
     }
   } catch (error) {
     console.error("Error fetching last sentence: ", error);
   }
 };
+
 
 onMounted(() => {
   if (currentUser.value && currentUser.value.displayName) {

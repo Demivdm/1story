@@ -19,7 +19,7 @@ export function useDeadline() {
     }
 
     // The deadline is the 25th of the next month
-    return new Date(year, nextMonth, 25); // Set the date to the 25th
+    return new Date(year, nextMonth, 25); 
   });
 
   const isDeadlinePassed = computed(() => {
