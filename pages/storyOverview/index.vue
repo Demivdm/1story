@@ -1,5 +1,7 @@
 <template>
   <BlocksNav></BlocksNav>
+  <ElementsBackButton>Terug naar Homepage</ElementsBackButton>
+
   <section class="stories">
     <h2 class="stories__story-title">Alle verhalen</h2>
 <!-- story props meesturen naar card -->
