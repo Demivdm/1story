@@ -12,13 +12,16 @@
         />
         
         <p @click="toggleEdit(sentence)">{{ sentence.content }}</p>
+
         
       </div>
+   
       <!-- modal -->
-      <h3>Kies de titel</h3>
-      <input v-model="title" placeholder="Voeg een titel toe" />
-      <button @click="saveTitle">Opslaan Titel</button>
-      <button @click="closeStory">Verhaal Sluiten</button>
+      <input v-model="title" placeholder="Voeg een titel voor het verhaal toe" required/>
+      <ElementsButton  @click="saveTitle">Titel opslaan</ElementsButton>
+     <ElementsButton @click="closeStory">
+         Verhaal verzenden
+        </ElementsButton>
     </div>
     <div v-else class="admin-deadline">
         <p>De deadline is nog niet verstreken. Je kunt het verhaal vanaf {{ formattedDeadline }} controleren</p>
