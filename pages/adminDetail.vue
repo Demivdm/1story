@@ -19,24 +19,31 @@
             </ElementsButton>    
         </BlocksModal>
       </div>
-      
-   
-      <!-- modal -->
-      <input v-model="title" placeholder="Voeg een titel voor het verhaal toe" required/>
+      <div v-if="isDeadlinePassed && !isStoryClosed">
+        <input v-model="title" placeholder="Voeg een titel voor het verhaal toe" required/>
       <ElementsButton @click="saveTitle">
+        {{ saveButton}}
 
-        Titel opslaan</ElementsButton>
+      </ElementsButton>
         
         <ElementsButton :disabled="!title" @click="closeStory">
         Verhaal verzenden
       </ElementsButton>
       
       <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+      </div>
+   
+      <!-- modal -->
+  
     </div>
-
 
     <div v-else class="admin-deadline">
         <p>De deadline is nog niet verstreken. Je kunt het verhaal vanaf {{ formattedDeadline }} controleren</p>
+    </div>
+
+    <div v-if="isStoryClosed" class="admin-deadline">
+      <p>Bedankt! Het verhaal is succesvol verzonden.</p>
+      <ElementsButton @click="returnHome">Keer terug naar home</ElementsButton>
     </div>
   </section>
 
@@ -54,10 +61,14 @@
   const sentences = ref([]);
   const currentStoryId = ref();
   const errorMessage = ref('')
-  const checkTitle = ref('')
   
   const storyCollection = collection(db, "stories");
   const sentenceCollection = collection(db, "sentences");
+
+  let titleSaved = ref(false);
+  let isStoryClosed = ref(false);
+
+
 
   const fetchStoryData = async () => {
     try {
@@ -96,6 +107,8 @@
         await updateDoc(storyRef, { title: title.value });
         // error message leegmaken als er iets is ingevuld
         errorMessage.value = '';
+        titleSaved.value = true;
+
 
       } catch (error) {
         console.error("Error saving title: ", error);
@@ -118,15 +131,12 @@
   
   // Verhaal sluiten en een nieuw verhaal beginnen
   const closeStory = async () => {
-    if (!title.value) {
-    errorMessage.value = 'Vul alle velden voor je het verhaal verzendt.';
-    return;
-  }
     if (currentStoryId.value) {
       try {
         const storyRef = doc(db, "stories", currentStoryId.value);
         await updateDoc(storyRef, { closedAt: serverTimestamp() });
-  
+        isStoryClosed.value = true;
+
         // Nieuw verhaal beginnen en titel kiezen
         const newStoryRef = await addDoc(storyCollection, { 
           title: null,
@@ -174,6 +184,9 @@
   // onMounted(() => {
   //   fetchStoryData();
   // });
+  const saveButton = computed(() => {
+  return titleSaved.value ? 'Titel opgeslagen' : 'Titel opslaan';
+});
   </script>
   <style lang="scss" scoped>
   .admin-detail{
