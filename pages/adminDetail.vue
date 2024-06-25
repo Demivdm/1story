@@ -8,9 +8,10 @@
       <div v-for="sentence in sentences" :key="sentence.id">
         <p @click="toggleEdit(sentence)">{{ sentence.content }}</p>
         <BlocksModal v-if="sentence.isEditing">
-
             <h2>Bewerk de zin</h2>
+            <ElementsTagBlock></ElementsTagBlock>
             <p>Naam: {{ sentence.name }}</p>
+            <ElementsTagBlock></ElementsTagBlock>
             <p>Functie: {{ sentence.job }}</p>
             <input v-model="sentence.content" />
             <ElementsButton @click="toggleEdit(sentence)">
@@ -18,6 +19,7 @@
             </ElementsButton>    
         </BlocksModal>
       </div>
+      
    
       <!-- modal -->
       <input v-model="title" placeholder="Voeg een titel voor het verhaal toe" required/>
@@ -25,7 +27,9 @@
      <ElementsButton @click="closeStory">
          Verhaal verzenden
         </ElementsButton>
+        
     </div>
+
     <div v-else class="admin-deadline">
         <p>De deadline is nog niet verstreken. Je kunt het verhaal vanaf {{ formattedDeadline }} controleren</p>
     </div>
@@ -62,10 +66,9 @@
 
 
   // vullen met zinnen met hetzelfde id
-        const sentenceQuery = query(sentenceCollection, where("storyUID", "==", currentStoryId.value));
-        const sentenceSnapshot = await getDocs(sentenceQuery);
-        console.log("Fetched sentences:", sentenceSnapshot.docs);
 
+        const sentenceQuery = query(sentenceCollection, where("storyUID", "==", currentStoryId.value), orderBy("createdAt", "asc"));
+        const sentenceSnapshot = await getDocs(sentenceQuery);
         sentences.value = sentenceSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, isEditing: false }));
       }
   
@@ -100,26 +103,26 @@
   };
   
   // Verhaal sluiten en een nieuw verhaal beginnen
-  // const closeStory = async () => {
-  //   if (currentStoryId.value) {
-  //     try {
-  //       const storyRef = doc(db, "stories", currentStoryId.value);
-  //       await updateDoc(storyRef, { closedAt: serverTimestamp() });
+  const closeStory = async () => {
+    if (currentStoryId.value) {
+      try {
+        const storyRef = doc(db, "stories", currentStoryId.value);
+        await updateDoc(storyRef, { closedAt: serverTimestamp() });
   
-  //       // Nieuw verhaal beginnen en titel kiezen
-  //       const newStoryRef = await addDoc(storyCollection, { 
-  //         title: null,
-  //         createdAt: serverTimestamp(), 
-  //         closedAt: null, 
-  //       });
-  //       currentStoryId.value = newStoryRef.id;
-  //       title.value = '';
-  //       sentences.value = [];
-  //     } catch (error) {
-  //       console.error("Error closing story: ", error);
-  //     }
-  //   }
-  // };
+        // Nieuw verhaal beginnen en titel kiezen
+        const newStoryRef = await addDoc(storyCollection, { 
+          title: null,
+          createdAt: serverTimestamp(), 
+          closedAt: null, 
+        });
+        currentStoryId.value = newStoryRef.id;
+        title.value = '';
+        sentences.value = [];
+      } catch (error) {
+        console.error("Error closing story: ", error);
+      }
+    }
+  };
   
   onMounted(() => {
     fetchStoryData();
@@ -139,7 +142,7 @@
   //         });
 
   //         // Set new story ID using the composable
-  //         setCurrentStoryId(newStoryRef.id);
+  //         currentStoryId(newStoryRef.id);
 
   //         currentStoryId.value = newStoryRef.id;
   //         title.value = '';
