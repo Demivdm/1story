@@ -6,14 +6,17 @@
       <h1>Controleer het verhaal</h1>
       <ElementsScrollUp></ElementsScrollUp>
       <div v-for="sentence in sentences" :key="sentence.id">
-        <input 
-          v-if="sentence.isEditing" 
-          v-model="sentence.content" 
-        />
-        
         <p @click="toggleEdit(sentence)">{{ sentence.content }}</p>
+        <BlocksModal v-if="sentence.isEditing">
 
-        
+            <h2>Bewerk de zin</h2>
+            <p>Naam: {{ sentence.name }}</p>
+            <p>Functie: {{ sentence.job }}</p>
+            <input v-model="sentence.content" />
+            <ElementsButton @click="toggleEdit(sentence)">
+              Opslaan
+            </ElementsButton>    
+        </BlocksModal>
       </div>
    
       <!-- modal -->
@@ -97,26 +100,26 @@
   };
   
   // Verhaal sluiten en een nieuw verhaal beginnen
-  const closeStory = async () => {
-    if (currentStoryId.value) {
-      try {
-        const storyRef = doc(db, "stories", currentStoryId.value);
-        await updateDoc(storyRef, { closedAt: serverTimestamp() });
+  // const closeStory = async () => {
+  //   if (currentStoryId.value) {
+  //     try {
+  //       const storyRef = doc(db, "stories", currentStoryId.value);
+  //       await updateDoc(storyRef, { closedAt: serverTimestamp() });
   
-        // Nieuw verhaal beginnen en titel kiezen
-        const newStoryRef = await addDoc(storyCollection, { 
-          title: null,
-          createdAt: serverTimestamp(), 
-          closedAt: null, 
-        });
-        currentStoryId.value = newStoryRef.id;
-        title.value = '';
-        sentences.value = [];
-      } catch (error) {
-        console.error("Error closing story: ", error);
-      }
-    }
-  };
+  //       // Nieuw verhaal beginnen en titel kiezen
+  //       const newStoryRef = await addDoc(storyCollection, { 
+  //         title: null,
+  //         createdAt: serverTimestamp(), 
+  //         closedAt: null, 
+  //       });
+  //       currentStoryId.value = newStoryRef.id;
+  //       title.value = '';
+  //       sentences.value = [];
+  //     } catch (error) {
+  //       console.error("Error closing story: ", error);
+  //     }
+  //   }
+  // };
   
   onMounted(() => {
     fetchStoryData();
