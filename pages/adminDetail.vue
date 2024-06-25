@@ -23,12 +23,17 @@
    
       <!-- modal -->
       <input v-model="title" placeholder="Voeg een titel voor het verhaal toe" required/>
-      <ElementsButton  @click="saveTitle">Titel opslaan</ElementsButton>
-     <ElementsButton @click="closeStory">
-         Verhaal verzenden
-        </ElementsButton>
+      <ElementsButton @click="saveTitle">
+
+        Titel opslaan</ElementsButton>
         
+        <ElementsButton :disabled="!title" @click="closeStory">
+        Verhaal verzenden
+      </ElementsButton>
+      
+      <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
     </div>
+
 
     <div v-else class="admin-deadline">
         <p>De deadline is nog niet verstreken. Je kunt het verhaal vanaf {{ formattedDeadline }} controleren</p>
@@ -48,6 +53,8 @@
   const title = ref('');
   const sentences = ref([]);
   const currentStoryId = ref();
+  const errorMessage = ref('')
+  const checkTitle = ref('')
   
   const storyCollection = collection(db, "stories");
   const sentenceCollection = collection(db, "sentences");
@@ -79,10 +86,17 @@
   
   // titel op kunnen slaan
   const saveTitle = async () => {
+    if (!title.value.trim()) {
+    errorMessage.value = 'Titel is verplicht om het verhaal op te slaan.';
+    return;
+  }
     if (currentStoryId.value) {
       try {
         const storyRef = doc(db, "stories", currentStoryId.value);
         await updateDoc(storyRef, { title: title.value });
+        // error message leegmaken als er iets is ingevuld
+        errorMessage.value = '';
+
       } catch (error) {
         console.error("Error saving title: ", error);
       }
@@ -104,6 +118,10 @@
   
   // Verhaal sluiten en een nieuw verhaal beginnen
   const closeStory = async () => {
+    if (!title.value) {
+    errorMessage.value = 'Vul alle velden voor je het verhaal verzendt.';
+    return;
+  }
     if (currentStoryId.value) {
       try {
         const storyRef = doc(db, "stories", currentStoryId.value);
