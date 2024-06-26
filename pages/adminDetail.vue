@@ -6,8 +6,9 @@
       <h1>Controleer het verhaal</h1>
       <ElementsScrollUp></ElementsScrollUp>
       <div v-for="sentence in sentences" :key="sentence.id">
-        <p @click="toggleEdit(sentence)">{{ sentence.content }}</p>
+        <p class="story-sentence" @click="toggleEdit(sentence)">{{ sentence.content }}</p>
         <BlocksModal v-if="sentence.isEditing">
+          <button class="close-button" @click="closeEditModal(sentence)">X</button>
             <h2>Bewerk de zin</h2>
             <ElementsTagBlock></ElementsTagBlock>
             <p>Naam: {{ sentence.name }}</p>
@@ -19,7 +20,14 @@
             </ElementsButton>    
         </BlocksModal>
       </div>
-      <div v-if="isDeadlinePassed && !isStoryClosed">
+      <ElementsButton @click="toggleConfirmStory" v-if="!showConfirmStory && isDeadlinePassed && !isStoryClosed">
+        Open Confirmatie
+      </ElementsButton>
+      <!-- confirm modal -->
+      <div class="confirm-story" v-if="showConfirmStory">
+        <BlocksModal>
+          <button class="close-button" @click="closeConfirmStory">X</button>
+
         <input v-model="title" placeholder="Voeg een titel voor het verhaal toe" required/>
       <ElementsButton @click="saveTitle">
         {{ saveButton}}
@@ -31,6 +39,7 @@
       </ElementsButton>
       
       <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+    </BlocksModal>
       </div>
    
       <!-- modal -->
@@ -61,6 +70,8 @@
   const sentences = ref([]);
   const currentStoryId = ref();
   const errorMessage = ref('')
+  const showConfirmStory = ref(false);
+
   
   const storyCollection = collection(db, "stories");
   const sentenceCollection = collection(db, "sentences");
@@ -156,6 +167,18 @@
     fetchStoryData();
   });
 
+  // modal toggles
+  const toggleConfirmStory = () => {
+  showConfirmStory.value = !showConfirmStory.value;
+};
+
+const closeConfirmStory = () => {
+  showConfirmStory.value = false;
+};
+
+const closeEditModal = (sentence) => {
+  sentence.isEditing = false;
+};
   // const closeStory = async () => {
   //     if (currentStoryId.value) {
   //       try {
@@ -199,6 +222,12 @@
     margin: auto;
     text-align: center;
     // background: red;
+  }
+  .story-sentence{
+    cursor: pointer;
+  }
+  button{
+    cursor: pointer;
   }
   </style>
   
