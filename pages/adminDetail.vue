@@ -21,7 +21,7 @@
         </BlocksModal>
       </div>
       <ElementsButton @click="toggleConfirmStory" v-if="!showConfirmStory && isDeadlinePassed && !isStoryClosed">
-        Open Confirmatie
+        Open verhaal bevestiging
       </ElementsButton>
       <!-- confirm modal -->
       <div class="confirm-story" v-if="showConfirmStory">
@@ -228,6 +228,9 @@ const closeEditModal = (sentence) => {
   }
   button{
     cursor: pointer;
+  }
+  .error-message{
+    color: red;
   }
   </style>
   
