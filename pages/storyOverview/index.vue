@@ -31,7 +31,12 @@ const sentences = ref<Sentence[]>([]);
 const sentencesCollection = collection(db, "sentences");
 
 onMounted(() => {
-  const storiesQuery = query(storiesCollection, orderBy('createdAt', 'desc'));
+  const storiesQuery = query(
+    storiesCollection,
+    // geen stories die nog niet gesloten zijn tonen
+    where('closedAt', '!=', null), 
+    orderBy('createdAt', 'desc')
+  );
   const sentencesQuery = query(sentencesCollection, orderBy("createdAt", "asc"));
 
   onSnapshot(storiesQuery, (querySnapshot: QuerySnapshot) => {
@@ -86,7 +91,7 @@ const chunkedStories = computed(() => {
 $component: "stories";
 
 .#{$component} {
-  margin: 2rem auto 0;
+  margin: 2rem auto 5rem;
   padding-top: 5rem;
   max-width: 1152px;
   height: 100%;
