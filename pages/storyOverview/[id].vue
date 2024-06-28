@@ -21,7 +21,6 @@
           <ElementsSentence
             :text="sentence.content"
             :info="{ job: sentence.job, name: sentence.name }"
-            :class="{'bigger-font': index < 2}"
           />
         </template>
       </article>

@@ -2,12 +2,22 @@
   <section class="admin-detail">
 
     <BlocksNav></BlocksNav>
-    <div v-if="isDeadlinePassed">
+
+    <div v-if="isDeadlinePassed" >
+      <div class="header-wrapper">
       <h1>Controleer het verhaal en kies een titel</h1>
+      <ElementsButton @click="toggleConfirmStory" v-if="!showConfirmStory && isDeadlinePassed && !isStoryClosed">
+        Open verhaal bevestiging
+      </ElementsButton>
+    </div>
       <ElementsScrollUp></ElementsScrollUp>
-      <span v-for="sentence in sentences" :key="sentence.id">
-        <p class="story-sentence" @click="toggleEdit(sentence)">{{ sentence.content }}</p>
-        <BlocksModal v-if="sentence.isEditing" class="sentence-popup">
+      <div class="sentence-wrapper">
+
+   
+      <span v-for="sentence in sentences" :key="sentence.id"  class="confirm-story-sentence">
+        
+        <p class="story-sentence" @click="toggleEdit(sentence)">{{ sentence.content }} </p>
+          <BlocksModal v-if="sentence.isEditing" class="sentence-popup">
           <button class="close-button" @click="closeEditModal(sentence)">X</button>
             <h2>Bewerk de zin</h2>
             <ElementsTagBlock></ElementsTagBlock>
@@ -20,9 +30,8 @@
             </ElementsButton>    
         </BlocksModal>
       </span>
-      <ElementsButton @click="toggleConfirmStory" v-if="!showConfirmStory && isDeadlinePassed && !isStoryClosed">
-        Open verhaal bevestiging
-      </ElementsButton>
+    </div>
+    
       <!-- confirm modal -->
       <div class="confirm-story" v-if="showConfirmStory">
         <BlocksModal>
@@ -80,7 +89,11 @@
   let isStoryClosed = ref(false);
 
 
-  const addPeriod = (text: string) => {
+  const addPeriod = (text: string, isFirstSentence: boolean) => {
+    // standaard zin mag extra punten hebben
+    if (isFirstSentence) {
+    return text; 
+  }
     const trimmedText = text.trim();
     const lastChar = trimmedText.charAt(trimmedText.length - 1);
 
@@ -107,9 +120,8 @@
 
         const sentenceQuery = query(sentenceCollection, where("storyUID", "==", currentStoryId.value), orderBy("createdAt", "asc"));
         const sentenceSnapshot = await getDocs(sentenceQuery);
-        sentences.value = sentenceSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, isEditing: false }));
+        sentences.value = [{ content: 'Er was eens....', id: 'initial', name: 'Demi', job: 'Developer', isEditing: false}, ...sentenceSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, isEditing: false }))];
       }
-  
     } catch (error) {
       console.error("Error fetching story data: ", error);
     }
@@ -138,6 +150,11 @@
   
   // editten en updaten
   const toggleEdit = async (sentence) => {
+    sentences.value.forEach(s => {
+    if (s !== sentence) {
+      s.isEditing = false;
+    }
+  });
     if (sentence.isEditing) {
       try {
         sentence.content = addPeriod(sentence.content);
@@ -166,7 +183,9 @@
         });
         currentStoryId.value = newStoryRef.id;
         title.value = '';
-        sentences.value = [];
+        sentences.value = [{ content: 'Er was eens', id: 'initial', name: 'Demi', job: 'Developer', isEditing: false }];
+
+        // sentences.value = [];
       } catch (error) {
         console.error("Error closing story: ", error);
       }
@@ -223,7 +242,16 @@ const closeEditModal = (sentence) => {
   </script>
   <style lang="scss" scoped>
   .admin-detail{
-    // height: 100vh;
+    // height: 200vh;
+    max-width: 900px;
+    margin: auto;
+  }
+  .header-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    top: 10vh;
   }
   .admin-deadline{
     display: grid;
@@ -233,12 +261,18 @@ const closeEditModal = (sentence) => {
     text-align: center;
     // background: red;
   }
-  article{
-    width: max-content;
+  
+  .sentence-popup{
+    position: absolute;
+    z-index: 1;
   }
   .story-sentence{
     cursor: pointer;
     display: inline;
+    position: relative;
+    top: 15vh;
+    padding-right: 4px;
+    height: max-content;
   }
   button{
     cursor: pointer;
@@ -246,5 +280,15 @@ const closeEditModal = (sentence) => {
   .error-message{
     color: red;
   }
+  .confirm-story-sentence {
+  &:nth-child(-n + 2) {
+    font-size: 30px;
+    display: block;
+
+    // @include sm {
+    //   font-size: 20px;
+    // }
+  }
+}
   </style>
   
