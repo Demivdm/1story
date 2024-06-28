@@ -1,7 +1,7 @@
 <template>
 
   <main class="home-page">
-<ElementsLogout></ElementsLogout>
+<!-- <ElementsLogout></ElementsLogout> -->
 
     <BlocksNav></BlocksNav>
 
