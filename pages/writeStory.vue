@@ -495,6 +495,10 @@ $component: "story-container";
     display: grid;
     place-items: center;
     height: 100vh;
+    @include sm{
+    margin: 0 1rem 0 1rem;
+    text-align: center;
+  }
   }
 
 }
