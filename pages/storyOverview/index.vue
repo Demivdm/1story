@@ -89,12 +89,16 @@ const chunkedStories = computed(() => {
 </script>
 <style scoped lang="scss">
 $component: "stories";
+@import "../scss/mixins/_index.scss";
 
 .#{$component} {
   margin: 2rem auto 5rem;
   padding-top: 5rem;
   max-width: 1152px;
   height: 100%;
+  @include sm{
+    margin: 0 1rem 0 1rem;
+  }
   
   &__story-title {
     margin-left: 2rem;
