@@ -399,6 +399,7 @@ $component: "admin-detail";
   display: flex;
   gap: 1rem;
   margin-top: 2rem;
+  width: 60%;
 }
 &__confirm-story{
   input{
@@ -406,7 +407,7 @@ $component: "admin-detail";
     border: 0;
     border-bottom: 1px solid black;
     font-size: 16px;
-    width: 50%;
+    width: 56%;
     padding: .5rem 0;
   }
 }

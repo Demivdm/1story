@@ -3,8 +3,8 @@
           <h5>Er zijn op het moment nog geen verhalen, kom later terug</h5>
         </div>
         
-  <section v-else class="card">
-    <div v-for="story in stories" :key="story.id" class="card__story-block">
+  <section class="card">
+<div class="card__story-block">
 <!-- link naar storydetail met het bijpassende story id -->
     <NuxtLink :to="`/storyOverview/${story.id}`" class="card__link">
           <div class="card__tag-wrapper">
@@ -21,6 +21,25 @@
   </div>
   </section>
 </template>
+
+<!-- <template>
+  <div class="card">
+    <div class="card__story-block">
+      <NuxtLink :to="`/storyOverview/${story.id}`" class="card__link">
+        <div class="card__tag-wrapper">
+          <ElementsTagBlock></ElementsTagBlock>
+          <p>{{ formatDate(story.createdAt) }}</p>
+        </div>
+        <div class="card__content-wrapper">
+          <h5 class="card__title">{{ story.title }}</h5>
+          <p class="card__preview-sentence">
+            {{ story.firstSentence }}
+          </p>
+        </div>
+      </NuxtLink>
+    </div>
+  </div>
+</template> -->
 
 <script setup lang="ts">
 
@@ -122,7 +141,7 @@ $component: "card";
 .#{$component} {
   display: flex;
   gap: 3rem;
-  margin: 0 2rem 3rem 2rem;
+  // margin: 0 2rem 3rem 2rem;
   @include sm {
     flex-direction: column;
     align-items: center;
@@ -147,7 +166,7 @@ $component: "card";
   &__story-block {
     background: #ffffff;
     border-radius: 20px;
-    max-width: 360px;
+    min-width: 360px;
     height: 254px;
     transition: 1s ease-in-out;
   }
