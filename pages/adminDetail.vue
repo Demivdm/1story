@@ -1,31 +1,45 @@
 <template>
   <section class="admin-detail">
-
+      <div class="admin-detail__background-wrapper">
     <BlocksNav></BlocksNav>
-
+<div class="admin-detail__date">
+  <ElementsTagBlock></ElementsTagBlock>
+  <p>{{ createdAt }}</p>
+</div>
     <div v-if="isDeadlinePassed" >
-      <div class="header-wrapper">
-      <h1>Controleer het verhaal en kies een titel</h1>
+      <div class="admin-detail__header-wrapper">
+        <div class="admin-detail__intro">
+          <h1>Controleer het verhaal en kies een titel</h1>
+          <p>Klik op de zinnen om deze te bewerken</p>
+        </div>
       <ElementsButton @click="toggleConfirmStory" v-if="!showConfirmStory && isDeadlinePassed && !isStoryClosed">
         Open verhaal bevestiging
       </ElementsButton>
     </div>
       <ElementsScrollUp></ElementsScrollUp>
-      <div class="sentence-wrapper">
+      <div class="admin-detail__sentence-wrapper">
 
    
-      <span v-for="sentence in sentences" :key="sentence.id"  class="confirm-story-sentence">
+      <span v-for="sentence in sentences" :key="sentence.id"  class="admin-detail__confirm-story-sentence">
         
-        <p class="story-sentence" @click="toggleEdit(sentence)">{{ sentence.content }} </p>
-          <BlocksModal v-if="sentence.isEditing" class="sentence-popup">
-          <button class="close-button" @click="closeEditModal(sentence)">X</button>
-            <h2>Bewerk de zin</h2>
-            <ElementsTagBlock></ElementsTagBlock>
-            <p>Naam: {{ sentence.name }}</p>
-            <ElementsTagBlock></ElementsTagBlock>
-            <p>Functie: {{ sentence.job }}</p>
-            <input v-model="sentence.content" />
-            <ElementsButton @click="toggleEdit(sentence)">
+        <p class="admin-detail__story-sentence" @click="toggleEdit(sentence)">{{ sentence.content }} </p>
+          <BlocksModal v-if="sentence.isEditing" class="admin-detail__sentence-popup">
+          <button class="admin-detail__close-button" @click="closeEditModal(sentence)">X</button>
+       
+            <div class="admin-detail__tag-wrapper">
+              <div class="admin-detail__tag-block">
+                <ElementsTagBlock></ElementsTagBlock>
+                <p>{{ sentence.name }}</p>
+              </div>
+    
+              <div class="admin-detail__tag-block">
+                <ElementsTagBlock></ElementsTagBlock>
+                <p>{{ sentence.job }}</p>
+              </div>
+            </div>
+            <h5 class="admin-detail__input-title">Zin van de week</h5>
+            <input class="admin-detail__edit-input" v-model="sentence.content" />
+            <ElementsButton class="admin-detail__save-button" @click="toggleEdit(sentence)">
               Opslaan
             </ElementsButton>    
         </BlocksModal>
@@ -33,9 +47,9 @@
     </div>
     
       <!-- confirm modal -->
-      <div class="confirm-story" v-if="showConfirmStory">
+      <div class="admin-detail__confirm-story" v-if="showConfirmStory">
         <BlocksModal>
-          <button class="close-button" @click="closeConfirmStory">X</button>
+          <button class="admin-detail__close-button" @click="closeConfirmStory">X</button>
 
         <input v-model="title" placeholder="Voeg een titel voor het verhaal toe" required/>
       <ElementsButton @click="saveTitle">
@@ -47,7 +61,7 @@
         Verhaal verzenden
       </ElementsButton>
       
-      <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+      <p v-if="errorMessage" class="admin-detail__error-message">{{ errorMessage }}</p>
     </BlocksModal>
       </div>
    
@@ -55,14 +69,15 @@
   
     </div>
 
-    <div v-else class="admin-deadline">
+    <div v-else class="admin-detail__admin-deadline">
         <p>De deadline is nog niet verstreken. Je kunt het verhaal vanaf {{ formattedDeadline }} controleren</p>
     </div>
 
-    <div v-if="isStoryClosed" class="admin-deadline">
+    <div v-if="isStoryClosed" class="admin-detail__succes">
       <p>Bedankt! Het verhaal is succesvol verzonden.</p>
       <ElementsButton @click="returnHome">Keer terug naar home</ElementsButton>
     </div>
+  </div>
   </section>
 
   </template>
@@ -81,9 +96,11 @@
   const errorMessage = ref('')
   const showConfirmStory = ref(false);
 
-  
+
   const storyCollection = collection(db, "stories");
   const sentenceCollection = collection(db, "sentences");
+
+  const createdAt = ref('')
 
   let titleSaved = ref(false);
   let isStoryClosed = ref(false);
@@ -111,6 +128,8 @@
   
       if (!storySnapshot.empty) {
         const storyDoc = storySnapshot.docs[0];
+        const timestamp = storyDoc.data().createdAt || '';
+        createdAt.value = timestamp ? formatDate(new Date(timestamp.seconds * 1000)) : '';
         currentStoryId.value = storyDoc.id;
         console.log("story doc id is",storyDoc.id)
         title.value = storyDoc.data().title || '';
@@ -120,12 +139,19 @@
 
         const sentenceQuery = query(sentenceCollection, where("storyUID", "==", currentStoryId.value), orderBy("createdAt", "asc"));
         const sentenceSnapshot = await getDocs(sentenceQuery);
-        sentences.value = [{ content: 'Er was eens....', id: 'initial', name: 'Demi', job: 'Developer', isEditing: false}, ...sentenceSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, isEditing: false }))];
+        sentences.value =
+         [{ content: 'Er was eens....', id: 'initial', name: 'Demi', job: 'Developer', isEditing: false}, ...sentenceSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, isEditing: false }))];
       }
     } catch (error) {
       console.error("Error fetching story data: ", error);
     }
   };
+// datum formatteren
+  const formatDate = (date: Date | null) => {
+  if (!date) return "";
+  const options = { day: "2-digit", month: "2-digit", year: "2-digit" };
+  return date.toLocaleDateString("nl-NL", options);
+};
   
   // titel op kunnen slaan
   const saveTitle = async () => {
@@ -239,21 +265,63 @@ const closeEditModal = (sentence) => {
   const saveButton = computed(() => {
   return titleSaved.value ? 'Titel opgeslagen' : 'Titel opslaan';
 });
+
   </script>
   <style lang="scss" scoped>
-  .admin-detail{
-    // height: 200vh;
-    max-width: 900px;
-    margin: auto;
-  }
-  .header-wrapper{
+
+$component: "admin-detail";
+
+.#{$component} {
+  background: linear-gradient(180deg, #FBFEFE 0%, #DBF3FA 100%);
+
+  &__date{
     display: flex;
     align-items: center;
+    top: 10vh;
+    position: relative;
+    p{
+      margin: 0;
+      padding: 0;
+    }
+
+  }
+  &__background-wrapper{
+    max-width: 900px;
+    min-height: 100vh;
+    margin:auto;
+  }
+
+  &__tag-block{
+    display: flex;
+    align-items: center;
+    padding-bottom: 1rem;
+    
+    p{
+      margin: 0;
+      padding: 0;
+      margin-right: 1rem;
+    }
+  }
+  &__tag-wrapper{
+    display: flex;
+  }
+  &__admin-detail{
+    min-height: 100vh;
+    width: 100vw;
+    margin: auto;
+    left: 100%;
+    max-width: 900px;
+
+  }
+
+  &__header-wrapper{
+    display: flex;
+    align-items: flex-start;
     justify-content: space-between;
     position: relative;
     top: 10vh;
   }
-  .admin-deadline{
+  &__admin-deadline{
     display: grid;
     height: 100vh;
     place-items: center;
@@ -262,11 +330,11 @@ const closeEditModal = (sentence) => {
     // background: red;
   }
   
-  .sentence-popup{
+  &__sentence-popup{
     position: absolute;
     z-index: 1;
   }
-  .story-sentence{
+  &__story-sentence{
     cursor: pointer;
     display: inline;
     position: relative;
@@ -274,13 +342,14 @@ const closeEditModal = (sentence) => {
     padding-right: 4px;
     height: max-content;
   }
+
   button{
     cursor: pointer;
   }
-  .error-message{
+  &__error-message{
     color: red;
   }
-  .confirm-story-sentence {
+  &__confirm-story-sentence {
   &:nth-child(-n + 2) {
     font-size: 30px;
     display: block;
@@ -290,5 +359,36 @@ const closeEditModal = (sentence) => {
     // }
   }
 }
+&__close-button{
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-weight: 900;
+  font-size: 20px;
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+}
+&__input-title{
+  padding: 0;
+  margin: 0;
+  font-size: 14px;  
+  opacity: .5;
+  position: relative;
+  top: .5rem;
+}
+&__edit-input{
+  background: transparent;
+  border: 0;
+  width: 100%;
+  border-bottom: 1px solid black;
+  margin-bottom: 2rem;
+  font-size: 16px;
+  padding: 1rem 0;
+}
+&__save-button{
+  position: absolute;
+  right: 4rem;
+}}
   </style>
   
