@@ -52,7 +52,8 @@
           <button class="admin-detail__close-button" @click="closeConfirmStory">X</button>
 
         <input v-model="title" placeholder="Voeg een titel voor het verhaal toe" required/>
-      <ElementsButton @click="saveTitle">
+        <div class="admin-detail__button-wrapper">
+          <ElementsButton @click="saveTitle">
         {{ saveButton}}
 
       </ElementsButton>
@@ -61,6 +62,8 @@
         Verhaal verzenden
       </ElementsButton>
       
+        </div>
+   
       <p v-if="errorMessage" class="admin-detail__error-message">{{ errorMessage }}</p>
     </BlocksModal>
       </div>
@@ -299,6 +302,7 @@ $component: "admin-detail";
     p{
       margin: 0;
       padding: 0;
+      font-size: 20px;
       margin-right: 1rem;
     }
   }
@@ -358,6 +362,7 @@ $component: "admin-detail";
     //   font-size: 20px;
     // }
   }
+
 }
 &__close-button{
   background: transparent;
@@ -389,6 +394,22 @@ $component: "admin-detail";
 &__save-button{
   position: absolute;
   right: 4rem;
-}}
+}
+&__button-wrapper{
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+&__confirm-story{
+  input{
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid black;
+    font-size: 16px;
+    width: 50%;
+    padding: .5rem 0;
+  }
+}
+}
   </style>
   
