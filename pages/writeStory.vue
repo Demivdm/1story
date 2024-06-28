@@ -23,9 +23,9 @@
         <p>oeps geen zin gevonden, probeer het later nog een keer</p>
       </div>
       <div v-if="isDeadlinePassed">
-        <p>Oeps de deadline is verstreken. Geen zorgen we sturen je een mailtje als je weer mee kunt doen!</p>
+        <p class="story-container__deadline-passed">Oeps de deadline is verstreken. Geen zorgen we sturen je een mailtje als je weer mee kunt doen!</p>
       </div>
-      <BlocksModal>
+      <BlocksModal v-if="prevSentence && !isDeadlinePassed">
         <section class="story-container__modal-content">
           <div class="story-container__name-function-input">
             <span class="story-container__name-input">
@@ -490,6 +490,11 @@ $component: "story-container";
     @include sm {
       width: 100%;
     }
+  }
+  &__deadline-passed{
+    display: grid;
+    place-items: center;
+    height: 100vh;
   }
 
 }
