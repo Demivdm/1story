@@ -3,11 +3,11 @@
 
     <BlocksNav></BlocksNav>
     <div v-if="isDeadlinePassed">
-      <h1>Controleer het verhaal</h1>
+      <h1>Controleer het verhaal en kies een titel</h1>
       <ElementsScrollUp></ElementsScrollUp>
-      <div v-for="sentence in sentences" :key="sentence.id">
+      <span v-for="sentence in sentences" :key="sentence.id">
         <p class="story-sentence" @click="toggleEdit(sentence)">{{ sentence.content }}</p>
-        <BlocksModal v-if="sentence.isEditing">
+        <BlocksModal v-if="sentence.isEditing" class="sentence-popup">
           <button class="close-button" @click="closeEditModal(sentence)">X</button>
             <h2>Bewerk de zin</h2>
             <ElementsTagBlock></ElementsTagBlock>
@@ -19,7 +19,7 @@
               Opslaan
             </ElementsButton>    
         </BlocksModal>
-      </div>
+      </span>
       <ElementsButton @click="toggleConfirmStory" v-if="!showConfirmStory && isDeadlinePassed && !isStoryClosed">
         Open verhaal bevestiging
       </ElementsButton>
@@ -80,6 +80,15 @@
   let isStoryClosed = ref(false);
 
 
+  const addPeriod = (text: string) => {
+    const trimmedText = text.trim();
+    const lastChar = trimmedText.charAt(trimmedText.length - 1);
+
+    if (lastChar !== "." && lastChar !== "!" && lastChar !== "?") {
+      return trimmedText + ".";
+    }
+    return text;
+  };
 
   const fetchStoryData = async () => {
     try {
@@ -131,6 +140,7 @@
   const toggleEdit = async (sentence) => {
     if (sentence.isEditing) {
       try {
+        sentence.content = addPeriod(sentence.content);
         const sentenceRef = doc(db, "sentences", sentence.id);
         await updateDoc(sentenceRef, { content: sentence.content });
       } catch (error) {
@@ -223,8 +233,12 @@ const closeEditModal = (sentence) => {
     text-align: center;
     // background: red;
   }
+  article{
+    width: max-content;
+  }
   .story-sentence{
     cursor: pointer;
+    display: inline;
   }
   button{
     cursor: pointer;

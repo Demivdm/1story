@@ -1,6 +1,6 @@
 <template>
   <div class="admin">
-    <div v-if="isAdmin">
+    <div v-if="isAdmin && isDeadlinePassed">
       <h1>Welkom Admin!</h1>
       <p>
         Het is tijd om het verhaal van de maand te publiceren. Mocht er iets
@@ -9,7 +9,10 @@
       </p>
       <ElementsButton to="adminDetail"> Controleer het verhaal </ElementsButton>
     </div>
-    <div v-else>
+    <div v-if="!isDeadlinePassed" class="admin-deadline">
+        <p>De deadline is nog niet verstreken. Je kunt het verhaal vanaf {{ formattedDeadline }} controleren</p>
+    </div>
+    <div v-if="!isAdmin">
       <p>
         Dit is de admin pagina, ga terug naar de homepage of login als admin
       </p>
@@ -22,6 +25,10 @@
 import { getFirestore } from "firebase/firestore";
 import { useCurrentUser } from "vuefire";
 import { checkAdmin } from "@/firebase/adminLoginUtil";
+import { useDeadline} from '../composable/useDeadline';
+
+const {isDeadlinePassed, formattedDeadline } = useDeadline();
+
 
 definePageMeta({
   middleware: ["auth"],
