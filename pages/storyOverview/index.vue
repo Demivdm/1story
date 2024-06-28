@@ -18,9 +18,28 @@
 const stories = ref<Story[]>([]);
 const storiesCollection = collection(db, "stories");
 
+interface Story {
+  id: string;
+  title: string;
+  createdAt: Date | null;
+  firstSentence?: string;
+}
+
+
+const sentences = ref<Sentence[]>([]);
+
+const sentencesCollection = collection(db, "sentences");
+
 onMounted(() => {
-  const q = query(storiesCollection);
-  onSnapshot(q, (querySnapshot: QuerySnapshot) => {
+  const storiesQuery = query(
+    storiesCollection,
+    // geen stories die nog niet gesloten zijn tonen
+    where('closedAt', '!=', null), 
+    orderBy('createdAt', 'desc')
+  );
+  const sentencesQuery = query(sentencesCollection, orderBy("createdAt", "asc"));
+
+  onSnapshot(storiesQuery, (querySnapshot: QuerySnapshot) => {
     const fbStories: Story[] = [];
     querySnapshot.forEach((doc) => {
       const data = doc.data();
@@ -28,14 +47,38 @@ onMounted(() => {
         id: doc.id,
         title: data.title,
         createdAt: data.createdAt ? data.createdAt.toDate() : null,
-        // closedAt: data.createdAt ? data.createdAt.toDate() : null,
-
       };
       fbStories.push(story);
     });
     stories.value = fbStories;
+    matchSentences();
+  });
+
+  onSnapshot(sentencesQuery, (querySnapshot: QuerySnapshot) => {
+    const fbSentences: Sentence[] = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const sentence = {
+        id: doc.id,
+        content: data.content,
+        storyUID: data.storyUID,
+      };
+      fbSentences.push(sentence);
+    });
+    sentences.value = fbSentences;
+    matchSentences();
   });
 });
+
+const matchSentences = () => {
+  stories.value.forEach(story => {
+    const firstSentence = sentences.value.find(sentence => sentence.storyUID === story.id);
+    if (firstSentence) {
+      story.firstSentence = firstSentence.content;
+    }
+  });
+};
+
 const chunkedStories = computed(() => {
   const chunks: Story[][] = [];
   for (let i = 0; i < stories.value.length; i += 6) {
@@ -46,13 +89,17 @@ const chunkedStories = computed(() => {
 </script>
 <style scoped lang="scss">
 $component: "stories";
+@import "../scss/mixins/_index.scss";
 
 .#{$component} {
-  margin: 2rem auto 0;
+  margin: 2rem auto 5rem;
   padding-top: 5rem;
   max-width: 1152px;
   height: 100%;
-
+  @include sm{
+    margin: 0 1rem 0 1rem;
+  }
+  
   &__story-title {
     margin-left: 2rem;
   }
@@ -61,6 +108,11 @@ $component: "stories";
     text-align: center;
     margin: auto;
     padding: 5rem 0 5rem 0;
+  }
+  &__row{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
   }
 }
 </style>

@@ -92,7 +92,6 @@ const fetchSentences = async (userId) => {
         createdAt: data.createdAt || null,
       };
     });
-    console.log({ sentences });
   } catch (error) {
     console.error("Error fetching sentences: ", error);
   }
@@ -110,18 +109,17 @@ const toggleEdit = async (sentence) => {
   }
   sentence.isEditing = !sentence.isEditing;
 };
-
-const limitCheck = (sentence) => {
-  if (sentence.content.length > charLimit) {
-    sentence.content = sentence.content.slice(0, charLimit);
-    console.log(sentence.content.lenght);
+const limitCheck = (event, sentence) => {
+  if (event.target.value.length > charLimit) {
+    event.target.value = event.target.value.slice(0, charLimit);
   }
+  sentence.content = event.target.value;
 };
 
-// bereken hoeveel karakters er nog zijn
 const remainingChar = (sentence) => {
-  return charLimit - sentence.content.length;
+  return Math.max(0, charLimit - sentence.content.length);
 };
+
 
 // ik heb een watcher nodig om te kijen of de waarde van de user veranderd, of de waarde van de uid veranded
 watch(

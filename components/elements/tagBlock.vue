@@ -1,12 +1,12 @@
 <template>
-  <div class="tag">
+  <section class="tag">
     <div class="tag__tag-blocks">
       <div
         class="tag__tag-block"
         :style="{ backgroundColor: getRandomColor() }"
       ></div>
     </div>
-  </div>
+  </section>
 </template>
 <script setup lang="ts">
 const colorArray = [
@@ -28,6 +28,7 @@ $component: "tag";
 @import "/scss/vars/colors";
 
 .#{$component} {
+  padding-right: .5rem;
   &__tag-blocks {
     display: flex;
   }

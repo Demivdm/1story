@@ -19,8 +19,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { getAuth } from 'firebase/auth';
 
-import WriteStory from '@/components/WriteStory.vue'; // Example WriteStory component
-import Login from '@/components/Login.vue'; // Example Login component
+import Index from '~/pages/index.vue';
+import WriteStory from '~/pages/writeStory.vue';
+import Login from '~/components/elements/login.vue';
+
 
 const routes = [
   { path: '/', component: Index },

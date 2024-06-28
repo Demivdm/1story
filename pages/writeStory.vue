@@ -9,7 +9,7 @@
     <p>{{ logoutMessage }} </p>
     </span> -->
     <div class="story-container__story-wrapper">
-      <div v-if="prevSentence" class="story-container__info-wrapper">
+      <div v-if="prevSentence && !isDeadlinePassed" class="story-container__info-wrapper">
         <div class="story-container__info-tags">
           <ElementsTagBlock></ElementsTagBlock>
           <p>{{ prevSentence.name }}</p>
@@ -22,17 +22,21 @@
       <div v-if="!prevSentence">
         <p>oeps geen zin gevonden, probeer het later nog een keer</p>
       </div>
-      <BlocksModal>
+      <div v-if="isDeadlinePassed">
+        <p class="story-container__deadline-passed">Oeps de deadline is verstreken. Geen zorgen we sturen je een mailtje als je weer mee kunt doen!</p>
+      </div>
+      <BlocksModal v-if="prevSentence && !isDeadlinePassed">
         <section class="story-container__modal-content">
           <div class="story-container__name-function-input">
             <span class="story-container__name-input">
               <label for="name">Mijn naam is</label>
               <div class="story-container__input-container">
                 <input
+                :disabled="isDeadlinePassed"
                   type="text"
                   :placeholder="currentUser?.displayName || 'Voornaam'"
                   v-model="nameInput"
-                  :class="{ 'wrong-input': inputValCheckNameInput }"
+                  :class="{ 'wrong-input': inputValCheckNameInput, 'disabled-pointer': isDeadlinePassed}"
                   required
                 />
                 <p
@@ -50,10 +54,13 @@
               <div class="story-container__input-container">
                 <!-- eerst de class die je wilt toggelen en daarna de functie met de voorwaarden voor true of false erin -->
                 <input
+                :disabled="isDeadlinePassed"
+
+
                   type="text"
                   placeholder="Functie"
                   v-model="functionInput"
-                  :class="{ 'wrong-input': inputValCheckFunctionInput }"
+                  :class="{ 'wrong-input': inputValCheckFunctionInput,'disabled-pointer': isDeadlinePassed }"
                   required
                 />
 
@@ -71,6 +78,8 @@
             <label for="name">Mijn zin van de week is</label>
             <div class="story-container__week-input-container">
               <textarea
+              :disabled="isDeadlinePassed"
+              :class="{'disabled-pointer': isDeadlinePassed}"
                 v-model="textInput"
                 @input="limitCheck"
                 cols="60"
@@ -86,7 +95,7 @@
           </div>
 
           <section class="story-container__button-wrapper">
-            <ElementsButton @click="addSentence" :disabled="!disabled">
+            <ElementsButton @click="addSentence" :disabled="!isSubmitEnabled">
               Verzenden
             </ElementsButton>
           </section>
@@ -97,6 +106,13 @@
 </template>
 
 <script setup lang="ts">
+  import { useCurrentStory} from '../composable/useCurrentStory';
+  import { useDeadline} from '../composable/useDeadline';
+
+  
+const { currentStoryId } = useCurrentStory();
+const {isDeadlinePassed } = useDeadline();
+
 const currentUser = useCurrentUser();
 const charLimit = 100;
 const textInput = ref("");
@@ -106,47 +122,68 @@ const auth = getAuth();
 const router = useRouter();
 const logoutMessage = ref("");
 const prevSentence = ref(null);
+
 // const inputValCheck = ref(false);
 const inputValCheckFunctionInput = ref(false);
 const inputValCheckNameInput = ref(false);
 
-const disabled = computed(
-  () =>
-    textInput.value !== "" &&
-    nameInput.value !== "" &&
-    functionInput.value !== ""
-);
-console.log(disabled.value);
 
-const addSentence = () => {
-  if (!currentUser.value || !currentUser.value.uid) {
-    console.error("User not authenticated or UID is missing");
-    return;
-  }
 
-  if (textInput.value === "") {
-    return;
-  }
+// aanpassen om evoor te zogen dat input niet standaard disabled is.  
+const isSubmitEnabled = computed(() => {
+  return !isDeadlinePassed.value && textInput.value !== "" && nameInput.value !== "" && functionInput.value !== "";
+});
+console.log('deadline passed is',isDeadlinePassed.value)
 
-  addDoc(collection(db, "sentences"), {
-    uid: currentUser.value.uid,
-    content: textInput.value,
-    name: nameInput.value,
-    job: functionInput.value,
-    createdAt: serverTimestamp(),
-    storyUID: "vq7I23zQK8iszSCXbMsj",
-  })
-    .then(() => {
+// console.log('is submit enabled',isSubmitEnabled.value)
+// const disabled = computed(
+//   () =>
+//     textInput.value !== "" &&
+//     nameInput.value !== "" &&
+//     functionInput.value !== "" &&
+//     deadline.value < new Date()
+
+// );
+
+// const addSentence = () => {
+//   if (!currentUser.value || !currentUser.value.uid) {
+//     console.error("User not authenticated or UID is missing");
+//     return;
+//   }
+
+//   if (textInput.value === "") {
+//     return;
+//   }
+
+  const addSentence = async () => {
+    if (!currentUser.value || !currentUser.value.uid) {
+      console.error("User not authenticated or UID is missing");
+      return;
+    }
+
+    if (textInput.value === "") {
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, "sentences"), {
+        uid: currentUser.value.uid,
+        content: textInput.value,
+        name: nameInput.value,
+        job: functionInput.value,
+        createdAt: serverTimestamp(),
+        storyUID: currentStoryId.value,
+      });
+
       textInput.value = "";
       nameInput.value = "";
       functionInput.value = "";
 
       router.push("confirm");
-    })
-    .catch((error) => {
+    } catch (error) {
       console.error("Error adding sentence, please try again later", error);
-    });
-};
+    }
+  };
 
 const remainingChar = computed(() => {
   return charLimit - textInput.value.length;
@@ -161,6 +198,7 @@ const limitCheck = () => {
 watch(textInput, () => {
   limitCheck();
 });
+
 
 const logout = async () => {
   try {
@@ -190,13 +228,20 @@ const fetchLastSentence = async () => {
         id: doc.id,
         ...doc.data(),
       };
-    } else {
-      prevSentence.value = null;
+
+      if (prevSentence.value.storyUID !== currentStoryId.value) {
+        prevSentence.value = {
+          name: "Demi",
+          job: "Stagiair",
+          content: "Er was eens...",
+        };
+      }
     }
   } catch (error) {
     console.error("Error fetching last sentence: ", error);
   }
 };
+
 
 onMounted(() => {
   if (currentUser.value && currentUser.value.displayName) {
@@ -446,5 +491,18 @@ $component: "story-container";
       width: 100%;
     }
   }
+  &__deadline-passed{
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    @include sm{
+    margin: 0 1rem 0 1rem;
+    text-align: center;
+  }
+  }
+
 }
+.disabled-pointer {
+    cursor: not-allowed;
+  }
 </style>

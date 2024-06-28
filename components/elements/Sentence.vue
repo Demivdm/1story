@@ -111,6 +111,8 @@ const processedText = computed(() => {
 const toggleDropdown = () => {
   isHovered.value = !isHovered.value;
 };
+
+
 </script>
 
 <style scoped lang="scss">
