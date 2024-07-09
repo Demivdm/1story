@@ -19,12 +19,13 @@
 
         <h2>{{ prevSentence.content }}</h2>
       </div>
-      <div v-if="!prevSentence">
-        <p>oeps geen zin gevonden, probeer het later nog een keer</p>
-      </div>
-      <div v-if="isDeadlinePassed">
-        <p class="story-container__deadline-passed">Oeps de deadline is verstreken. Geen zorgen we sturen je een mailtje als je weer mee kunt doen!</p>
-      </div>
+      <div v-else-if="!prevSentence && !isDeadlinePassed">
+  <p>oeps we hebben geen zin voor je kunnen vinden om op te reageren, probeer het later nog een keer</p>
+</div>
+<div v-if="isDeadlinePassed">
+  <p class="story-container__deadline-passed">Oeps de deadline is verstreken. Geen zorgen we sturen je een mailtje als je weer mee kunt doen!</p>
+</div>
+
       <BlocksModal v-if="prevSentence && !isDeadlinePassed">
         <section class="story-container__modal-content">
           <div class="story-container__name-function-input">
@@ -107,6 +108,7 @@
 
 <script setup lang="ts">
   import { useCurrentStory} from '../composable/useCurrentStory';
+
   import { useDeadline} from '../composable/useDeadline';
 
   
@@ -160,6 +162,10 @@ console.log('deadline passed is',isDeadlinePassed.value)
       console.error("User not authenticated or UID is missing");
       return;
     }
+    if (currentStoryId.value ==  null) {
+      console.error("No current story ID available");
+      return;
+    }
 
     if (textInput.value === "") {
       return;
@@ -172,7 +178,7 @@ console.log('deadline passed is',isDeadlinePassed.value)
         name: nameInput.value,
         job: functionInput.value,
         createdAt: serverTimestamp(),
-        storyUID: currentStoryId.value,
+        storyUID: '9qjO0wlRGc1qtzd2LXkY',
       });
 
       textInput.value = "";
@@ -214,35 +220,79 @@ const logout = async () => {
   }
 };
 
+// const fetchLastSentence = async () => {
+//   try {
+//     const q = query(
+//       collection(db, "sentences"),
+//       orderBy("createdAt", "desc"),
+//       limit(1)
+//     );
+//     const querySnapshot = await getDocs(q);
+//     if (!querySnapshot.empty) {
+//       const doc = querySnapshot.docs[0];
+//       prevSentence.value = {
+//         id: doc.id,
+//         ...doc.data(),
+//       };
+
+//     } else {
+  //     prevSentence.value = {
+  //       name: "Demi",
+  //       job: "Stagiair",
+  //       content: "Er was eens...",
+  //     };
+  //   }
+  // } catch (error) {
+  //   console.error("Error fetching last sentence: ", error);
+  // }
+// };
+
 const fetchLastSentence = async () => {
   try {
-    const q = query(
-      collection(db, "sentences"),
-      orderBy("createdAt", "desc"),
-      limit(1)
-    );
-    const querySnapshot = await getDocs(q);
-    if (!querySnapshot.empty) {
-      const doc = querySnapshot.docs[0];
-      prevSentence.value = {
-        id: doc.id,
-        ...doc.data(),
-      };
+    // Fetch the current open story
+    const storyQuery = query(collection(db, "stories"), where("closedAt", "==", null));
+    const storySnapshot = await getDocs(storyQuery);
 
-      if (prevSentence.value.storyUID !== currentStoryId.value) {
+    if (!storySnapshot.empty) {
+      const storyDoc = storySnapshot.docs[0];
+      const storyId = storyDoc.id;
+
+      // Fetch the most recent sentence from the current open story
+      const sentenceQuery = query(
+        collection(db, "sentences"),
+        where("storyUID", "==", storyId),
+        orderBy("createdAt", "desc"),
+        limit(1)
+      );
+
+      const sentenceSnapshot = await getDocs(sentenceQuery);
+
+      if (!sentenceSnapshot.empty) {
+        const doc = sentenceSnapshot.docs[0];
+        prevSentence.value = {
+          id: doc.id,
+          ...doc.data(),
+        };
+      } else {
+        // Set default sentence if no sentences are found for the open story
         prevSentence.value = {
           name: "Demi",
           job: "Stagiair",
           content: "Er was eens...",
         };
       }
+    } else {
+      // Set default sentence if no open stories are found
+      prevSentence.value = {
+        name: "Demi",
+        job: "Stagiair",
+        content: "Er was eens...",
+      };
     }
   } catch (error) {
     console.error("Error fetching last sentence: ", error);
   }
 };
-
-
 onMounted(() => {
   if (currentUser.value && currentUser.value.displayName) {
     nameInput.value = currentUser.value.displayName;
@@ -257,6 +307,8 @@ watchEffect(() => {
   inputValCheckNameInput.value = invalidChars.test(nameInput.value);
   console.log("functie input waarde", inputValCheckFunctionInput.value);
   console.log("naam input waarde", inputValCheckNameInput.value);
+  console.log('huidige storyid:', currentStoryId.value)
+
 });
 </script>
 

@@ -6,9 +6,13 @@
     <div v-for="(chunk, chunkIndex) in chunkedStories" :key="chunkIndex" class="stories__row">
       <BlocksCard v-for="story in chunk" :key="story.id" :story="story"></BlocksCard>
       <!-- Insert divider sentence after every chunk -->
-      <h2 v-if="chunkIndex < chunkedStories.length - 1" class="stories__breaker-sentence">
-        Zin voor zin, een verhaal van en voor ons allemaal dat ons verbindt en inspireert.
+     <h2 class="stories__breaker-sentence">Zin voor zin, een verhaal van en voor ons allemaal dat ons verbindt en inspireert.</h2> 
+      <h2 v-if="chunkIndex < chunkedStories.length - 1 || chunkIndex == 1" class="stories__breaker-sentence">
+        Een verhaal van en voor ons allemaal, geschreven zin voor zin, dat ons verbindt en inspireert.
       </h2>
+    </div>
+    <div v-if="stories.length === 0">
+      Er zijn nog geen verhalen geschreven, kom later terug.
     </div>
   </section>
 </template>
