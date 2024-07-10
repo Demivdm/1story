@@ -178,7 +178,7 @@ console.log('deadline passed is',isDeadlinePassed.value)
         name: nameInput.value,
         job: functionInput.value,
         createdAt: serverTimestamp(),
-        storyUID: '9qjO0wlRGc1qtzd2LXkY',
+        storyUID: currentStoryId.value,
       });
 
       textInput.value = "";

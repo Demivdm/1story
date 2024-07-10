@@ -6,10 +6,10 @@
     <div v-if="currentstory" class="story__detail">
       <div class="story-info">
         <ElementsScrollUp></ElementsScrollUp>
-        <date class="story__time">
+        <time class="story__time">
           <ElementsTagBlock></ElementsTagBlock>
           <p>{{ formatDate(currentstory.createdAt) }}</p>
-        </date>
+        </time>
         <h2>{{ currentstory.title }}</h2>
 
 

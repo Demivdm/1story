@@ -8,10 +8,10 @@
 
     <div class="story-info">
       <ElementsScrollUp></ElementsScrollUp>
-      <date class="story__time">
+      <time class="story__time">
         <ElementsTagBlock></ElementsTagBlock>
         27.05.2024
-      </date>
+      </time>
 
       <h2>Het verhaal</h2>
     </div>
